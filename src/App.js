@@ -329,7 +329,7 @@ const App = () => {
       <section id="home" className="hero">
         <div className="container">
           <div className="hero-content">
-            <div className="hero-badge">Terpercaya Sejak 2024</div>
+            {/* <div className="hero-badge">Terpercaya Sejak 2024</div> */}
             <h1>Jasa Titip & Ekspedisi Internasional</h1>
             <p>Melayani pengiriman barang dari Jepang ke Indonesia dan sebaliknya, serta ekspedisi ke 64 negara dengan jaminan keamanan dan ketepatan waktu</p>
             <div className="hero-cta">
