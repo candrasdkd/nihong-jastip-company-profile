@@ -61,7 +61,7 @@ const App = () => {
       ]
     },
     {
-      country: "Hongkong (Cargo Umum)",
+      country: "Hongkong",
       estimates: "Estimasi 7 hari",
       prices: [
         { range: "1-10 kg", price: "155.000/kg" },
@@ -79,7 +79,7 @@ const App = () => {
       ]
     },
     {
-      country: "Jepang (Via Pos)",
+      country: "Jepang",
       estimates: "",
       prices: [
         { range: "0,5 kg", price: "2.500¥/kg" },
@@ -449,7 +449,6 @@ const App = () => {
               </div>
               <div className="pricing-note">
                 <p>* Harga dapat bervariasi tergantung jenis barang dan nilai bea cukai</p>
-                <p>* Minimal pengiriman 1 kg</p>
               </div>
             </div>
           )}
