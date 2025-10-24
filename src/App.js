@@ -5,6 +5,14 @@ const App = () => {
   const [activeTab, setActiveTab] = useState('jastip');
   const [activeFaq, setActiveFaq] = useState(null);
   const [activeMenu, setActiveMenu] = useState('home');
+  // State untuk sidebar
+  // State untuk sidebar
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Fungsi toggle sidebar
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   const jastipData = {
     title: "Via Jastip",
@@ -200,7 +208,12 @@ const App = () => {
     // Update hash optional
     // history.replaceState(null, '', `#${id}`);
   };
-
+  const handleNavClickWithClose = (id) => (e) => {
+    e.preventDefault();
+    setActiveMenu(id);
+    setSidebarOpen(false);
+    scrollToId(id);
+  };
   // Kirim data form "Kirim Pesan" ke WhatsApp (terpisah dari openWhatsApp)
   const submitContactToWhatsApp = (e) => {
     e.preventDefault();
@@ -263,12 +276,25 @@ const App = () => {
   return (
     <div className="App">
       {/* Header */}
+      {/* Header */}
       <header className="header">
         <div className="container">
           <div className="logo-section">
             <h1 className="logo">Nihong Jastip</h1>
             <span className="tagline">Your Trusted International Shipping Partner</span>
           </div>
+
+          {/* Hamburger Button untuk Mobile */}
+          <button
+            className="hamburger-btn"
+            onClick={toggleSidebar}
+            aria-label="Toggle Menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
           <nav className="nav">
             <a href="#home" onClick={handleNavClick('home')} className={activeMenu === 'home' ? 'active' : ''}>Beranda</a>
             <a href="#services" onClick={handleNavClick('services')} className={activeMenu === 'services' ? 'active' : ''}>Layanan</a>
@@ -278,6 +304,26 @@ const App = () => {
           </nav>
         </div>
       </header>
+
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && <div className="sidebar-overlay" onClick={toggleSidebar}></div>}
+
+      {/* Mobile Sidebar */}
+      <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+        <div className="sidebar-header">
+          <h2>Nihong Jastip</h2>
+          <button className="close-btn" onClick={toggleSidebar} aria-label="Close Menu">
+            &times;
+          </button>
+        </div>
+        <div className="sidebar-links">
+          <a href="#home" onClick={handleNavClickWithClose('home')} className={activeMenu === 'home' ? 'active' : ''}>Beranda</a>
+          <a href="#services" onClick={handleNavClickWithClose('services')} className={activeMenu === 'services' ? 'active' : ''}>Layanan</a>
+          <a href="#pricing" onClick={handleNavClickWithClose('pricing')} className={activeMenu === 'pricing' ? 'active' : ''}>Harga</a>
+          <a href="#faq" onClick={handleNavClickWithClose('faq')} className={activeMenu === 'faq' ? 'active' : ''}>FAQ</a>
+          <a href="#contact" onClick={handleNavClickWithClose('contact')} className={activeMenu === 'contact' ? 'active' : ''}>Kontak</a>
+        </div>
+      </nav>
 
       {/* Hero Section */}
       <section id="home" className="hero">
