@@ -622,7 +622,7 @@ html {
 /* FAQ Section */
 .faq {
   padding: 100px 0;
-  background-color: white;
+  background-color: #f8f9fa;
 }
 
 .faq-container {
@@ -632,6 +632,7 @@ html {
 
 .faq-item {
   border: 1px solid var(--border);
+  background-color: white;
   border-radius: 8px;
   margin-bottom: 1rem;
   overflow: hidden;
@@ -649,7 +650,7 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f8f9fa;
+  background: white;
   transition: var(--transition);
 }
 
@@ -831,7 +832,7 @@ html {
 
 .terms {
   padding: 100px 0;
-  background-color: #f8f9fa;
+  background-color: white;
 }
 
 .terms-grid {

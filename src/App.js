@@ -277,6 +277,7 @@ const App = () => {
         </div>
       </section>
 
+
       {/* Pricing Section */}
       <section id="pricing" className="pricing">
         <div className="container">
@@ -355,31 +356,7 @@ const App = () => {
           )}
         </div>
       </section>
-
-      {/* FAQ Section */}
-      <section id="faq" className="faq">
-        <div className="container">
-          <div className="section-header">
-            <h2>Pertanyaan Umum</h2>
-            <p>Semua yang perlu Anda ketahui tentang layanan kami</p>
-          </div>
-          <div className="faq-container">
-            {faqData.map((item, index) => (
-              <div key={index} className={`faq-item ${activeFaq === index ? 'active' : ''}`}>
-                <div className="faq-question" onClick={() => toggleFaq(index)}>
-                  <h4>{item.question}</h4>
-                  <span className="faq-toggle">{activeFaq === index ? '−' : '+'}</span>
-                </div>
-                <div className="faq-answer">
-                  <p>{item.answer}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Terms Section */}
+            {/* Terms Section */}
       <section id="terms" className="terms">
         <div className="container">
           <div className="section-header">
@@ -459,6 +436,31 @@ const App = () => {
           </div>
         </div>
       </section>
+
+
+      {/* FAQ Section */}
+      <section id="faq" className="faq">
+        <div className="container">
+          <div className="section-header">
+            <h2>Pertanyaan Umum</h2>
+            <p>Semua yang perlu Anda ketahui tentang layanan kami</p>
+          </div>
+          <div className="faq-container">
+            {faqData.map((item, index) => (
+              <div key={index} className={`faq-item ${activeFaq === index ? 'active' : ''}`}>
+                <div className="faq-question" onClick={() => toggleFaq(index)}>
+                  <h4>{item.question}</h4>
+                  <span className="faq-toggle">{activeFaq === index ? '−' : '+'}</span>
+                </div>
+                <div className="faq-answer">
+                  <p>{item.answer}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* CTA Section */}
       <section className="cta-section">
