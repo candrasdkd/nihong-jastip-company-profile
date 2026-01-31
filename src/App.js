@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { expeditionData, faqData, jastipData } from './data';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('jastip');
@@ -13,137 +14,6 @@ const App = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
-  const jastipData = {
-    title: "Via Jastip",
-    routes: [
-      { route: "Jepang → Indonesia", price: "1300¥ - 1700¥ / kg" },
-      { route: "Indonesia → Jepang", price: "1100¥ - 1500¥ / kg" }
-    ]
-  };
-
-  const expeditionData = [
-    {
-      country: "Singapura",
-      estimates: "Estimasi 7 hari",
-      prices: [
-        { range: "1-5 kg", price: "95.000/kg" },
-        { range: "6-10 kg", price: "85.000/kg" },
-        { range: "11-20 kg", price: "75.000/kg" },
-        { range: "20-30 kg", price: "60.000/kg" }
-      ]
-    },
-    {
-      country: "Brunei",
-      estimates: "Estimasi 7 hari",
-      prices: [
-        { range: "1-5 kg", price: "165.000/kg" },
-        { range: "6-10 kg", price: "155.000/kg" },
-        { range: "20-30 kg", price: "150.000/kg" }
-      ]
-    },
-    {
-      country: "Malaysia",
-      estimates: "Estimasi 7 hari",
-      prices: [
-        { range: "1-10 kg", price: "95.000/kg" },
-        { range: "11-25 kg", price: "85.000/kg" },
-        { range: "26-30 kg", price: "80.000/kg" }
-      ]
-    },
-    {
-      country: "Malaysia Timur (Sabah Serawak)",
-      estimates: "Estimasi 7 hari",
-      prices: [
-        { range: "1-10 kg", price: "115.000/kg" },
-        { range: "11-25 kg", price: "105.000/kg" },
-        { range: "26-30 kg", price: "100.000/kg" }
-      ]
-    },
-    {
-      country: "Hongkong",
-      estimates: "Estimasi 7 hari",
-      prices: [
-        { range: "1-10 kg", price: "155.000/kg" },
-        { range: "11-25 kg", price: "145.000/kg" },
-        { range: "26-30 kg", price: "140.000/kg" }
-      ]
-    },
-    {
-      country: "Taiwan",
-      estimates: "Estimasi 7 hari",
-      prices: [
-        { range: "1-10 kg", price: "105.000/kg" },
-        { range: "11-20 kg", price: "95.000/kg" },
-        { range: "21-30 kg", price: "90.000/kg" }
-      ]
-    },
-    {
-      country: "Jepang",
-      estimates: "",
-      prices: [
-        { range: "0,5 kg", price: "2.500¥/kg" },
-        { range: "1 kg", price: "3.700¥/kg" },
-        { range: "2-3 kg", price: "2.600¥/kg" },
-        { range: "4-8 kg", price: "2.100¥/kg" },
-        { range: "9-12 kg", price: "1.900¥/kg" },
-        { range: "13-20 kg", price: "1.800¥/kg" },
-        { range: "21-30 kg", price: "1.600¥/kg" }
-      ]
-    },
-    {
-      country: "Arab Saudi",
-      estimates: "Estimasi 7 hari",
-      prices: [
-        { range: "1 kg", price: "395.000" },
-        { range: "2 kg", price: "495.000" },
-        { range: "3 kg", price: "610.000" },
-        { range: "4 kg", price: "740.000" },
-        { range: "5 kg", price: "850.000" },
-        { range: "6 kg", price: "960.000" },
-        { range: "7 kg", price: "1.100.000" },
-        { range: "8 kg", price: "1.200.000" },
-        { range: "9 kg", price: "1.300.000" },
-        { range: "10 kg", price: "1.400.000" },
-        { range: "11-30 kg", price: "Per kg tambahan 100.000" }
-      ]
-    }
-  ];
-
-  const faqData = [
-    {
-      question: "Apa itu Nihong Jastip?",
-      answer: "Nihong Jastip adalah layanan jasa titip dan ekspedisi internasional yang mengkhususkan diri dalam pengiriman barang antara Indonesia dan Jepang, serta ke berbagai negara lainnya. Kami membantu Anda mendapatkan produk dari Jepang atau mengirimkan barang ke berbagai tujuan internasional."
-    },
-    {
-      question: "Bagaimana cara memesan layanan jastip?",
-      answer: "Anda dapat memesan melalui website kami dengan mengisi formulir kontak, menghubungi kami via WhatsApp, atau melalui media sosial. Kami akan memandu Anda melalui proses pemesanan, mulai dari pemilihan produk hingga pengiriman."
-    },
-    {
-      question: "Berapa lama waktu pengiriman?",
-      answer: "Waktu pengiriman bervariasi tergantung negara tujuan. Untuk layanan ekspedisi, estimasi umumnya 7-14 hari. Untuk layanan jastip khusus Indonesia-Jepang, biasanya membutuhkan waktu 2-3 minggu tergantung proses customs dan ketersediaan barang."
-    },
-    {
-      question: "Apakah ada biaya tambahan selain yang tertera?",
-      answer: "Harga yang tertera sudah termasuk biaya pengiriman dasar. Namun, mungkin ada biaya tambahan untuk packing khusus, asuransi, atau bea cukai di negara tujuan yang akan kami informasikan terlebih dahulu sebelum proses pengiriman."
-    },
-    {
-      question: "Bagaimana dengan barang yang rusak atau hilang?",
-      answer: "Kami menyediakan asuransi pengiriman untuk barang bernilai tinggi. Untuk klaim kerusakan atau kehilangan, harap laporkan dalam waktu 3 hari setelah barang diterima dengan menyertakan bukti foto/video untuk proses klaim."
-    },
-    {
-      question: "Apakah ada batasan barang yang bisa dikirim?",
-      answer: "Ya, kami tidak melayani pengiriman barang terlarang seperti narkoba, senjata, bahan mudah meledak, hewan hidup, dan barang ilegal lainnya. Beberapa negara juga memiliki restriksi khusus untuk makanan, obat-obatan, dan produk tertentu."
-    },
-    {
-      question: "Bagaimana sistem pembayaran?",
-      answer: "Kami menerima pembayaran melalui transfer bank, e-wallet, dan untuk layanan jastip bisa melalui sistem DP (down payment) dengan pelunasan sebelum pengiriman. Detail pembayaran akan disampaikan setelah konfirmasi pesanan."
-    },
-    {
-      question: "Apakah bisa tracking pengiriman?",
-      answer: "Ya, untuk semua layanan ekspedisi kami menyediakan nomor resi yang dapat digunakan untuk melacak status pengiriman melalui website resmi kurir atau melalui sistem tracking kami."
-    }
-  ];
 
   // --- Icons (inline SVG, no deps) ---
   const MailIcon = () => (
@@ -454,7 +324,7 @@ const App = () => {
           )}
 
           {activeTab === 'expedition' && (
-            <div className="pricing-content">
+            <div className="prifaqDatacing-content">
               <h3>Via Ekspedisi Internasional</h3>
               <p className="info-note">
                 * Harga berikut untuk negara yang paling sering dikirim. Untuk negara lainnya, silakan hubungi kami untuk penawaran khusus.
@@ -505,6 +375,87 @@ const App = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Terms Section */}
+      <section id="terms" className="terms">
+        <div className="container">
+          <div className="section-header">
+            <h2>Syarat & Ketentuan Handcarry</h2>
+            <p>Mohon dibaca sebelum menggunakan layanan kami</p>
+          </div>
+
+          <div className="terms-grid">
+
+            {/* Jepang → Indonesia */}
+            <div className="terms-card">
+              <h3>🇯🇵 → 🇮🇩 Jepang ke Indonesia</h3>
+
+              <h4>Titip Beli</h4>
+              <ul>
+                <li>Full payment / DP 50% di awal (kecuali kesepakatan khusus)</li>
+                <li>Pesanan diproses setelah pembayaran lunas</li>
+              </ul>
+
+              <h4>Titip Bawa</h4>
+              <ul>
+                <li>Barang tersedia di warehouse minimal H-2 sebelum keberangkatan</li>
+                <li>Termasuk packing bandara, bagasi pesawat, dan dibawa sampai tujuan</li>
+              </ul>
+
+              <h4>Pengiriman</h4>
+              <ul>
+                <li>Ongkir domestik setelah landing Jakarta ditanggung penerima</li>
+                <li>Barang dikirim 1–3 hari setelah landing</li>
+                <li>Estimasi tiba 2–3 hari (tergantung flight)</li>
+              </ul>
+
+              <h4>Biaya & Kebijakan</h4>
+              <ul>
+                <li>Sistem hitung per kg (dibulatkan ke atas)</li>
+                <li>Minimum charge 1 kg</li>
+                <li>Fee bisa nego sesuai kesepakatan</li>
+                <li>Pembatalan setelah dikirim tidak dapat refund</li>
+              </ul>
+            </div>
+
+            {/* Indonesia → Jepang */}
+            <div className="terms-card">
+              <h3>🇮🇩 → 🇯🇵 Indonesia ke Jepang</h3>
+
+              <h4>Ketentuan Barang</h4>
+              <ul>
+                <li>Hanya menerima barang yang tidak dilarang</li>
+                <li>Kami berhak menolak barang berbahaya/berisiko</li>
+                <li>Semua paket diperiksa & dibuka terlebih dahulu demi keamanan</li>
+              </ul>
+
+              <h4>Warehouse & Tanggung Jawab</h4>
+              <ul>
+                <li>Tanggung jawab kami setelah barang diterima di warehouse</li>
+                <li>Kerusakan/kehilangan dari ekspedisi lokal bukan tanggung jawab kami</li>
+                <li>Berat dihitung termasuk box/kemasan</li>
+              </ul>
+
+              <h4>Pengiriman</h4>
+              <ul>
+                <li>Alamat wajib dicantumkan sebelum keberangkatan</li>
+                <li>Dikirim 1–3 hari setelah landing Jepang/Korea/Indonesia</li>
+                <li>Estimasi 2–4 hari tergantung flight</li>
+                <li>Jika delay penerbangan, waktu pengiriman menyesuaikan</li>
+              </ul>
+
+              <h4>Pembayaran</h4>
+              <ul>
+                <li>DP 50% untuk titip beli (kecuali kesepakatan)</li>
+                <li>Sistem per kg dibulatkan ke atas</li>
+                <li>Minimum charge 1 kg</li>
+                <li>Penerbangan rutin 2–5 kali per bulan</li>
+              </ul>
+            </div>
+
           </div>
         </div>
       </section>
