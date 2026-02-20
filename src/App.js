@@ -7,7 +7,7 @@ import { getExpeditionData, getFaqData, getJastipData } from './data';
 const App = () => {
   const [lang, setLang] = useState('id'); // id, en, jp
   const [activeTab, setActiveTab] = useState('jastip');
-  const [activeFaq, setActiveFaq] = useState(null);
+  const [activeFaqs, setActiveFaqs] = useState([]);
   const [activeMenu, setActiveMenu] = useState('home');
   // State untuk sidebar
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -69,7 +69,9 @@ const App = () => {
 
   // FAQ toggle
   const toggleFaq = (index) => {
-    setActiveFaq(activeFaq === index ? null : index);
+    setActiveFaqs((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
   };
 
   // Smooth scroll helpers + active menu
@@ -143,6 +145,15 @@ const App = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Update AOS when accordion changes height
+  useEffect(() => {
+    // Wait for the CSS transition to complete (0.3s)
+    const timer = setTimeout(() => {
+      AOS.refresh();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [activeFaqs]);
+
   // Set awal dari hash (kalau user buka dengan #pricing dll)
   useEffect(() => {
     const hash = window.location.hash?.replace('#', '');
@@ -155,7 +166,7 @@ const App = () => {
   useEffect(() => {
     AOS.init({
       duration: 800,
-      once: false,
+      once: true,
     });
   }, []);
 
@@ -505,10 +516,10 @@ const App = () => {
           </div>
           <div className="faq-container">
             {faqData.map((item, index) => (
-              <div key={index} className={`faq-item ${activeFaq === index ? 'active' : ''}`} data-aos="fade-up" data-aos-delay={index * 100}>
+              <div key={index} className={`faq-item ${activeFaqs.includes(index) ? 'active' : ''}`}>
                 <div className="faq-question" onClick={() => toggleFaq(index)}>
                   <h4>{item.question}</h4>
-                  <span className="faq-toggle">{activeFaq === index ? '−' : '+'}</span>
+                  <span className="faq-toggle">{activeFaqs.includes(index) ? '−' : '+'}</span>
                 </div>
                 <div className="faq-answer">
                   <p>{item.answer}</p>
