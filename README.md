@@ -11,23 +11,25 @@ A premium, SEO-optimized company profile website for **Nihong Jastip**, speciali
 
 - **Next.js 15+ App Router**: Built with the latest Next.js features for high performance and optimal developer experience.
 - **Advanced i18n Support**: Full internationalization support for Indonesian (ID), English (EN), and Japanese (JA) via URL-based routing.
+- **Intelligent AI Chatbot**: Integrated AI assistant powered by Groq to provide 24/7 customer support and answer Jastip queries accurately.
 - **SEO & Performance Optimized**: 
   - Dynamic Metadata & OpenGraph tags.
   - JSON-LD Structured Data for better search engine visibility.
   - Optimized fonts and images.
   - Canonical URL management.
 - **Premium Design System**: Custom-built design using Vanilla CSS for maximum flexibility and performance.
-- **Responsive & Interactive**: Fully responsive layout with smooth animations powered by [AOS (Animate on Scroll)](https://michalsnik.github.io/aos/).
+- **Responsive & Interactive**: Fully responsive layout with smooth animations powered by [Framer Motion](https://www.framer.com/motion/) and [AOS](https://michalsnik.github.io/aos/).
 - **Global Presence**: Information about services in Osaka, Semarang, Depok, and Jakarta, serving over 64 countries.
 
 ## 🛠️ Tech Stack
 
 - **Framework**: [Next.js](https://nextjs.org/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **AI Integration**: [Groq SDK](https://console.groq.com/)
 - **Styling**: Vanilla CSS (Custom Design Tokens)
-- **Animations**: [AOS](https://github.com/michalsnik/aos)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [AOS](https://github.com/michalsnik/aos)
 - **Typography**: [Inter](https://fonts.google.com/specimen/Inter) via `next/font`
-- **Icons**: Custom SVG Icons
+- **Icons**: [Lucide React](https://lucide.dev/) & Custom SVG Icons
 
 ## 📂 Project Structure
 
@@ -36,6 +38,8 @@ src/
 ├── app/             # Next.js App Router (i18n routing)
 │   └── [lang]/      # Language-specific pages
 ├── components/      # UI Components (Sections, Layout, SEO)
+├── data/            # Static data and knowledge base for AI
+├── hooks/           # Custom React hooks (e.g., useChat)
 ├── types/           # TypeScript Type Definitions
 ├── utils/           # Helper functions & constants
 └── globals.css      # Custom design system & global styles
