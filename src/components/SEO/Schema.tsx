@@ -14,7 +14,7 @@ export default function Schema({ lang }: SchemaProps) {
     "provider": {
       "@type": "LocalBusiness",
       "name": "Nihong Jastip",
-      "image": "https://nihongjastip.com/og-image.png",
+      "image": "https://www.nihongjastip.com/og-image.png",
       "address": [
         {
           "@type": "PostalAddress",

@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
   };
 
   return {
+    metadataBase: new URL('https://www.nihongjastip.com'),
     title: titles[lang] || titles.id,
     description: descriptions[lang] || descriptions.id,
     alternates: {
