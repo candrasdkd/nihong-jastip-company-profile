@@ -1,6 +1,7 @@
-"use client";
-
 import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, MessageCircle, Globe, Zap, Users } from 'lucide-react';
+import Image from 'next/image';
 
 import { Language } from '../../types';
 
@@ -12,39 +13,88 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollToId }) => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
   return (
-    <section id="home" className="hero">
+    <section id="home" className="hero mesh-bg">
       <div className="container">
-        <div className="hero-content">
-          <h1 data-aos="fade-up">
+        <motion.div 
+          className="hero-content"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.div variants={itemVariants} className="hero-badge">
+            <span className="dot"></span>
+            {lang === 'id' ? 'Tersedia Pengiriman ke 64+ Negara' : lang === 'en' ? 'Shipping available to 64+ Countries' : '64カ国以上への配送が可能'}
+          </motion.div>
+
+          <motion.h1 variants={itemVariants}>
             {lang === 'id' ? (
               <>Jasa Titip & Ekspedisi <br /><span className="highlight">Jepang ⇄ Indonesia</span></>
             ) : lang === 'en' ? (
-              <>Japan ⇄ Indonesia <br /><span className="highlight">Personal Shopper & Logistics</span></>
+              <>Japan ⇄ Indonesia <br /><span className="highlight">Personal Shopper</span></>
             ) : (
-              <>日本 ⇄ インドネシア <br /><span className="highlight">買い物代行および配送</span></>
+              <>日本 ⇄ インドネシア <br /><span className="highlight">買い物代行</span></>
             )}
-          </h1>
-          <p data-aos="fade-up" data-aos-delay="200" className="hero-description">
+          </motion.h1>
+
+          <motion.div variants={itemVariants} className="hero-description">
             {lang === 'id' ? (
               <>
-                Solusi pengiriman aman ke 64 negara. <br />
-                <span className="locations">Osaka • Semarang • Depok • Jakarta</span>
+                Solusi belanja dan pengiriman aman dari Jepang langsung ke depan pintu Anda. Cepat, transparan, dan terpercaya.
+                <div className="locations">
+                  <span>📍 Osaka</span>
+                  <span>📍 Semarang</span>
+                  <span>📍 Depok</span>
+                  <span>📍 Jakarta</span>
+                </div>
               </>
             ) : lang === 'en' ? (
               <>
-                Secure shipping solutions to 64 countries. <br />
-                <span className="locations">Osaka • Semarang • Depok • Jakarta</span>
+                Secure shopping and shipping solutions from Japan directly to your doorstep. Fast, transparent, and reliable.
+                <div className="locations">
+                  <span>📍 Osaka</span>
+                  <span>📍 Semarang</span>
+                  <span>📍 Depok</span>
+                  <span>📍 Jakarta</span>
+                </div>
               </>
             ) : (
               <>
-                64カ国への安全な配送ソリューション。 <br />
-                <span className="locations">大阪 • スマラン • デポック • ジャカルタ</span>
+                日本からあなたのご自宅まで、安全なショッピングと配送ソリューションを直接お届けします。迅速、透明、そして信頼。
+                <div className="locations">
+                  <span>📍 大阪</span>
+                  <span>📍 スマラン</span>
+                  <span>📍 デポック</span>
+                  <span>📍 ジャカルタ</span>
+                </div>
               </>
             )}
-          </p>
-          <div className="hero-cta" data-aos="fade-up" data-aos-delay="400">
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="hero-cta">
             <button className="cta-button primary" onClick={openWhatsApp}>
+              <MessageCircle size={20} />
               {lang === 'id' ? 'Konsultasi Gratis' : lang === 'en' ? 'Free Consultation' : '無料相談'}
             </button>
             <button
@@ -52,9 +102,11 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
               onClick={() => { setActiveMenu('services'); scrollToId('services'); }}
             >
               {lang === 'id' ? 'Lihat Layanan' : lang === 'en' ? 'View Services' : 'サービスを見る'}
+              <ArrowRight size={20} />
             </button>
-          </div>
-          <div className="hero-stats" data-aos="fade-up" data-aos-delay="600">
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="hero-stats">
             <div className="stat">
               <span className="stat-number">2+</span>
               <span className="stat-label">
@@ -64,7 +116,7 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
             <div className="stat">
               <span className="stat-number">64</span>
               <span className="stat-label">
-                {lang === 'id' ? 'Negara Tujuan' : lang === 'en' ? 'Destination Countries' : '対象国'}
+                {lang === 'id' ? 'Negara Tujuan' : lang === 'en' ? 'Destinations' : '対象国'}
               </span>
             </div>
             <div className="stat">
@@ -73,8 +125,36 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
                 {lang === 'id' ? 'Pelanggan Puas' : lang === 'en' ? 'Happy Customers' : '満足なお客様'}
               </span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
+
+        <motion.div 
+          className="hero-image-container"
+          initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <motion.div
+            animate={{ 
+              y: [0, -20, 0],
+              rotate: [0, 2, 0]
+            }}
+            transition={{ 
+              duration: 6, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+          >
+            <Image 
+              src="/images/hero_3d.png" 
+              alt="Nihong Jastip 3D" 
+              width={600} 
+              height={600} 
+              priority
+              style={{ objectFit: 'contain' }}
+            />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

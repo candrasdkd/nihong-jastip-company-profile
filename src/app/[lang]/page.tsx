@@ -1,9 +1,7 @@
 "use client";
 
 import React, { use } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-
+import { motion } from 'framer-motion';
 // Hooks
 import { useAppLogic } from '../../hooks/useAppLogic';
 import { Language } from '../../types';
@@ -95,17 +93,28 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         toggleFaq={toggleFaq}
       />
 
-      <section className="cta-section">
+      <motion.section 
+        className="cta-section"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
         <div className="container">
-          <div className="cta-content" data-aos="zoom-in">
+          <motion.div 
+            className="cta-content"
+            initial={{ scale: 0.9, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <h2>{lang === 'id' ? 'Siap Mengirimkan Barang Anda?' : lang === 'en' ? 'Ready to Ship Your Items?' : '商品を発送する準備はできましたか？'}</h2>
             <p>{lang === 'id' ? 'Dapatkan penawaran khusus untuk pengiriman pertama Anda' : lang === 'en' ? 'Get a special offer for your first shipment' : '初めての発送で特別割引を受けましょう'}</p>
             <button className="cta-button primary large" onClick={handleOpenWhatsApp}>
               {lang === 'id' ? 'Hubungi Kami Sekarang' : lang === 'en' ? 'Contact Us Now' : '今すぐお問い合わせ'}
             </button>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       <Contact
         lang={lang}

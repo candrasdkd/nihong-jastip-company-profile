@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import AOS from 'aos';
 import { getExpeditionData, getFaqData, getJastipData } from '../data';
 import { openWhatsApp, generateWhatsAppUrl } from '../utils/whatsapp';
 import { Language } from '../types';
@@ -85,20 +84,11 @@ export const useAppLogic = (lang: Language) => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => AOS.refresh(), 300);
-    return () => clearTimeout(timer);
-  }, [activeFaqs]);
-
-  useEffect(() => {
     const hash = window.location.hash?.replace('#', '');
     if (hash) {
       setActiveMenu(hash);
       setTimeout(() => scrollToId(hash), 0);
     }
-  }, []);
-
-  useEffect(() => {
-    AOS.init({ duration: 800, once: true });
   }, []);
 
   return {

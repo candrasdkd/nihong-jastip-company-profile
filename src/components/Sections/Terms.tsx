@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { motion } from 'framer-motion';
 import { Language } from '../../types';
 
 interface TermsProps {
@@ -7,17 +7,48 @@ interface TermsProps {
 }
 
 const Terms: React.FC<TermsProps> = ({ lang }) => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" }
+    }
+  };
+
   return (
     <section id="terms" className="terms">
       <div className="container">
-        <div className="section-header" data-aos="fade-up">
+        <motion.div 
+          className="section-header"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <h2>{lang === 'id' ? 'Syarat & Ketentuan Handcarry' : lang === 'en' ? 'Handcarry Terms & Conditions' : 'ハンドキャリー利用規約'}</h2>
           <p>{lang === 'id' ? 'Mohon dibaca sebelum menggunakan layanan kami' : lang === 'en' ? 'Please read before using our services' : '当社のサービスをご利用になる前にお読みください'}</p>
-        </div>
+        </motion.div>
 
-        <div className="terms-grid">
+        <motion.div 
+          className="terms-grid"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           {/* Jepang → Indonesia */}
-          <div className="terms-card" data-aos="fade-right">
+          <motion.div className="terms-card" variants={cardVariants}>
             <h3>🇯🇵 → 🇮🇩 {lang === 'id' ? 'Jepang ke Indonesia' : lang === 'en' ? 'Japan to Indonesia' : '日本からインドネシアへ'}</h3>
 
             <h4>{lang === 'id' ? 'Titip Beli' : lang === 'en' ? 'Buy for Me' : '買い付け依頼'}</h4>
@@ -46,10 +77,10 @@ const Terms: React.FC<TermsProps> = ({ lang }) => {
               <li>{lang === 'id' ? 'Fee bisa nego sesuai kesepakatan' : lang === 'en' ? 'Fee is negotiable upon agreement' : '料金は合意により交渉可能です'}</li>
               <li>{lang === 'id' ? 'Pembatalan setelah dikirim tidak dapat refund' : lang === 'en' ? 'Cancellations after shipping cannot be refunded' : '発送後のキャンセルは返金できません'}</li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Indonesia → Jepang */}
-          <div className="terms-card" data-aos="fade-left">
+          <motion.div className="terms-card" variants={cardVariants}>
             <h3>🇮🇩 → 🇯🇵 {lang === 'id' ? 'Indonesia ke Jepang' : lang === 'en' ? 'Indonesia to Japan' : 'インドネシアから日本へ'}</h3>
 
             <h4>{lang === 'id' ? 'Ketentuan Barang' : lang === 'en' ? 'Item Conditions' : '商品の条件'}</h4>
@@ -81,8 +112,8 @@ const Terms: React.FC<TermsProps> = ({ lang }) => {
               <li>{lang === 'id' ? 'Minimum charge 1 kg' : lang === 'en' ? 'Minimum charge 1 kg' : '最低料金1kg'}</li>
               <li>{lang === 'id' ? 'Penerbangan rutin 2–5 kali per bulan' : lang === 'en' ? 'Routine flights 2–5 times a month' : '月に2〜5回の定期便'}</li>
             </ul>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

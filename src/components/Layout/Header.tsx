@@ -1,6 +1,7 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { Language, NavClickHandlers } from '../../types';
 
@@ -18,8 +19,22 @@ const Header: React.FC<HeaderProps> = ({
   handleLangChange,
   toggleSidebar
 }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className="header">
+    <motion.header 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`header ${isScrolled ? 'scrolled' : ''}`}
+    >
       <div className="container">
         <div className="logo-section">
           <h1 className="logo">Nihong Jastip</h1>
@@ -66,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({
           </button>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 };
 
