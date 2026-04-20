@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { Language } from '../../types';
 
 interface TermsProps {
@@ -7,7 +7,7 @@ interface TermsProps {
 }
 
 const Terms: React.FC<TermsProps> = ({ lang }) => {
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -17,10 +17,10 @@ const Terms: React.FC<TermsProps> = ({ lang }) => {
     }
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.8, ease: "easeOut" }
     }
@@ -29,7 +29,7 @@ const Terms: React.FC<TermsProps> = ({ lang }) => {
   return (
     <section id="terms" className="terms">
       <div className="container">
-        <motion.div 
+        <motion.div
           className="section-header"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -40,7 +40,7 @@ const Terms: React.FC<TermsProps> = ({ lang }) => {
           <p>{lang === 'id' ? 'Mohon dibaca sebelum menggunakan layanan kami' : lang === 'en' ? 'Please read before using our services' : '当社のサービスをご利用になる前にお読みください'}</p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="terms-grid"
           variants={containerVariants}
           initial="hidden"

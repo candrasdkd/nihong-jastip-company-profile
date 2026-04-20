@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { Globe, ShoppingBag, Package, CheckCircle2 } from 'lucide-react';
 
 import { Language } from '../../types';
@@ -9,7 +9,7 @@ interface ServicesProps {
 }
 
 const Services: React.FC<ServicesProps> = ({ lang }) => {
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -19,10 +19,10 @@ const Services: React.FC<ServicesProps> = ({ lang }) => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.6, ease: "easeOut" }
     }
@@ -31,7 +31,7 @@ const Services: React.FC<ServicesProps> = ({ lang }) => {
   return (
     <section id="services" className="services">
       <div className="container">
-        <motion.div 
+        <motion.div
           className="section-header"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -42,7 +42,7 @@ const Services: React.FC<ServicesProps> = ({ lang }) => {
           <p>{lang === 'id' ? 'Berbagai solusi pengiriman internasional untuk kebutuhan bisnis dan pribadi Anda' : lang === 'en' ? 'Various international shipping solutions for your business and personal needs' : 'お客様のビジネスや個人のニーズに合わせた様々な国際配送ソリューション'}</p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="services-grid"
           variants={containerVariants}
           initial="hidden"

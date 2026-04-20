@@ -121,7 +121,10 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         submitContactToWhatsApp={submitContactToWhatsApp}
       />
 
-      <Footer lang={lang} />
+      <Footer 
+        lang={lang} 
+        handleNavClick={handleNavClick}
+      />
     </div>
   );
 }
