@@ -151,9 +151,9 @@ const generateResponse = (input: string, lang: Language, history: Message[] = []
         if (nums.length >= 2) {
           const [lo, hi_] = nums;
           const cur = r.price.includes('¥') ? '¥' : 'Rp';
-          return `${r.route}:\n  Min: ${weight} × ${fmtNum(lo, cur)} = ${fmtNum(Math.round(weight * lo), cur)}\n  Max: ${weight} × ${fmtNum(hi_, cur)} = ${fmtNum(Math.round(weight * hi_), cur)}`;
+          return `  ${r.route}:\n    Min: ${weight} × ${fmtNum(lo, cur)} = ${fmtNum(Math.round(weight * lo), cur)}\n    Max: ${weight} × ${fmtNum(hi_, cur)} = ${fmtNum(Math.round(weight * hi_), cur)}`;
         }
-        return `${r.route}: ${r.price}`;
+        return `  ${r.route}: ${r.price}`;
       }).join('\n\n');
 
       const handcarryResult = {
@@ -168,17 +168,17 @@ const generateResponse = (input: string, lang: Language, history: Message[] = []
       if (expJapan) {
         const tier = findTier(weight, expJapan.prices);
         if (tier) {
-          const est = expJapan.estimates ? `\n  ⏱ ${expJapan.estimates}` : '';
+          const est = expJapan.estimates ? `\n    ⏱ ${expJapan.estimates}` : '';
           expeditionResult = {
-            id: `✈️ *Via Ekspedisi*\n${calcCostText(weight, tier, lang)}${est}`,
-            en: `✈️ *Via Expedition*\n${calcCostText(weight, tier, lang)}${est}`,
-            jp: `✈️ *配送サービス*\n${calcCostText(weight, tier, lang)}${est}`
+            id: `✈️ *Via Ekspedisi*\n${calcCostText(weight, tier, lang).replace('  Tier', '    Tier').replace('  Total', '    Total')}${est}`,
+            en: `✈️ *Via Expedition*\n${calcCostText(weight, tier, lang).replace('  Tier', '    Tier').replace('  Total', '    Total')}${est}`,
+            jp: `✈️ *配送サービス*\n${calcCostText(weight, tier, lang).replace('  Tier', '    Tier').replace('  合計', '    合計')}${est}`
           }[lang];
         } else {
           expeditionResult = {
-            id: `✈️ *Via Ekspedisi*: Berat ${weight} kg di luar range.`,
-            en: `✈️ *Via Expedition*: ${weight} kg out of range.`,
-            jp: `✈️ *配送サービス*: ${weight}kgは範囲外です。`
+            id: `✈️ *Via Ekspedisi*\n    Berat ${weight} kg di luar range.`,
+            en: `✈️ *Via Expedition*\n    ${weight} kg out of range.`,
+            jp: `✈️ *配送サービス*\n    ${weight}kgは範囲外です。`
           }[lang];
         }
       }
@@ -199,9 +199,9 @@ const generateResponse = (input: string, lang: Language, history: Message[] = []
       } else {
         // USER AMBIGU: Tampilkan Keduanya
         return prefix + {
-          id: `Untuk Jepang, kami punya 2 layanan. Berikut estimasi ${weight} kg:\n\n${handcarryResult}\n\n${expeditionResult}\n\nLayanan mana yang ingin dipakai?`,
-          en: `For Japan, we have 2 services. Here is the estimate for ${weight} kg:\n\n${handcarryResult}\n\n${expeditionResult}\n\nWhich service do you prefer?`,
-          jp: `日本向けには2つのサービスがあります。${weight}kgのお見積もりです:\n\n${handcarryResult}\n\n${expeditionResult}\n\nどちらのサービスをご希望ですか？`
+          id: `Untuk pengiriman ke Jepang, kami punya 2 layanan. Berikut estimasi tarif untuk ${weight} kg:\n\n${handcarryResult}\n\n${expeditionResult}\n\nLayanan mana yang ingin Kakak pakai?`,
+          en: `For shipping to Japan, we have 2 services. Here is the estimate for ${weight} kg:\n\n${handcarryResult}\n\n${expeditionResult}\n\nWhich service would you like to use?`,
+          jp: `日本への発送には2つのサービスがあります。${weight}kgのお見積もりです:\n\n${handcarryResult}\n\n${expeditionResult}\n\nどちらのサービスをご希望ですか？`
         }[lang];
       }
     }
