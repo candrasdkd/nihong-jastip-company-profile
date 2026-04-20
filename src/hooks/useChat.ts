@@ -80,11 +80,16 @@ export const useChat = (lang: string) => {
     setIsTyping(true);
 
     try {
-      // Fetch API dulu, ambil teks balasannya
+      // Kirim seluruh history percakapan agar bot punya konteks
+      const history = messages.map((m) => ({
+        role: m.sender === 'user' ? 'user' : 'assistant',
+        content: m.text,
+      }));
+
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage.text })
+        body: JSON.stringify({ message: userMessage.text, history })
       });
 
       if (!res.ok) throw new Error('API Error');

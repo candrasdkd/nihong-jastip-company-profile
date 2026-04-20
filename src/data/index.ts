@@ -93,6 +93,10 @@ export const getFaqData = (lang: string = 'id'): FaqItem[] => {
       {
         question: "Bagaimana sistem perhitungan dan pembulatan berat barang?",
         answer: "Untuk Via Ekspedisi, setiap kelebihan berat sekecil apapun akan dibulatkan ke atas ke 1 kg berikutnya (contoh: 1,1 kg dihitung 2 kg, 0,2 kg dihitung 1 kg). Untuk Jastip Handcarry, berat dibulatkan ke atas per kelipatan 0,5 kg (contoh: 1,2 kg dihitung 1,5 kg, 1,7 kg dihitung 2 kg)."
+      },
+      {
+        question: "Mengapa harga Jastip Handcarry memiliki rentang minimum dan maksimum (min-max)?",
+        answer: "Harga Jastip Handcarry bersifat fluktuatif karena sangat bergantung pada biaya operasional, terutama harga tiket pesawat tim kami. Saat harga tiket sedang promo atau murah, kami bisa memberikan harga batas bawah (min), namun saat musim liburan (peak season) di mana tiket pesawat mahal, harga akan menyesuaikan ke batas atas (max)."
       }
     ],
     en: [
@@ -123,6 +127,10 @@ export const getFaqData = (lang: string = 'id'): FaqItem[] => {
       {
         question: "How is the weight calculated and rounded?",
         answer: "For Via Expedition, any excess weight will be rounded up to the next full 1 kg (e.g., 1.1 kg is calculated as 2 kg, 0.2 kg as 1 kg). For Jastip Handcarry, the weight is rounded up to the nearest 0.5 kg interval (e.g., 1.2 kg is calculated as 1.5 kg, 1.7 kg as 2 kg)."
+      },
+      {
+        question: "Why is there a min-max price range for Jastip Handcarry?",
+        answer: "Jastip Handcarry prices fluctuate because they are highly dependent on operational costs, especially airline ticket prices. When ticket prices are on promo or low, we can offer the minimum rate. However, during peak seasons when flight tickets are expensive, the price will adjust toward the maximum rate."
       }
     ],
     jp: [
@@ -153,6 +161,10 @@ export const getFaqData = (lang: string = 'id'): FaqItem[] => {
       {
         question: "荷物の重量計算と切り上げのシステムはどうなっていますか？",
         answer: "配送サービス（Via Expedition）の場合、わずかな超過でも次の1kgに切り上げられます（例：1.1kgは2kg、0.2kgは1kgとして計算）。手荷物代行（Jastip Handcarry）の場合、重量は0.5kg単位で切り上げられます（例：1.2kgは1.5kg、1.7kgは2kgとして計算）。"
+      },
+      {
+        question: "なぜJastip Handcarry（手荷物代行）の価格には最小・最大（min-max）の幅があるのですか？",
+        answer: "Jastip Handcarryの料金は、航空券の価格などの運営コストに大きく左右されるため、変動制となっています。航空券がプロモーションなどで安い時期は最小料金（min）で提供できますが、旅行シーズンなどの航空券が高騰する時期は最大料金（max）に近い設定となります。"
       }
     ]
   };

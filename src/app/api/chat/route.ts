@@ -13,11 +13,20 @@ export async function POST(req: Request) {
             return NextResponse.json({ reply: 'Server Error: API Key hilang.' }, { status: 500 });
         }
 
-        const { message } = await req.json();
+        const { message, history } = await req.json();
 
         if (!message) {
             return NextResponse.json({ reply: 'Pesan kosong.' }, { status: 400 });
         }
+
+        // Batasi history menjadi 10 pesan terakhir agar tidak menguras token
+        type ChatRole = 'user' | 'assistant';
+        const trimmedHistory: { role: ChatRole; content: string }[] = Array.isArray(history)
+            ? history.slice(-10).map((m: { role: string; content: string }) => ({
+                role: (m.role === 'user' ? 'user' : 'assistant') as ChatRole,
+                content: m.content,
+              }))
+            : [];
 
         // --- PREPARASI DATA ---
         const jastip = getJastipData('id');
@@ -99,6 +108,7 @@ Sebelum memberikan jawaban akhir, pikirkan dulu di dalam hati (internal monologu
                 const chatCompletion = await groq.chat.completions.create({
                     messages: [
                         { role: 'system', content: systemPrompt },
+                        ...trimmedHistory,
                         { role: 'user', content: message }
                     ],
                     model: modelId,
