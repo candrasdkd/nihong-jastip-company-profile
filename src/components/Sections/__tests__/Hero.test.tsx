@@ -1,17 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Hero from '../Hero';
 
-// PENJELASAN MOCKING:
-// Kita memalsukan 'framer-motion' menggunakan Proxy.
-// Mengapa? Karena di dalam Hero banyak sekali elemen motion (h1, p, div, a) 
-// yang memiliki animasi kompleks. Tanpa mock ini, JSDOM akan kewalahan 
-// dan test akan berjalan lambat atau bahkan error.
-jest.mock('framer-motion', () => ({
-  motion: new Proxy({}, {
-    get: () => ({ children, ...props }: any) => <div {...props}>{children}</div>
-  }),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}));
+
 
 describe('Hero Section', () => {
   // PENJELASAN TEST 1:

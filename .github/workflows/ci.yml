@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn' # Assuming yarn from vercel.json, but npm can also be used
+          cache: 'npm'
           
       - name: Install Dependencies
         run: npm ci || npm install # fallback to install if package-lock is missing

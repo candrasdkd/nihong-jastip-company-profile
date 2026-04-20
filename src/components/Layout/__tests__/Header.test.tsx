@@ -1,17 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Header from '../Header';
 
-// PENJELASAN MOCKING (STRATEGI PROXY):
-// Kita menggunakan 'Proxy' untuk menangani semua pemanggilan elemen 'motion' di Header.
-// Header memiliki banyak motion element (motion.header, motion.nav, dll).
-// Proxy membolehkan kita me-mock semuanya sekaligus tanpa harus mendaftarkan satu per satu.
-// Setiap pemanggilan properti pada object 'motion' akan dialihkan menjadi render elemen <div> biasa.
-jest.mock('framer-motion', () => ({
-  motion: new Proxy({}, {
-    get: () => ({ children, ...props }: any) => <div {...props}>{children}</div>
-  }),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}));
+
 
 describe('Header Component', () => {
   // PENJELASAN SETUP:

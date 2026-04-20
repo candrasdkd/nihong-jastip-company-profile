@@ -1,15 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Services from '../Services';
 
-// PENJELASAN MOCKING:
-// Sama seperti Hero, kita menonaktifkan animasi framer-motion.
-// Tujuannya agar kita bisa fokus mengetes konten teks di dalam grid layanan.
-jest.mock('framer-motion', () => ({
-  motion: new Proxy({}, {
-    get: () => ({ children, ...props }: any) => <div {...props}>{children}</div>
-  }),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}));
+
 
 describe('Services Section', () => {
   // PENJELASAN TEST 1:

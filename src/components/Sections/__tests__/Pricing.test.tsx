@@ -1,16 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Pricing from '../Pricing';
 
-// PENJELASAN MOCKING:
-// Library 'framer-motion' seringkali menyebabkan error di lingkungan testing (JSDOM) 
-// karena ia mencoba menghitung posisi elemen dan menjalankan animasi CSS.
-// Di sini kita men-disable animasi tersebut agar test berjalan cepat dan stabil.
-jest.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}));
+
 
 describe('Pricing Section', () => {
   // Data simulasi untuk rute jastip (Handcarry)

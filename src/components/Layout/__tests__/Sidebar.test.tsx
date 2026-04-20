@@ -1,18 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Sidebar from '../Sidebar';
 
-// PENJELASAN MOCKING (PENTING):
-// Komponen Sidebar sangat bergantung pada 'framer-motion' untuk animasi Slide-In/Out.
-// Di lingkungan JSDOM (tempat unit test ini berjalan), API browser untuk animasi tidak lengkap.
-// Oleh karena itu, kita menggunakan 'Proxy' untuk memalsukan semua properti 'motion'.
-// Apapun tag yang dipanggil (motion.div, motion.nav, motion.a, dll), Proxy ini akan 
-// secara otomatis mengubahnya menjadi <div> biasa agar bisa dirender tanpa error di lingkungan test.
-jest.mock('framer-motion', () => ({
-  motion: new Proxy({}, {
-    get: () => ({ children, ...props }: any) => <div {...props}>{children}</div>
-  }),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}));
+
 
 describe('Sidebar Component', () => {
   // PENJELASAN SETUP:

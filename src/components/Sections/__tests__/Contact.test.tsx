@@ -1,15 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Contact from '../Contact';
 
-// PENJELASAN MOCKING:
-// Mematikan animasi agar JSDOM tidak perlu memproses transisi CSS/JS yang berat
-// saat kita mengecek keberadaan form input.
-jest.mock('framer-motion', () => ({
-  motion: new Proxy({}, {
-    get: () => ({ children, ...props }: any) => <div {...props}>{children}</div>
-  }),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}));
+
 
 describe('Contact Section', () => {
   // PENJELASAN TEST:

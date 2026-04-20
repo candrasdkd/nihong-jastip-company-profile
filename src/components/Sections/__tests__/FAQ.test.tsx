@@ -1,15 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import FAQ from '../FAQ';
 
-// PENJELASAN MOCKING:
-// Mematikan animasi framer-motion agar transisi buka/tutup FAQ tidak mengganggu 
-// timing eksekusi test kita.
-jest.mock('framer-motion', () => ({
-  motion: new Proxy({}, {
-    get: () => ({ children, ...props }: any) => <div {...props}>{children}</div>
-  }),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}));
+
 
 describe('FAQ Section', () => {
   // Data simulasi untuk pengetesan FAQ
