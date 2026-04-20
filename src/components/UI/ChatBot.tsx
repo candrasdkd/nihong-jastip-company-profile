@@ -19,6 +19,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
     inputValue,
     setInputValue,
     isTyping,
+    streamingText,
     messagesEndRef,
     handleSend,
     chatData
@@ -72,9 +73,20 @@ const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
                 </div>
               ))}
 
-              {isTyping && (
+              {/* Loading indicator: tampil saat isTyping TAPI belum ada teks streaming */}
+              {isTyping && !streamingText && (
                 <div className="chatbot-typing-indicator">
                   <Loader2 size={16} className="chatbot-typing-spinner" />
+                </div>
+              )}
+
+              {/* Streaming bubble: tampil saat typewriter sedang berjalan */}
+              {streamingText && (
+                <div className="chatbot-message-wrapper bot">
+                  <div className="chatbot-message-bubble">
+                    {renderText(streamingText)}
+                    <span className="chatbot-cursor">▌</span>
+                  </div>
                 </div>
               )}
               <div ref={messagesEndRef} />

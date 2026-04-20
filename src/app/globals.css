@@ -1659,3 +1659,17 @@ html {
   from { transform: rotate(0deg); } 
   to { transform: rotate(360deg); } 
 }
+
+/* Blinking cursor untuk typewriter effect */
+.chatbot-cursor {
+  display: inline-block;
+  color: var(--primary);
+  font-weight: 300;
+  margin-left: 1px;
+  animation: blink-cursor 0.7s step-end infinite;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
