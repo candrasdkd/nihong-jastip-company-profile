@@ -1,70 +1,87 @@
-# Getting Started with Create React App
+# Nihong Jastip — Japan ⇄ Indonesia Personal Shopper & Expedition
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![Next.js](https://img.shields.io/badge/Next.js-15+-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![CSS3](https://img.shields.io/badge/Vanilla_CSS-Custom-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-## Available Scripts
+A premium, SEO-optimized company profile website for **Nihong Jastip**, specializing in personal shopper services from Japan to Indonesia (**Jastip Jepang / Titip Jepang**) and global expedition services.
 
-In the project directory, you can run:
+## 🚀 Key Features
 
-### `npm start`
+- **Next.js 15+ App Router**: Built with the latest Next.js features for high performance and optimal developer experience.
+- **Advanced i18n Support**: Full internationalization support for Indonesian (ID), English (EN), and Japanese (JA) via URL-based routing.
+- **SEO & Performance Optimized**: 
+  - Dynamic Metadata & OpenGraph tags.
+  - JSON-LD Structured Data for better search engine visibility.
+  - Optimized fonts and images.
+  - Canonical URL management.
+- **Premium Design System**: Custom-built design using Vanilla CSS for maximum flexibility and performance.
+- **Responsive & Interactive**: Fully responsive layout with smooth animations powered by [AOS (Animate on Scroll)](https://michalsnik.github.io/aos/).
+- **Global Presence**: Information about services in Osaka, Semarang, Depok, and Jakarta, serving over 64 countries.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠️ Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Framework**: [Next.js](https://nextjs.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: Vanilla CSS (Custom Design Tokens)
+- **Animations**: [AOS](https://github.com/michalsnik/aos)
+- **Typography**: [Inter](https://fonts.google.com/specimen/Inter) via `next/font`
+- **Icons**: Custom SVG Icons
 
-### `npm test`
+## 📂 Project Structure
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```text
+src/
+├── app/             # Next.js App Router (i18n routing)
+│   └── [lang]/      # Language-specific pages
+├── components/      # UI Components (Sections, Layout, SEO)
+├── types/           # TypeScript Type Definitions
+├── utils/           # Helper functions & constants
+└── globals.css      # Custom design system & global styles
+```
 
-### `npm run build`
+## 🏃 Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js 18.x or later
+- Yarn or npm
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Installation
 
-### `npm run eject`
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/nihong-jastip-company-profile.git
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Install dependencies:
+   ```bash
+   yarn install
+   # or
+   npm install
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Run the development server:
+   ```bash
+   yarn dev
+   # or
+   npm run dev
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📦 Scripts
 
-## Learn More
+- `yarn dev`: Start development server.
+- `yarn build`: Build the production application.
+- `yarn start`: Start the production server.
+- `yarn lint`: Run ESLint for code quality.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🌐 Deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The project is optimized for deployment on **Vercel**. Simply connect your repository and it will automatically handle the build and deployment process.
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Built with ❤️ by [Candrasdkd](https://github.com/candrasdkd)
