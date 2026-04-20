@@ -98,7 +98,7 @@ const Footer: React.FC<FooterProps> = ({ lang, handleNavClick }) => {
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
         >
-          <p>&copy;2024 Nihong Jastip. All rights reserved.</p>
+          <p>Copyright ©2024 Nihong Jastip. All rights reserved.</p>
         </motion.div>
       </div>
     </footer>

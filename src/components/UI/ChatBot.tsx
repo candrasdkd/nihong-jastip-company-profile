@@ -77,6 +77,68 @@ const INTENTS = {
 type IntentKey = keyof typeof INTENTS;
 const hi = (q: string, intent: IntentKey) => hasAny(q, INTENTS[intent]);
 
+// ─── Weight & Price Calculation ───────────────────────────────────────────────
+
+// Extract weight value from query: "3 kg", "3kg", "3 kilo", "0,5 kg", "setengah"
+const extractWeight = (q: string): number | null => {
+  const m = q.match(/(\d+[,.]?\d*)\s*k(g|ilo|ilogram)?(\b|$)/i);
+  if (m) return parseFloat(m[1].replace(',', '.'));
+  if (q.includes('setengah') || q.includes('half')) return 0.5;
+  return null;
+};
+
+// Parse "1-5 kg" → {min:1, max:5} | "0,5 kg" → {min:0.5, max:0.5}
+const parseRange = (rangeStr: string): { min: number; max: number } => {
+  const s = rangeStr.toLowerCase().replace(/[kg\s]/g, '').replace(',', '.');
+  if (s.includes('-')) {
+    const [a, b] = s.split('-').map(Number);
+    return { min: a, max: b };
+  }
+  const v = parseFloat(s);
+  return { min: v, max: v };
+};
+
+const findTier = (weight: number, prices: { range: string; price: string }[]) =>
+  prices.find(({ range }) => {
+    const { min, max } = parseRange(range);
+    return weight >= min && weight <= max;
+  });
+
+// Parse ID-formatted price: "95.000/kg" → {value:95000, currency:'Rp', isPerKg:true}
+// "2.500¥/kg" → {value:2500, currency:'¥', isPerKg:true}
+// "610.000"   → {value:610000, currency:'Rp', isPerKg:false}
+const parsePriceStr = (p: string) => {
+  const isYen = p.includes('¥');
+  const isPerKg = /\/\s*kg/i.test(p) || /per\s*kg/i.test(p);
+  const numMatch = p.match(/[\d.]+/);
+  if (!numMatch) return null;
+  // Dots are thousands separators in ID format → remove them
+  const value = parseFloat(numMatch[0].replace(/\./g, ''));
+  return { value, currency: isYen ? '¥' : 'Rp', isPerKg };
+};
+
+const fmtNum = (n: number, currency: string) =>
+  currency === '¥' ? `¥${n.toLocaleString('ja-JP')}` : `Rp ${n.toLocaleString('id-ID')}`;
+
+const calcCostText = (
+  weight: number,
+  tier: { range: string; price: string },
+  lang: Language
+): string => {
+  const parsed = parsePriceStr(tier.price);
+  if (!parsed) return `${tier.range}: ${tier.price}`;
+  const { value, currency, isPerKg } = parsed;
+
+  if (isPerKg) {
+    const total = Math.round(value * weight);
+    const label = { id: 'Total', en: 'Total', jp: '合計' }[lang];
+    return `  Tier ${tier.range} → ${fmtNum(value, currency)}/kg\n  ${label}: ${weight} × ${fmtNum(value, currency)} = ${fmtNum(total, currency)}`;
+  }
+  // Flat rate (Saudi style)
+  const label = { id: 'Tarif flat', en: 'Flat rate', jp: '定額' }[lang];
+  return `  ${label} ${tier.range}: ${fmtNum(value, currency)}`;
+};
+
 // ─── Response Engine ──────────────────────────────────────────────────────────
 const generateResponse = (input: string, lang: Language): string => {
   const q = normalize(input);
@@ -93,16 +155,66 @@ const generateResponse = (input: string, lang: Language): string => {
     }[lang];
   }
 
-  // ── 2. PRICE INTENT — checked before FAQ to prevent interception ─────────────
+  // ── 2. WEIGHT CALCULATION — weight + country detected ────────────────────────
+  const weight = extractWeight(q);
   const countryKeys: IntentKey[] = ['singapore', 'brunei', 'malaysia', 'hongkong', 'taiwan', 'japan', 'saudi'];
   const matchedCountryKey = countryKeys.find((ck) => hi(q, ck));
 
-  // Country token alone (e.g. user replies "singapura" after seeing country list)
-  // is treated as a price query for that country
+  if (weight !== null && matchedCountryKey) {
+    const wantsHandcarry = hi(q, 'handcarry') || (hi(q, 'jastipAlone') && !hi(q, 'expedition'));
+
+    // Jastip handcarry calculation (Japan only, price is a range "1300¥ - 1700¥ / kg")
+    if (wantsHandcarry && matchedCountryKey === 'japan') {
+      const sections = jastip.routes.map((r) => {
+        const nums = [...r.price.matchAll(/(\d[\d.]*)/g)].map((m) =>
+          parseFloat(m[1].replace(/\./g, ''))
+        );
+        if (nums.length >= 2) {
+          const [lo, hi_] = nums;
+          const isYen = r.price.includes('¥');
+          const cur = isYen ? '¥' : 'Rp';
+          return `${r.route}:\n  Min: ${weight} × ${fmtNum(lo, cur)} = ${fmtNum(Math.round(weight * lo), cur)}\n  Max: ${weight} × ${fmtNum(hi_, cur)} = ${fmtNum(Math.round(weight * hi_), cur)}`;
+        }
+        return `${r.route}: ${r.price}`;
+      }).join('\n\n');
+      return {
+        id: `Estimasi Jastip Handcarry ${weight} kg:\n\n${sections}`,
+        en: `Estimated Jastip Handcarry cost for ${weight} kg:\n\n${sections}`,
+        jp: `手荷物代行 ${weight}kgの料金目安:\n\n${sections}`,
+      }[lang];
+    }
+
+    // Expedition cost calculation
+    const matchedExps = expeditions.filter((e) =>
+      INTENTS[matchedCountryKey].some((kw) => normalize(e.country).includes(kw))
+    );
+    if (matchedExps.length > 0) {
+      const sections = matchedExps.map((exp) => {
+        const tier = findTier(weight, exp.prices);
+        if (!tier) {
+          return {
+            id: `${exp.country}: Berat ${weight} kg di luar range tersedia (maks ${exp.prices[exp.prices.length - 1].range}).`,
+            en: `${exp.country}: ${weight} kg is out of available range (max ${exp.prices[exp.prices.length - 1].range}).`,
+            jp: `${exp.country}: ${weight}kgは対応範囲外です（最大 ${exp.prices[exp.prices.length - 1].range}）。`,
+          }[lang];
+        }
+        const est = exp.estimates ? `\n  ⏱ ${exp.estimates}` : '';
+        return `${exp.country}:\n${calcCostText(weight, tier, lang)}${est}`;
+      }).join('\n\n');
+      return {
+        id: `Estimasi biaya kirim ${weight} kg:\n\n${sections}`,
+        en: `Estimated shipping cost for ${weight} kg:\n\n${sections}`,
+        jp: `${weight}kgの配送料金目安:\n\n${sections}`,
+      }[lang];
+    }
+  }
+
+  // ── 3. PRICE INTENT — checked before FAQ to prevent interception ─────────────
+
+  // Country token alone → treat as price query
   const isPriceQuery = hi(q, 'price') || hi(q, 'handcarry') || hi(q, 'expedition') || !!matchedCountryKey;
 
   if (isPriceQuery) {
-    // 2a. Country-specific expedition rate
     const matchedKey = matchedCountryKey;
 
     if (matchedKey) {
