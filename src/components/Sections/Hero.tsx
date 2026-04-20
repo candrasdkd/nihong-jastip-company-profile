@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 
 import { Language } from '../../types';
@@ -15,10 +17,31 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
       <div className="container">
         <div className="hero-content">
           <h1 data-aos="fade-up">
-            {lang === 'id' ? 'Jasa Titip & Ekspedisi Internasional' : lang === 'en' ? 'International Personal Shopper & Expedition' : '国際買い物代行および配送サービス'}
+            {lang === 'id' ? (
+              <>Jasa Titip & Ekspedisi <br /><span className="highlight">Jepang ⇄ Indonesia</span></>
+            ) : lang === 'en' ? (
+              <>Japan ⇄ Indonesia <br /><span className="highlight">Personal Shopper & Logistics</span></>
+            ) : (
+              <>日本 ⇄ インドネシア <br /><span className="highlight">買い物代行および配送</span></>
+            )}
           </h1>
-          <p data-aos="fade-up" data-aos-delay="200">
-            {lang === 'id' ? 'Melayani pengiriman barang dari Jepang ke Indonesia dan sebaliknya, serta ekspedisi ke 64 negara dengan jaminan keamanan dan ketepatan waktu' : lang === 'en' ? 'Serving shipments from Japan to Indonesia and vice versa, as well as expedition to 64 countries with a guarantee of security and timeliness' : '日本からインドネシアへの商品配送、およびその逆、さらには64カ国への安全で時間厳守 hostの配送サービスを提供しています'}
+          <p data-aos="fade-up" data-aos-delay="200" className="hero-description">
+            {lang === 'id' ? (
+              <>
+                Solusi pengiriman aman ke 64 negara. <br />
+                <span className="locations">Osaka • Semarang • Depok • Jakarta</span>
+              </>
+            ) : lang === 'en' ? (
+              <>
+                Secure shipping solutions to 64 countries. <br />
+                <span className="locations">Osaka • Semarang • Depok • Jakarta</span>
+              </>
+            ) : (
+              <>
+                64カ国への安全な配送ソリューション。 <br />
+                <span className="locations">大阪 • スマラン • デポック • ジャカルタ</span>
+              </>
+            )}
           </p>
           <div className="hero-cta" data-aos="fade-up" data-aos-delay="400">
             <button className="cta-button primary" onClick={openWhatsApp}>

@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { MailIcon, PhoneIcon, MapPinIcon, ClockIcon } from '../UI/Icons';
 

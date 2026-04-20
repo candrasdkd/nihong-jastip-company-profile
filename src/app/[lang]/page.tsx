@@ -1,26 +1,33 @@
-import React from 'react';
-import './App.css';
+"use client";
+
+import React, { use } from 'react';
+import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 // Hooks
-import { useAppLogic } from './hooks/useAppLogic';
+import { useAppLogic } from '../../hooks/useAppLogic';
+import { Language } from '../../types';
 
 // Layout Components
-import Header from './components/Layout/Header';
-import Sidebar from './components/Layout/Sidebar';
-import Footer from './components/Layout/Footer';
+import Header from '../../components/Layout/Header';
+import Sidebar from '../../components/Layout/Sidebar';
+import Footer from '../../components/Layout/Footer';
 
 // Section Components
-import Hero from './components/Sections/Hero';
-import Services from './components/Sections/Services';
-import Pricing from './components/Sections/Pricing';
-import Terms from './components/Sections/Terms';
-import FAQ from './components/Sections/FAQ';
-import Contact from './components/Sections/Contact';
+import Hero from '../../components/Sections/Hero';
+import Services from '../../components/Sections/Services';
+import Pricing from '../../components/Sections/Pricing';
+import Terms from '../../components/Sections/Terms';
+import FAQ from '../../components/Sections/FAQ';
+import Contact from '../../components/Sections/Contact';
+import { useRouter } from 'next/navigation';
 
-const App: React.FC = () => {
+export default function Home({ params }: { params: Promise<{ lang: Language }> }) {
+  const resolvedParams = use(params);
+  const lang = resolvedParams.lang;
+  const router = useRouter();
+
   const {
-    lang,
     activeTab,
     setActiveTab,
     activeFaqs,
@@ -37,8 +44,12 @@ const App: React.FC = () => {
     handleNavClick,
     handleNavClickWithClose,
     submitContactToWhatsApp,
-    handleLangChange
-  } = useAppLogic();
+  } = useAppLogic(lang);
+
+  const handleLangChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    const newLang = e.target.value;
+    router.push(`/${newLang}`);
+  };
 
   return (
     <div className="App">
@@ -104,6 +115,4 @@ const App: React.FC = () => {
       <Footer lang={lang} />
     </div>
   );
-};
-
-export default App;
+}

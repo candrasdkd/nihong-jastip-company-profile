@@ -4,8 +4,7 @@ import { getExpeditionData, getFaqData, getJastipData } from '../data';
 import { openWhatsApp, generateWhatsAppUrl } from '../utils/whatsapp';
 import { Language } from '../types';
 
-export const useAppLogic = () => {
-  const [lang, setLang] = useState<Language>('id');
+export const useAppLogic = (lang: Language) => {
   const [activeTab, setActiveTab] = useState<'jastip' | 'expedition'>('jastip');
   const [activeFaqs, setActiveFaqs] = useState<number[]>([]);
   const [activeMenu, setActiveMenu] = useState<string>('home');
@@ -68,10 +67,6 @@ export const useAppLogic = () => {
     form.reset();
   };
 
-  const handleLangChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    setLang(e.target.value as Language);
-  };
-
   useEffect(() => {
     const ids = ['home', 'services', 'pricing', 'faq', 'contact'];
     const sections = ids.map((id) => document.getElementById(id)).filter((sec): sec is HTMLElement => sec !== null);
@@ -107,7 +102,6 @@ export const useAppLogic = () => {
   }, []);
 
   return {
-    lang,
     activeTab,
     setActiveTab,
     activeFaqs,
@@ -123,7 +117,6 @@ export const useAppLogic = () => {
     scrollToId,
     handleNavClick,
     handleNavClickWithClose,
-    submitContactToWhatsApp,
-    handleLangChange
+    submitContactToWhatsApp
   };
 };
