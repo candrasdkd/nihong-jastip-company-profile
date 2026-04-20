@@ -30,41 +30,17 @@ const tokenScore = (query: string, tokens: string[]): number =>
 // ─── Intent tokens ────────────────────────────────────────────────────────────
 const INTENTS = {
   greeting: ['halo', 'hai', 'hello', 'hi', 'hey', 'ohayo', 'selamat pagi', 'selamat siang'],
-
-  // Price signals — checked FIRST to avoid FAQ intercept
-  price: ['harga', 'biaya', 'tarif', 'ongkir', 'ongkos', 'cost', 'price', 'rate',
-    'berapa', 'how much', 'いくら', '料金', '値段'],
-
-  handcarry: ['handcarry', 'hand carry', 'koper', 'bagasi', 'bawa langsung',
-    'titip bawa', 'jastip handcarry', 'via jastip'],
-
-  // "jastip" alone is ambiguous — only use as handcarry signal when paired
+  price: ['harga', 'biaya', 'tarif', 'ongkir', 'ongkos', 'cost', 'price', 'rate', 'berapa', 'how much', 'いくら', '料金', '値段'],
+  handcarry: ['handcarry', 'hand carry', 'koper', 'bagasi', 'bawa langsung', 'titip bawa', 'jastip handcarry', 'via jastip'],
   jastipAlone: ['jastip'],
-
-  expedition: ['ekspedisi', 'expedition', 'via ekspedisi', 'kurir', 'cargo',
-    'paket', 'kirim lewat', 'pengiriman'],
-
-  duration: ['lama', 'estimasi', 'berapa hari', 'berapa minggu', 'how long',
-    'waktu kirim', 'days', 'weeks', '何日', '期間'],
-
+  expedition: ['ekspedisi', 'expedition', 'via ekspedisi', 'kurir', 'cargo', 'paket', 'kirim lewat', 'pengiriman'],
+  duration: ['lama', 'estimasi', 'berapa hari', 'berapa minggu', 'how long', 'waktu kirim', 'days', 'weeks', '何日', '期間'],
   tracking: ['lacak', 'tracking', 'resi', 'nomor resi', 'track', 'status kiriman', '追跡'],
-
   tax: ['pajak', 'bea cukai', 'customs', 'tax', 'duty', 'cukai', '税金', '関税'],
-
-  // ← FIX: tambah 'terlarang', 'tidak bisa dikirim', 'apa yang boleh'
-  prohibited: ['larangan', 'dilarang', 'terlarang', 'barang terlarang',
-    'prohibited', 'banned', 'tidak boleh', 'tidak bisa dikirim',
-    'apa yang boleh', 'apa saja', 'narkoba', 'senjata', 'peledak', '禁止'],
-
-  payment: ['bayar', 'pembayaran', 'payment', 'dp', 'down payment',
-    'transfer', 'ewallet', 'gopay', 'ovo', '支払い'],
-
-  order: ['cara order', 'cara pesan', 'how to order', 'mau order',
-    'mau pesan', 'gimana order', '注文', '申し込み'],
-
+  prohibited: ['larangan', 'dilarang', 'terlarang', 'barang terlarang', 'prohibited', 'banned', 'tidak boleh', 'tidak bisa dikirim', 'apa yang boleh', 'apa saja', 'narkoba', 'senjata', 'peledak', '禁止'],
+  payment: ['bayar', 'pembayaran', 'payment', 'dp', 'down payment', 'transfer', 'ewallet', 'gopay', 'ovo', '支払い'],
+  order: ['cara order', 'cara pesan', 'how to order', 'mau order', 'mau pesan', 'gimana order', '注文', '申し込み'],
   contact: ['kontak', 'contact', 'wa', 'whatsapp', 'instagram', 'hubungi', '連絡'],
-
-  // Country tokens
   singapore: ['singapura', 'singapore', 'sgp', 'シンガポール'],
   brunei: ['brunei', 'ブルネイ'],
   malaysia: ['malaysia', 'kl', 'kuala lumpur', 'マレーシア'],
@@ -78,8 +54,6 @@ type IntentKey = keyof typeof INTENTS;
 const hi = (q: string, intent: IntentKey) => hasAny(q, INTENTS[intent]);
 
 // ─── Weight & Price Calculation ───────────────────────────────────────────────
-
-// Extract weight value from query: "3 kg", "3kg", "3 kilo", "0,5 kg", "setengah"
 const extractWeight = (q: string): number | null => {
   const m = q.match(/(\d+[,.]?\d*)\s*k(g|ilo|ilogram)?(\b|$)/i);
   if (m) return parseFloat(m[1].replace(',', '.'));
@@ -87,7 +61,6 @@ const extractWeight = (q: string): number | null => {
   return null;
 };
 
-// Parse "1-5 kg" → {min:1, max:5} | "0,5 kg" → {min:0.5, max:0.5}
 const parseRange = (rangeStr: string): { min: number; max: number } => {
   const s = rangeStr.toLowerCase().replace(/[kg\s]/g, '').replace(',', '.');
   if (s.includes('-')) {
@@ -104,15 +77,11 @@ const findTier = (weight: number, prices: { range: string; price: string }[]) =>
     return weight >= min && weight <= max;
   });
 
-// Parse ID-formatted price: "95.000/kg" → {value:95000, currency:'Rp', isPerKg:true}
-// "2.500¥/kg" → {value:2500, currency:'¥', isPerKg:true}
-// "610.000"   → {value:610000, currency:'Rp', isPerKg:false}
 const parsePriceStr = (p: string) => {
   const isYen = p.includes('¥');
   const isPerKg = /\/\s*kg/i.test(p) || /per\s*kg/i.test(p);
   const numMatch = p.match(/[\d.]+/);
   if (!numMatch) return null;
-  // Dots are thousands separators in ID format → remove them
   const value = parseFloat(numMatch[0].replace(/\./g, ''));
   return { value, currency: isYen ? '¥' : 'Rp', isPerKg };
 };
@@ -120,11 +89,7 @@ const parsePriceStr = (p: string) => {
 const fmtNum = (n: number, currency: string) =>
   currency === '¥' ? `¥${n.toLocaleString('ja-JP')}` : `Rp ${n.toLocaleString('id-ID')}`;
 
-const calcCostText = (
-  weight: number,
-  tier: { range: string; price: string },
-  lang: Language
-): string => {
+const calcCostText = (weight: number, tier: { range: string; price: string }, lang: Language): string => {
   const parsed = parsePriceStr(tier.price);
   if (!parsed) return `${tier.range}: ${tier.price}`;
   const { value, currency, isPerKg } = parsed;
@@ -134,74 +99,127 @@ const calcCostText = (
     const label = { id: 'Total', en: 'Total', jp: '合計' }[lang];
     return `  Tier ${tier.range} → ${fmtNum(value, currency)}/kg\n  ${label}: ${weight} × ${fmtNum(value, currency)} = ${fmtNum(total, currency)}`;
   }
-  // Flat rate (Saudi style)
   const label = { id: 'Tarif flat', en: 'Flat rate', jp: '定額' }[lang];
   return `  ${label} ${tier.range}: ${fmtNum(value, currency)}`;
 };
 
-// ─── Response Engine ──────────────────────────────────────────────────────────
-const generateResponse = (input: string, lang: Language): string => {
+// ─── Upgraded Response Engine (Anti-Ambiguity) ────────────────────────────────
+const generateResponse = (input: string, lang: Language, history: Message[] = []): string => {
   const q = normalize(input);
   const faqs = getFaqData(lang);
   const expeditions = getExpeditionData(lang);
   const jastip = getJastipData(lang);
 
-  // ── 1. Greeting ─────────────────────────────────────────────────────────────
-  if (hi(q, 'greeting')) {
-    return {
-      id: 'Halo! Ada yang bisa saya bantu? Tanyakan soal harga, metode pengiriman, atau cara order ya 😊',
-      en: 'Hello! How can I help? Ask me about pricing, shipping methods, or how to place an order!',
-      jp: 'こんにちは！料金、発送方法、注文方法などについてお気軽にどうぞ！',
-    }[lang];
+  // 1. EXTRACT CONTEXT DARI HISTORY
+  const countryKeys: IntentKey[] = ['singapore', 'brunei', 'malaysia', 'hongkong', 'taiwan', 'japan', 'saudi'];
+  let matchedCountryKey = countryKeys.find((ck) => hi(q, ck));
+
+  if (!matchedCountryKey && history.length > 0) {
+    const pastText = history
+      .filter(m => m.sender === 'user')
+      .slice(-2)
+      .map(m => normalize(m.text))
+      .join(' ');
+    matchedCountryKey = countryKeys.find((ck) => hi(pastText, ck));
   }
 
-  // ── 2. WEIGHT CALCULATION — weight + country detected ────────────────────────
   const weight = extractWeight(q);
-  const countryKeys: IntentKey[] = ['singapore', 'brunei', 'malaysia', 'hongkong', 'taiwan', 'japan', 'saudi'];
-  const matchedCountryKey = countryKeys.find((ck) => hi(q, ck));
+  const isGreeting = hi(q, 'greeting');
 
+  // Deteksi intent eksplisit dari user
+  const explicitHandcarry = hi(q, 'handcarry') || hi(q, 'jastipAlone');
+  const explicitExpedition = hi(q, 'expedition');
+
+  const isPriceQuery = hi(q, 'price') || explicitHandcarry || explicitExpedition || !!matchedCountryKey;
+
+  const prefixText = {
+    id: "Halo! Berikut estimasinya ya:\n\n",
+    en: "Hello! Here is the estimate:\n\n",
+    jp: "こんにちは！お見積もりはこちらです:\n\n"
+  }[lang];
+
+  // 2. PRIORITASKAN TRANSAKSI DENGAN BERAT
   if (weight !== null && matchedCountryKey) {
-    const wantsHandcarry = hi(q, 'handcarry') || (hi(q, 'jastipAlone') && !hi(q, 'expedition'));
+    const prefix = isGreeting ? prefixText : "";
 
-    // Jastip handcarry calculation (Japan only, price is a range "1300¥ - 1700¥ / kg")
-    if (wantsHandcarry && matchedCountryKey === 'japan') {
-      const sections = jastip.routes.map((r) => {
-        const nums = [...r.price.matchAll(/(\d[\d.]*)/g)].map((m) =>
-          parseFloat(m[1].replace(/\./g, ''))
-        );
+    // ─── KHUSUS JEPANG: Logika Anti-Salah-Kira ───
+    if (matchedCountryKey === 'japan') {
+
+      // Hitung Handcarry
+      const hcSections = jastip.routes.map((r) => {
+        const nums = [...r.price.matchAll(/(\d[\d.]*)/g)].map((m) => parseFloat(m[1].replace(/\./g, '')));
         if (nums.length >= 2) {
           const [lo, hi_] = nums;
-          const isYen = r.price.includes('¥');
-          const cur = isYen ? '¥' : 'Rp';
+          const cur = r.price.includes('¥') ? '¥' : 'Rp';
           return `${r.route}:\n  Min: ${weight} × ${fmtNum(lo, cur)} = ${fmtNum(Math.round(weight * lo), cur)}\n  Max: ${weight} × ${fmtNum(hi_, cur)} = ${fmtNum(Math.round(weight * hi_), cur)}`;
         }
         return `${r.route}: ${r.price}`;
       }).join('\n\n');
-      return {
-        id: `Estimasi Jastip Handcarry ${weight} kg:\n\n${sections}`,
-        en: `Estimated Jastip Handcarry cost for ${weight} kg:\n\n${sections}`,
-        jp: `手荷物代行 ${weight}kgの料金目安:\n\n${sections}`,
+
+      const handcarryResult = {
+        id: `📦 *Jastip Handcarry*\n${hcSections}`,
+        en: `📦 *Jastip Handcarry*\n${hcSections}`,
+        jp: `📦 *手荷物代行*\n${hcSections}`
       }[lang];
+
+      // Hitung Ekspedisi
+      const expJapan = expeditions.find((e) => INTENTS['japan'].some((kw) => normalize(e.country).includes(kw)));
+      let expeditionResult = "";
+      if (expJapan) {
+        const tier = findTier(weight, expJapan.prices);
+        if (tier) {
+          const est = expJapan.estimates ? `\n  ⏱ ${expJapan.estimates}` : '';
+          expeditionResult = {
+            id: `✈️ *Via Ekspedisi*\n${calcCostText(weight, tier, lang)}${est}`,
+            en: `✈️ *Via Expedition*\n${calcCostText(weight, tier, lang)}${est}`,
+            jp: `✈️ *配送サービス*\n${calcCostText(weight, tier, lang)}${est}`
+          }[lang];
+        } else {
+          expeditionResult = {
+            id: `✈️ *Via Ekspedisi*: Berat ${weight} kg di luar range.`,
+            en: `✈️ *Via Expedition*: ${weight} kg out of range.`,
+            jp: `✈️ *配送サービス*: ${weight}kgは範囲外です。`
+          }[lang];
+        }
+      }
+
+      // Tampilkan berdasarkan apa yang user minta (atau tampilkan dua-duanya jika ambigu)
+      if (explicitHandcarry && !explicitExpedition) {
+        return prefix + {
+          id: `Estimasi Jastip Handcarry ${weight} kg:\n\n`,
+          en: `Estimated Jastip Handcarry for ${weight} kg:\n\n`,
+          jp: `手荷物代行 ${weight}kgの料金目安:\n\n`
+        }[lang] + handcarryResult;
+      } else if (explicitExpedition && !explicitHandcarry) {
+        return prefix + {
+          id: `Estimasi Ekspedisi ${weight} kg ke Jepang:\n\n`,
+          en: `Estimated Expedition for ${weight} kg to Japan:\n\n`,
+          jp: `日本への配送サービス ${weight}kgの料金目安:\n\n`
+        }[lang] + expeditionResult;
+      } else {
+        // USER AMBIGU: Tampilkan Keduanya
+        return prefix + {
+          id: `Untuk Jepang, kami punya 2 layanan. Berikut estimasi ${weight} kg:\n\n${handcarryResult}\n\n${expeditionResult}\n\nLayanan mana yang ingin dipakai?`,
+          en: `For Japan, we have 2 services. Here is the estimate for ${weight} kg:\n\n${handcarryResult}\n\n${expeditionResult}\n\nWhich service do you prefer?`,
+          jp: `日本向けには2つのサービスがあります。${weight}kgのお見積もりです:\n\n${handcarryResult}\n\n${expeditionResult}\n\nどちらのサービスをご希望ですか？`
+        }[lang];
+      }
     }
 
-    // Expedition cost calculation
+    // ─── NEGARA LAIN (Hanya Ekspedisi) ───
     const matchedExps = expeditions.filter((e) =>
-      INTENTS[matchedCountryKey].some((kw) => normalize(e.country).includes(kw))
+      INTENTS[matchedCountryKey!].some((kw) => normalize(e.country).includes(kw))
     );
+
     if (matchedExps.length > 0) {
       const sections = matchedExps.map((exp) => {
         const tier = findTier(weight, exp.prices);
-        if (!tier) {
-          return {
-            id: `${exp.country}: Berat ${weight} kg di luar range tersedia (maks ${exp.prices[exp.prices.length - 1].range}).`,
-            en: `${exp.country}: ${weight} kg is out of available range (max ${exp.prices[exp.prices.length - 1].range}).`,
-            jp: `${exp.country}: ${weight}kgは対応範囲外です（最大 ${exp.prices[exp.prices.length - 1].range}）。`,
-          }[lang];
-        }
+        if (!tier) return { id: `${exp.country}: Berat ${weight} kg di luar range tersedia.`, en: `${exp.country}: ${weight} kg is out of available range.`, jp: `${exp.country}: ${weight}kgは対応範囲外です。` }[lang];
         const est = exp.estimates ? `\n  ⏱ ${exp.estimates}` : '';
         return `${exp.country}:\n${calcCostText(weight, tier, lang)}${est}`;
       }).join('\n\n');
-      return {
+
+      return prefix + {
         id: `Estimasi biaya kirim ${weight} kg:\n\n${sections}`,
         en: `Estimated shipping cost for ${weight} kg:\n\n${sections}`,
         jp: `${weight}kgの配送料金目安:\n\n${sections}`,
@@ -209,75 +227,87 @@ const generateResponse = (input: string, lang: Language): string => {
     }
   }
 
-  // ── 3. PRICE INTENT — checked before FAQ to prevent interception ─────────────
+  // 3. HANDLE PRICE INTENT TANPA BERAT
+  if (isPriceQuery && !weight) {
+    const greetingFallback = { id: "Halo! ", en: "Hello! ", jp: "こんにちは！ " }[lang];
+    const prefix = isGreeting ? greetingFallback : "";
 
-  // Country token alone → treat as price query
-  const isPriceQuery = hi(q, 'price') || hi(q, 'handcarry') || hi(q, 'expedition') || !!matchedCountryKey;
+    if (matchedCountryKey) {
+      // ─── KHUSUS JEPANG TANPA BERAT ───
+      if (matchedCountryKey === 'japan') {
+        const hcRows = jastip.routes.map((r) => `  • ${r.route}: ${r.price}`).join('\n');
+        const expJapan = expeditions.find((e) => INTENTS['japan'].some((kw) => normalize(e.country).includes(kw)));
+        const expRows = expJapan ? expJapan.prices.map((p) => `  • ${p.range}: ${p.price}`).join('\n') : "";
 
-  if (isPriceQuery) {
-    const matchedKey = matchedCountryKey;
-
-    if (matchedKey) {
-      // If user also mentions handcarry/jastip → show jastip rates (for Japan)
-      const wantsHandcarry = hi(q, 'handcarry') || hi(q, 'jastipAlone');
-
-      if (wantsHandcarry && matchedKey === 'japan') {
-        const rows = jastip.routes.map((r) => `• ${r.route}: ${r.price}`).join('\n');
-        return {
-          id: `Tarif Jastip Handcarry (Jepang ↔ Indonesia):\n${rows}\n\nHarga sudah termasuk layanan titip & bawa langsung.`,
-          en: `Jastip Handcarry rates (Japan ↔ Indonesia):\n${rows}\n\nPrice includes personal shopping & carry service.`,
-          jp: `手荷物代行料金 (日本 ↔ インドネシア):\n${rows}\n\n買い物代行・手荷物持ち込み込みの料金です。`,
-        }[lang];
+        if (explicitHandcarry && !explicitExpedition) {
+          return prefix + {
+            id: `Tarif Jastip Handcarry (Jepang ↔ Indonesia):\n${hcRows}\n\nSebutkan beratnya (misal: "5kg") untuk total harga.`,
+            en: `Jastip Handcarry rates (Japan ↔ Indonesia):\n${hcRows}\n\nMention the weight (e.g., "5kg") for the total price.`,
+            jp: `手荷物代行料金 (日本 ↔ インドネシア):\n${hcRows}\n\n合計金額のために重量（例: "5kg"）を教えてください。`
+          }[lang];
+        } else if (explicitExpedition && !explicitHandcarry) {
+          return prefix + {
+            id: `Tarif Via Ekspedisi (Jepang):\n${expRows}\n\nSebutkan beratnya (misal: "3kg") untuk simulasi harga.`,
+            en: `Via Expedition rates (Japan):\n${expRows}\n\nMention the weight (e.g., "3kg") for a price simulation.`,
+            jp: `配送料金 (日本):\n${expRows}\n\nシミュレーションのために重量（例: "3kg"）を教えてください。`
+          }[lang];
+        } else {
+          // USER AMBIGU
+          return prefix + {
+            id: `Untuk Jepang, ada 2 opsi layanan:\n\n📦 *Jastip Handcarry*\n${hcRows}\n\n✈️ *Via Ekspedisi*\n${expRows}\n\nSebutkan berat barang (misal: "5kg") untuk estimasi totalnya.`,
+            en: `For Japan, there are 2 service options:\n\n📦 *Jastip Handcarry*\n${hcRows}\n\n✈️ *Via Expedition*\n${expRows}\n\nMention the item weight (e.g., "5kg") for a total estimate.`,
+            jp: `日本向けには2つのオプションがあります:\n\n📦 *手荷物代行*\n${hcRows}\n\n✈️ *配送サービス*\n${expRows}\n\n合計見積もりのために重量（例: "5kg"）を教えてください。`
+          }[lang];
+        }
       }
 
-      // filter (bukan find) supaya Malaysia + Malaysia Timur keduanya muncul
+      // ─── NEGARA LAIN TANPA BERAT ───
       const matchedExps = expeditions.filter((e) =>
-        INTENTS[matchedKey].some((kw) => normalize(e.country).includes(kw))
+        INTENTS[matchedCountryKey!].some((kw) => normalize(e.country).includes(kw))
       );
+
       if (matchedExps.length > 0) {
         const sections = matchedExps.map((exp) => {
           const rows = exp.prices.map((p) => `  • ${p.range}: ${p.price}`).join('\n');
-          const est = exp.estimates ? ` (${exp.estimates})` : '';
-          return `${exp.country}${est}:\n${rows}`;
+          return `${exp.country}:\n${rows}`;
         }).join('\n\n');
-        return {
-          id: `Tarif ekspedisi:\n\n${sections}`,
-          en: `Expedition rates:\n\n${sections}`,
-          jp: `配送料金:\n\n${sections}`,
+
+        return prefix + {
+          id: `Tarif ekspedisi:\n\n${sections}\n\nSebutkan beratnya (misal: "3kg") untuk simulasi harga.`,
+          en: `Expedition rates:\n\n${sections}\n\nPlease mention the weight (e.g., "3kg") for a price simulation.`,
+          jp: `配送料金:\n\n${sections}\n\n料金シミュレーションのために重量（例: "3kg"）を入力してください。`
         }[lang];
       }
     }
 
-    // 2b. Handcarry-specific (no country, or Japan implied)
-    if (hi(q, 'handcarry') || (hi(q, 'jastipAlone') && !hi(q, 'expedition'))) {
-      const rows = jastip.routes.map((r) => `• ${r.route}: ${r.price}`).join('\n');
-      return {
-        id: `Tarif Jastip Handcarry (Jepang ↔ Indonesia):\n${rows}\n\nHarga sudah termasuk layanan titip & bawa langsung.`,
-        en: `Jastip Handcarry rates (Japan ↔ Indonesia):\n${rows}\n\nPrice includes personal shopping & carry service.`,
-        jp: `手荷物代行料金 (日本 ↔ インドネシア):\n${rows}\n\n買い物代行・手荷物持ち込み込みの料金です。`,
-      }[lang];
-    }
-
-    // 2c. Expedition-specific (no country)
+    // Generic price overview
     if (hi(q, 'expedition')) {
       const countryList = expeditions.map((e) => `• ${e.country}`).join('\n');
-      return {
+      return prefix + {
         id: `Via Ekspedisi tersedia ke negara-negara berikut:\n${countryList}\n\nMau cek tarif ke negara mana?`,
-        en: `Via Expedition is available to:\n${countryList}\n\nWhich country would you like rates for?`,
+        en: `Via Expedition is available to the following countries:\n${countryList}\n\nWhich country would you like rates for?`,
         jp: `配送サービスの対応国:\n${countryList}\n\nどの国の料金を知りたいですか？`,
       }[lang];
     }
 
-    // 2d. Generic price overview
     const jRows = jastip.routes.map((r) => `• ${r.route}: ${r.price}`).join('\n');
-    return {
+    return prefix + {
       id: `Kami punya dua layanan:\n\n📦 Jastip Handcarry (Jepang ↔ Indonesia)\n${jRows}\n\n✈️ Via Ekspedisi ke 64+ negara\nTanya "tarif ke [negara]" untuk detail.`,
       en: `We offer two services:\n\n📦 Jastip Handcarry (Japan ↔ Indonesia)\n${jRows}\n\n✈️ Via Expedition to 64+ countries\nAsk "rates to [country]" for details.`,
       jp: `2つのサービスがあります:\n\n📦 手荷物代行 (日本 ↔ インドネシア)\n${jRows}\n\n✈️ 配送サービス 64カ国以上\n「[国]への料金」と聞いてください。`,
     }[lang];
   }
 
-  // ── 3. FAQ scoring — only runs when NOT a price query ────────────────────────
+  // 4. PURE GREETING
+  if (isGreeting && q.split(' ').length < 4) {
+    return {
+      id: 'Halo! Ada yang bisa saya bantu? Tanyakan soal harga, metode pengiriman, atau cara order ya 😊',
+      en: 'Hello! How can I help? Ask me about pricing, shipping methods, or how to place an order!',
+      jp: 'こんにちは！料金、発送方法、注文方法などについてお気軽にどうぞ！',
+    }[lang];
+  }
+
+  // 5. FAQ SCORING
   const faqScores = faqs.map((f) => {
     const tokens = normalize(f.question).split(' ').filter((w) => w.length > 3);
     return { faq: f, score: tokenScore(q, tokens) };
@@ -285,7 +315,7 @@ const generateResponse = (input: string, lang: Language): string => {
   const bestFaq = faqScores.sort((a, b) => b.score - a.score)[0];
   if (bestFaq?.score >= 2) return bestFaq.faq.answer;
 
-  // ── 4. Single-intent handlers ─────────────────────────────────────────────────
+  // 6. SINGLE-INTENT HANDLERS
   if (hi(q, 'duration')) {
     return {
       id: 'Estimasi waktu pengiriman:\n• Handcarry: tiba saat tim kami mendarat\n• Ekspedisi Udara: 1–3 minggu\n• Ekspedisi Laut: 1–2 bulan',
@@ -295,8 +325,7 @@ const generateResponse = (input: string, lang: Language): string => {
   }
 
   if (hi(q, 'tracking')) {
-    const f = faqs.find((faq) => tokenScore(normalize(faq.question), ['lacak', 'track', 'resi']) > 0);
-    return f?.answer ?? {
+    return {
       id: 'Via Ekspedisi dilengkapi nomor resi untuk tracking. Jastip Handcarry mendapat update status personal dari tim kami.',
       en: 'Via Expedition includes a tracking number. Jastip Handcarry gets personal status updates from our team.',
       jp: '配送サービスには追跡番号があります。手荷物代行はチームから個別にお知らせします。',
@@ -304,20 +333,15 @@ const generateResponse = (input: string, lang: Language): string => {
   }
 
   if (hi(q, 'tax')) {
-    const f = faqs.find((faq) => tokenScore(normalize(faq.question), ['pajak', 'cukai', 'tax']) > 0);
-    return f?.answer ?? {
+    return {
       id: 'Handcarry biasanya all-in termasuk pajak (dalam kuota). Ekspedisi mengikuti bea cukai negara tujuan.',
       en: 'Handcarry is usually all-in including tax (within quota). Expedition follows destination country customs.',
       jp: '手荷物代行は通常税金込み（免税範囲内）。配送は目的国の関税に従います。',
     }[lang];
   }
 
-  // ← FIX: prohibited now catches 'terlarang', 'barang terlarang', 'apa saja', dll
   if (hi(q, 'prohibited')) {
-    const f = faqs.find((faq) =>
-      tokenScore(normalize(faq.question), ['batasan', 'larangan', 'prohibited', 'limit']) > 0
-    );
-    return f?.answer ?? {
+    return {
       id: 'Barang yang TIDAK bisa dikirim:\n• Narkoba / obat terlarang\n• Senjata & amunisi\n• Bahan peledak\n• Hewan hidup\n• Barang ilegal lainnya\n\nVia Ekspedisi lebih fleksibel untuk barang besar, Handcarry terbatas kapasitas koper.',
       en: 'Items that CANNOT be shipped:\n• Drugs / narcotics\n• Weapons & ammunition\n• Explosives\n• Live animals\n• Other illegal goods\n\nVia Expedition is more flexible for large items; Handcarry is limited to luggage capacity.',
       jp: '発送できない品目:\n• 麻薬・違法薬物\n• 武器・弾薬\n• 爆発物\n• 生き物\n• その他の違法品\n\n配送サービスは大型品に柔軟対応、手荷物代行はスーツケースの容量に制限されます。',
@@ -325,8 +349,7 @@ const generateResponse = (input: string, lang: Language): string => {
   }
 
   if (hi(q, 'payment')) {
-    const f = faqs.find((faq) => tokenScore(normalize(faq.question), ['bayar', 'payment']) > 0);
-    return f?.answer ?? {
+    return {
       id: 'Pembayaran via transfer bank, e-wallet, atau sistem DP dengan pelunasan sebelum pengiriman.',
       en: 'Payment via bank transfer, e-wallet, or DP system with balance paid before shipment.',
       jp: '銀行振込、電子マネー、または前払い（DP）システムでお支払いいただけます。',
@@ -349,15 +372,15 @@ const generateResponse = (input: string, lang: Language): string => {
     }[lang];
   }
 
-  // ── 5. Fallback ───────────────────────────────────────────────────────────────
+  // 7. FALLBACK
   return {
-    id: 'Maaf, saya belum mengerti. Coba tanyakan:\n• "Berapa ongkir ke Jepang?"\n• "Harga jastip handcarry?"\n• "Barang apa yang tidak boleh dikirim?"\n• "Estimasi berapa hari?"',
-    en: "Sorry, I didn't understand. Try:\n• \"Shipping cost to Japan?\"\n• \"Jastip handcarry rates?\"\n• \"What items are prohibited?\"\n• \"How many days?\"",
-    jp: 'うまく理解できませんでした。こちらをお試しください:\n• 「日本への送料は？」\n• 「手荷物代行の料金は？」\n• 「禁止品は何ですか？」\n• 「何日かかる？」',
+    id: 'Maaf, saya kurang menangkap maksudnya. Coba tanyakan:\n• "Ongkir 5kg ke Jepang"\n• "Barang apa yang tidak boleh dikirim?"\n• "Cara bayarnya gimana?"',
+    en: "Sorry, I didn't quite catch that. Try:\n• \"5kg shipping to Japan\"\n• \"Prohibited items?\"\n• \"How to pay?\"",
+    jp: 'すみません、うまく理解できませんでした。こちらをお試しください:\n• 「日本へ5kgの送料」\n• 「禁止品は何ですか？」\n• 「支払い方法は？」',
   }[lang];
 };
 
-// ─── Component (unchanged structure) ─────────────────────────────────────────
+// ─── Component ────────────────────────────────────────────────────────────────
 const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -381,16 +404,27 @@ const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
 
   const handleSend = () => {
     if (!inputValue.trim() || isTyping) return;
+
     const userMessage: Message = {
-      id: Date.now().toString(), text: inputValue, sender: 'user', timestamp: new Date(),
+      id: Date.now().toString(),
+      text: inputValue,
+      sender: 'user',
+      timestamp: new Date(),
     };
+
     setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setIsTyping(true);
+
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
-        { id: (Date.now() + 1).toString(), text: generateResponse(userMessage.text, lang), sender: 'bot', timestamp: new Date() },
+        {
+          id: (Date.now() + 1).toString(),
+          text: generateResponse(userMessage.text, lang, prev),
+          sender: 'bot',
+          timestamp: new Date()
+        },
       ]);
       setIsTyping(false);
     }, 700);
