@@ -3,15 +3,15 @@ import { NextResponse } from 'next/server';
 import { getJastipData, getExpeditionData, getFaqData } from '../../../data';
 import { WA_NUMBER } from '../../../utils/whatsapp';
 
-const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY,
-});
-
 export async function POST(req: Request) {
     try {
-        if (!process.env.GROQ_API_KEY) {
+        const apiKey = process.env.GROQ_API_KEY;
+        
+        if (!apiKey) {
             return NextResponse.json({ reply: 'Server Error: API Key hilang.' }, { status: 500 });
         }
+
+        const groq = new Groq({ apiKey });
 
         const { message, history } = await req.json();
 
