@@ -1,30 +1,4 @@
-export interface JastipRoute {
-  route: string;
-  price: string;
-}
-
-export interface JastipData {
-  title: string;
-  routes: JastipRoute[];
-}
-
-export interface ExpeditionPrice {
-  range: string;
-  price: string;
-}
-
-export interface ExpeditionCountry {
-  country: string;
-  estimates: string;
-  prices: ExpeditionPrice[];
-}
-
-export interface FaqItem {
-  question: string;
-  answer: string;
-}
-
-export type Language = 'id' | 'en' | 'jp';
+import { JastipData, ExpeditionCountry, FaqItem, Language } from '../types';
 
 export const getJastipData = (lang: string = 'id'): JastipData => {
   const data: Record<string, JastipData> = {

@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { Language } from '../../types';
+
 interface ServicesProps {
-  lang: string;
+  lang: Language;
 }
 
 const Services: React.FC<ServicesProps> = ({ lang }) => {

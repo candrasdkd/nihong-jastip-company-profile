@@ -1,8 +1,10 @@
 import React from 'react';
 import { MailIcon, PhoneIcon, MapPinIcon, ClockIcon } from '../UI/Icons';
 
+import { Language } from '../../types';
+
 interface ContactProps {
-  lang: string;
+  lang: Language;
   submitContactToWhatsApp: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 

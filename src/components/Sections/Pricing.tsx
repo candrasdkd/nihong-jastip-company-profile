@@ -1,8 +1,8 @@
 import React from 'react';
-import { JastipData, ExpeditionCountry } from '../../data';
+import { Language, JastipData, ExpeditionCountry } from '../../types';
 
 interface PricingProps {
-  lang: string;
+  lang: Language;
   activeTab: 'jastip' | 'expedition';
   setActiveTab: (tab: 'jastip' | 'expedition') => void;
   jastipData: JastipData;

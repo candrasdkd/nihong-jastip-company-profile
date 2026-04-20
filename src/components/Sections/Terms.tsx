@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { Language } from '../../types';
+
 interface TermsProps {
-  lang: string;
+  lang: Language;
 }
 
 const Terms: React.FC<TermsProps> = ({ lang }) => {

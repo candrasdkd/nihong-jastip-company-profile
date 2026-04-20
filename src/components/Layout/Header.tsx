@@ -1,9 +1,10 @@
 import React from 'react';
 
-interface HeaderProps {
-  lang: string;
+import { Language, NavClickHandlers } from '../../types';
+
+interface HeaderProps extends Pick<NavClickHandlers, 'handleNavClick'> {
+  lang: Language;
   activeMenu: string;
-  handleNavClick: (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => void;
   handleLangChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   toggleSidebar: () => void;
 }

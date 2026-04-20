@@ -1,11 +1,12 @@
 import React from 'react';
 
-interface SidebarProps {
+import { Language, NavClickHandlers } from '../../types';
+
+interface SidebarProps extends Pick<NavClickHandlers, 'handleNavClickWithClose'> {
   sidebarOpen: boolean;
   activeMenu: string;
-  lang: string;
+  lang: Language;
   toggleSidebar: () => void;
-  handleNavClickWithClose: (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({

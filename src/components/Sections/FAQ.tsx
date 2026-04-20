@@ -1,8 +1,8 @@
 import React from 'react';
-import { FaqItem } from '../../data';
+import { Language, FaqItem } from '../../types';
 
 interface FAQProps {
-  lang: string;
+  lang: Language;
   faqData: FaqItem[];
   activeFaqs: number[];
   toggleFaq: (index: number) => void;

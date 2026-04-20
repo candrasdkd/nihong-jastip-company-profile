@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './App.css';
-import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { getExpeditionData, getFaqData, getJastipData } from './data';
+
+// Hooks
+import { useAppLogic } from './hooks/useAppLogic';
 
 // Layout Components
 import Header from './components/Layout/Header';
@@ -18,110 +19,26 @@ import FAQ from './components/Sections/FAQ';
 import Contact from './components/Sections/Contact';
 
 const App: React.FC = () => {
-  const [lang, setLang] = useState<string>('id');
-  const [activeTab, setActiveTab] = useState<'jastip' | 'expedition'>('jastip');
-  const [activeFaqs, setActiveFaqs] = useState<number[]>([]);
-  const [activeMenu, setActiveMenu] = useState<string>('home');
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-
-  const jastipData = getJastipData(lang);
-  const expeditionData = getExpeditionData(lang);
-  const faqData = getFaqData(lang);
-
-  const WA_NUMBER = '628157162517';
-
-  const toggleSidebar = (): void => setSidebarOpen(!sidebarOpen);
-
-  const openWhatsApp = (): void => {
-    const msg = `Halo Nihong Jastip, saya ingin konsultasi`;
-    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
-
-  const toggleFaq = (index: number): void => {
-    setActiveFaqs((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
-  };
-
-  const scrollToId = (id: string): void => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleNavClick = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>): void => {
-    e.preventDefault();
-    setActiveMenu(id);
-    scrollToId(id);
-  };
-
-  const handleNavClickWithClose = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>): void => {
-    e.preventDefault();
-    setActiveMenu(id);
-    setSidebarOpen(false);
-    scrollToId(id);
-  };
-
-  const submitContactToWhatsApp = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-    const name = (fd.get('name') as string || '').trim();
-    const phone = (fd.get('phone') as string || '').trim();
-    const message = (fd.get('message') as string || '').trim();
-    const cleanPhone = phone.replace(/[^\d+]/g, '');
-
-    const text = [
-      'Halo Nihong Jastip, saya mengirim pesan via Form Website 👋',
-      '',
-      `Nama: ${name}`,
-      `Telepon: ${cleanPhone}`,
-      '',
-      'Pesan:',
-      message
-    ].join('\n');
-
-    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
-    form.reset();
-  };
-
-  const handleLangChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    setLang(e.target.value);
-  };
-
-  useEffect(() => {
-    const ids = ['home', 'services', 'pricing', 'faq', 'contact'];
-    const sections = ids.map((id) => document.getElementById(id)).filter((sec): sec is HTMLElement => sec !== null);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveMenu(entry.target.id);
-        });
-      },
-      { rootMargin: '0px 0px -60% 0px', threshold: 0.1 }
-    );
-
-    sections.forEach((sec) => observer.observe(sec));
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => AOS.refresh(), 300);
-    return () => clearTimeout(timer);
-  }, [activeFaqs]);
-
-  useEffect(() => {
-    const hash = window.location.hash?.replace('#', '');
-    if (hash) {
-      setActiveMenu(hash);
-      setTimeout(() => scrollToId(hash), 0);
-    }
-  }, []);
-
-  useEffect(() => {
-    AOS.init({ duration: 800, once: true });
-  }, []);
+  const {
+    lang,
+    activeTab,
+    setActiveTab,
+    activeFaqs,
+    activeMenu,
+    setActiveMenu,
+    sidebarOpen,
+    toggleSidebar,
+    jastipData,
+    expeditionData,
+    faqData,
+    handleOpenWhatsApp,
+    toggleFaq,
+    scrollToId,
+    handleNavClick,
+    handleNavClickWithClose,
+    submitContactToWhatsApp,
+    handleLangChange
+  } = useAppLogic();
 
   return (
     <div className="App">
@@ -143,7 +60,7 @@ const App: React.FC = () => {
 
       <Hero
         lang={lang}
-        openWhatsApp={openWhatsApp}
+        openWhatsApp={handleOpenWhatsApp}
         setActiveMenu={setActiveMenu}
         scrollToId={scrollToId}
       />
@@ -172,7 +89,7 @@ const App: React.FC = () => {
           <div className="cta-content" data-aos="zoom-in">
             <h2>{lang === 'id' ? 'Siap Mengirimkan Barang Anda?' : lang === 'en' ? 'Ready to Ship Your Items?' : '商品を発送する準備はできましたか？'}</h2>
             <p>{lang === 'id' ? 'Dapatkan penawaran khusus untuk pengiriman pertama Anda' : lang === 'en' ? 'Get a special offer for your first shipment' : '初めての発送で特別割引を受けましょう'}</p>
-            <button className="cta-button primary large" onClick={openWhatsApp}>
+            <button className="cta-button primary large" onClick={handleOpenWhatsApp}>
               {lang === 'id' ? 'Hubungi Kami Sekarang' : lang === 'en' ? 'Contact Us Now' : '今すぐお問い合わせ'}
             </button>
           </div>

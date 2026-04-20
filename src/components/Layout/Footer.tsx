@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { Language } from '../../types';
+
 interface FooterProps {
-  lang: string;
+  lang: Language;
 }
 
 const Footer: React.FC<FooterProps> = ({ lang }) => {

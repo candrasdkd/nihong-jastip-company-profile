@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { Language } from '../../types';
+
 interface HeroProps {
-  lang: string;
+  lang: Language;
   openWhatsApp: () => void;
   setActiveMenu: (id: string) => void;
   scrollToId: (id: string) => void;
