@@ -30,265 +30,34 @@ export const getJastipData = (lang: string = 'id'): JastipData => {
 export const getExpeditionData = (lang: string = 'id'): ExpeditionCountry[] => {
   const data: Record<string, ExpeditionCountry[]> = {
     id: [
-      {
-        country: "Singapura",
-        estimates: "Estimasi 7 hari",
-        prices: [
-          { range: "1-5 kg", price: "95.000/kg" },
-          { range: "6-10 kg", price: "85.000/kg" },
-          { range: "11-20 kg", price: "75.000/kg" },
-          { range: "20-30 kg", price: "60.000/kg" }
-        ]
-      },
-      {
-        country: "Brunei",
-        estimates: "Estimasi 7 hari",
-        prices: [
-          { range: "1-5 kg", price: "165.000/kg" },
-          { range: "6-10 kg", price: "155.000/kg" },
-          { range: "20-30 kg", price: "150.000/kg" }
-        ]
-      },
-      {
-        country: "Malaysia",
-        estimates: "Estimasi 7 hari",
-        prices: [
-          { range: "1-10 kg", price: "95.000/kg" },
-          { range: "11-25 kg", price: "85.000/kg" },
-          { range: "26-30 kg", price: "80.000/kg" }
-        ]
-      },
-      {
-        country: "Malaysia Timur (Sabah Serawak)",
-        estimates: "Estimasi 7 hari",
-        prices: [
-          { range: "1-10 kg", price: "115.000/kg" },
-          { range: "11-25 kg", price: "105.000/kg" },
-          { range: "26-30 kg", price: "100.000/kg" }
-        ]
-      },
-      {
-        country: "Hongkong",
-        estimates: "Estimasi 7 hari",
-        prices: [
-          { range: "1-10 kg", price: "155.000/kg" },
-          { range: "11-25 kg", price: "145.000/kg" },
-          { range: "26-30 kg", price: "140.000/kg" }
-        ]
-      },
-      {
-        country: "Taiwan",
-        estimates: "Estimasi 7 hari",
-        prices: [
-          { range: "1-10 kg", price: "105.000/kg" },
-          { range: "11-20 kg", price: "95.000/kg" },
-          { range: "21-30 kg", price: "90.000/kg" }
-        ]
-      },
-      {
-        country: "Jepang",
-        estimates: "",
-        prices: [
-          { range: "0,5 kg", price: "2.500¥/kg" },
-          { range: "1 kg", price: "3.700¥/kg" },
-          { range: "2-3 kg", price: "2.600¥/kg" },
-          { range: "4-8 kg", price: "2.100¥/kg" },
-          { range: "9-12 kg", price: "1.900¥/kg" },
-          { range: "13-20 kg", price: "1.800¥/kg" },
-          { range: "21-30 kg", price: "1.600¥/kg" }
-        ]
-      },
-      {
-        country: "Arab Saudi",
-        estimates: "Estimasi 7 hari",
-        prices: [
-          { range: "1 kg", price: "395.000" },
-          { range: "2 kg", price: "495.000" },
-          { range: "3 kg", price: "610.000" },
-          { range: "4 kg", price: "740.000" },
-          { range: "5 kg", price: "850.000" },
-          { range: "6 kg", price: "960.000" },
-          { range: "7 kg", price: "1.100.000" },
-          { range: "8 kg", price: "1.200.000" },
-          { range: "9 kg", price: "1.300.000" },
-          { range: "10 kg", price: "1.400.000" },
-          { range: "11-30 kg", price: "Per kg tambahan 100.000" }
-        ]
-      }
+      { country: "Singapura", estimates: "Estimasi 7 hari", prices: [{ range: "1-5 kg", price: "95.000/kg" }, { range: "6-10 kg", price: "85.000/kg" }, { range: "11-20 kg", price: "75.000/kg" }, { range: "20-30 kg", price: "60.000/kg" }] },
+      { country: "Brunei", estimates: "Estimasi 7 hari", prices: [{ range: "1-5 kg", price: "165.000/kg" }, { range: "6-10 kg", price: "155.000/kg" }, { range: "20-30 kg", price: "150.000/kg" }] },
+      { country: "Malaysia", estimates: "Estimasi 7 hari", prices: [{ range: "1-10 kg", price: "95.000/kg" }, { range: "11-25 kg", price: "85.000/kg" }, { range: "26-30 kg", price: "80.000/kg" }] },
+      { country: "Malaysia Timur (Sabah Serawak)", estimates: "Estimasi 7 hari", prices: [{ range: "1-10 kg", price: "115.000/kg" }, { range: "11-25 kg", price: "105.000/kg" }, { range: "26-30 kg", price: "100.000/kg" }] },
+      { country: "Hongkong", estimates: "Estimasi 7 hari", prices: [{ range: "1-10 kg", price: "155.000/kg" }, { range: "11-25 kg", price: "145.000/kg" }, { range: "26-30 kg", price: "140.000/kg" }] },
+      { country: "Taiwan", estimates: "Estimasi 7 hari", prices: [{ range: "1-10 kg", price: "105.000/kg" }, { range: "11-20 kg", price: "95.000/kg" }, { range: "21-30 kg", price: "90.000/kg" }] },
+      { country: "Jepang", estimates: "", prices: [{ range: "0,5 kg", price: "2.500¥/kg" }, { range: "1 kg", price: "3.700¥/kg" }, { range: "2-3 kg", price: "2.600¥/kg" }, { range: "4-8 kg", price: "2.100¥/kg" }, { range: "9-12 kg", price: "1.900¥/kg" }, { range: "13-20 kg", price: "1.800¥/kg" }, { range: "21-30 kg", price: "1.600¥/kg" }] },
+      { country: "Arab Saudi", estimates: "Estimasi 7 hari", prices: [{ range: "1 kg", price: "395.000" }, { range: "2 kg", price: "495.000" }, { range: "3 kg", price: "610.000" }, { range: "4 kg", price: "740.000" }, { range: "5 kg", price: "850.000" }, { range: "6 kg", price: "960.000" }, { range: "7 kg", price: "1.100.000" }, { range: "8 kg", price: "1.200.000" }, { range: "9 kg", price: "1.300.000" }, { range: "10 kg", price: "1.400.000" }, { range: "11-30 kg", price: "Per kg tambahan 100.000" }] }
     ],
     en: [
-      {
-        country: "Singapore",
-        estimates: "Estimated 7 days",
-        prices: [
-          { range: "1-5 kg", price: "95.000/kg" },
-          { range: "6-10 kg", price: "85.000/kg" },
-          { range: "11-20 kg", price: "75.000/kg" },
-          { range: "20-30 kg", price: "60.000/kg" }
-        ]
-      },
-      {
-        country: "Brunei",
-        estimates: "Estimated 7 days",
-        prices: [
-          { range: "1-5 kg", price: "165.000/kg" },
-          { range: "6-10 kg", price: "155.000/kg" },
-          { range: "20-30 kg", price: "150.000/kg" }
-        ]
-      },
-      {
-        country: "Malaysia",
-        estimates: "Estimated 7 days",
-        prices: [
-          { range: "1-10 kg", price: "95.000/kg" },
-          { range: "11-25 kg", price: "85.000/kg" },
-          { range: "26-30 kg", price: "80.000/kg" }
-        ]
-      },
-      {
-        country: "East Malaysia (Sabah Sarawak)",
-        estimates: "Estimated 7 days",
-        prices: [
-          { range: "1-10 kg", price: "115.000/kg" },
-          { range: "11-25 kg", price: "105.000/kg" },
-          { range: "26-30 kg", price: "100.000/kg" }
-        ]
-      },
-      {
-        country: "Hong Kong",
-        estimates: "Estimated 7 days",
-        prices: [
-          { range: "1-10 kg", price: "155.000/kg" },
-          { range: "11-25 kg", price: "145.000/kg" },
-          { range: "26-30 kg", price: "140.000/kg" }
-        ]
-      },
-      {
-        country: "Taiwan",
-        estimates: "Estimated 7 days",
-        prices: [
-          { range: "1-10 kg", price: "105.000/kg" },
-          { range: "11-20 kg", price: "95.000/kg" },
-          { range: "21-30 kg", price: "90.000/kg" }
-        ]
-      },
-      {
-        country: "Japan",
-        estimates: "",
-        prices: [
-          { range: "0.5 kg", price: "2.500¥/kg" },
-          { range: "1 kg", price: "3.700¥/kg" },
-          { range: "2-3 kg", price: "2.600¥/kg" },
-          { range: "4-8 kg", price: "2.100¥/kg" },
-          { range: "9-12 kg", price: "1.900¥/kg" },
-          { range: "13-20 kg", price: "1.800¥/kg" },
-          { range: "21-30 kg", price: "1.600¥/kg" }
-        ]
-      },
-      {
-        country: "Saudi Arabia",
-        estimates: "Estimated 7 days",
-        prices: [
-          { range: "1 kg", price: "395.000" },
-          { range: "2 kg", price: "495.000" },
-          { range: "3 kg", price: "610.000" },
-          { range: "4 kg", price: "740.000" },
-          { range: "5 kg", price: "850.000" },
-          { range: "6 kg", price: "960.000" },
-          { range: "7 kg", price: "1.100.000" },
-          { range: "8 kg", price: "1.200.000" },
-          { range: "9 kg", price: "1.300.000" },
-          { range: "10 kg", price: "1.400.000" },
-          { range: "11-30 kg", price: "Additional kg 100.000" }
-        ]
-      }
+      { country: "Singapore", estimates: "Estimated 7 days", prices: [{ range: "1-5 kg", price: "95.000/kg" }, { range: "6-10 kg", price: "85.000/kg" }, { range: "11-20 kg", price: "75.000/kg" }, { range: "20-30 kg", price: "60.000/kg" }] },
+      { country: "Brunei", estimates: "Estimated 7 days", prices: [{ range: "1-5 kg", price: "165.000/kg" }, { range: "6-10 kg", price: "155.000/kg" }, { range: "20-30 kg", price: "150.000/kg" }] },
+      { country: "Malaysia", estimates: "Estimated 7 days", prices: [{ range: "1-10 kg", price: "95.000/kg" }, { range: "11-25 kg", price: "85.000/kg" }, { range: "26-30 kg", price: "80.000/kg" }] },
+      { country: "East Malaysia (Sabah Sarawak)", estimates: "Estimated 7 days", prices: [{ range: "1-10 kg", price: "115.000/kg" }, { range: "11-25 kg", price: "105.000/kg" }, { range: "26-30 kg", price: "100.000/kg" }] },
+      { country: "Hong Kong", estimates: "Estimated 7 days", prices: [{ range: "1-10 kg", price: "155.000/kg" }, { range: "11-25 kg", price: "145.000/kg" }, { range: "26-30 kg", price: "140.000/kg" }] },
+      { country: "Taiwan", estimates: "Estimated 7 days", prices: [{ range: "1-10 kg", price: "105.000/kg" }, { range: "11-20 kg", price: "95.000/kg" }, { range: "21-30 kg", price: "90.000/kg" }] },
+      { country: "Japan", estimates: "", prices: [{ range: "0.5 kg", price: "2.500¥/kg" }, { range: "1 kg", price: "3.700¥/kg" }, { range: "2-3 kg", price: "2.600¥/kg" }, { range: "4-8 kg", price: "2.100¥/kg" }, { range: "9-12 kg", price: "1.900¥/kg" }, { range: "13-20 kg", price: "1.800¥/kg" }, { range: "21-30 kg", price: "1.600¥/kg" }] },
+      { country: "Saudi Arabia", estimates: "Estimated 7 days", prices: [{ range: "1 kg", price: "395.000" }, { range: "2 kg", price: "495.000" }, { range: "3 kg", price: "610.000" }, { range: "4 kg", price: "740.000" }, { range: "5 kg", price: "850.000" }, { range: "6 kg", price: "960.000" }, { range: "7 kg", price: "1.100.000" }, { range: "8 kg", price: "1.200.000" }, { range: "9 kg", price: "1.300.000" }, { range: "10 kg", price: "1.400.000" }, { range: "11-30 kg", price: "Additional kg 100.000" }] }
     ],
     jp: [
-      {
-        country: "シンガポール",
-        estimates: "推定7日",
-        prices: [
-          { range: "1-5 kg", price: "95.000/kg" },
-          { range: "6-10 kg", price: "85.000/kg" },
-          { range: "11-20 kg", price: "75.000/kg" },
-          { range: "20-30 kg", price: "60.000/kg" }
-        ]
-      },
-      {
-        country: "ブルネイ",
-        estimates: "推定7日",
-        prices: [
-          { range: "1-5 kg", price: "165.000/kg" },
-          { range: "6-10 kg", price: "155.000/kg" },
-          { range: "20-30 kg", price: "150.000/kg" }
-        ]
-      },
-      {
-        country: "マレーシア",
-        estimates: "推定7日",
-        prices: [
-          { range: "1-10 kg", price: "95.000/kg" },
-          { range: "11-25 kg", price: "85.000/kg" },
-          { range: "26-30 kg", price: "80.000/kg" }
-        ]
-      },
-      {
-        country: "東マレーシア（サバ・サラワク）",
-        estimates: "推定7日",
-        prices: [
-          { range: "1-10 kg", price: "115.000/kg" },
-          { range: "11-25 kg", price: "105.000/kg" },
-          { range: "26-30 kg", price: "100.000/kg" }
-        ]
-      },
-      {
-        country: "香港",
-        estimates: "推定7日",
-        prices: [
-          { range: "1-10 kg", price: "155.000/kg" },
-          { range: "11-25 kg", price: "145.000/kg" },
-          { range: "26-30 kg", price: "140.000/kg" }
-        ]
-      },
-      {
-        country: "台湾",
-        estimates: "推定7日",
-        prices: [
-          { range: "1-10 kg", price: "105.000/kg" },
-          { range: "11-20 kg", price: "95.000/kg" },
-          { range: "21-30 kg", price: "90.000/kg" }
-        ]
-      },
-      {
-        country: "日本",
-        estimates: "",
-        prices: [
-          { range: "0.5 kg", price: "1kgあたり 2.500¥" },
-          { range: "1 kg", price: "1kgあたり 3.700¥" },
-          { range: "2-3 kg", price: "1kgあたり 2.600¥" },
-          { range: "4-8 kg", price: "1kgあたり 2.100¥" },
-          { range: "9-12 kg", price: "1kgあたり 1.900¥" },
-          { range: "13-20 kg", price: "1kgあたり 1.800¥" },
-          { range: "21-30 kg", price: "1kgあたり 1.600¥" }
-        ]
-      },
-      {
-        country: "サウジアラビア",
-        estimates: "推定7日",
-        prices: [
-          { range: "1 kg", price: "395.000" },
-          { range: "2 kg", price: "495.000" },
-          { range: "3 kg", price: "610.000" },
-          { range: "4 kg", price: "740.000" },
-          { range: "5 kg", price: "850.000" },
-          { range: "6 kg", price: "960.000" },
-          { range: "7 kg", price: "1.100.000" },
-          { range: "8 kg", price: "1.200.000" },
-          { range: "9 kg", price: "1.300.000" },
-          { range: "10 kg", price: "1.400.000" },
-          { range: "11-30 kg", price: "追加1kgあたり 100.000" }
-        ]
-      }
+      { country: "シンガポール", estimates: "推定7日", prices: [{ range: "1-5 kg", price: "95.000/kg" }, { range: "6-10 kg", price: "85.000/kg" }, { range: "11-20 kg", price: "75.000/kg" }, { range: "20-30 kg", price: "60.000/kg" }] },
+      { country: "ブルネイ", estimates: "推定7日", prices: [{ range: "1-5 kg", price: "165.000/kg" }, { range: "6-10 kg", price: "155.000/kg" }, { range: "20-30 kg", price: "150.000/kg" }] },
+      { country: "マレーシア", estimates: "推定7日", prices: [{ range: "1-10 kg", price: "95.000/kg" }, { range: "11-25 kg", price: "85.000/kg" }, { range: "26-30 kg", price: "80.000/kg" }] },
+      { country: "東マレーシア（サバ・サラワク）", estimates: "推定7日", prices: [{ range: "1-10 kg", price: "115.000/kg" }, { range: "11-25 kg", price: "105.000/kg" }, { range: "26-30 kg", price: "100.000/kg" }] },
+      { country: "香港", estimates: "推定7日", prices: [{ range: "1-10 kg", price: "155.000/kg" }, { range: "11-25 kg", price: "145.000/kg" }, { range: "26-30 kg", price: "140.000/kg" }] },
+      { country: "台湾", estimates: "推定7日", prices: [{ range: "1-10 kg", price: "105.000/kg" }, { range: "11-20 kg", price: "95.000/kg" }, { range: "21-30 kg", price: "90.000/kg" }] },
+      { country: "日本", estimates: "", prices: [{ range: "0.5 kg", price: "1kgあたり 2.500¥" }, { range: "1 kg", price: "1kgあたり 3.700¥" }, { range: "2-3 kg", price: "1kgあたり 2.600¥" }, { range: "4-8 kg", price: "1kgあたり 2.100¥" }, { range: "9-12 kg", price: "1kgあたり 1.900¥" }, { range: "13-20 kg", price: "1kgあたり 1.800¥" }, { range: "21-30 kg", price: "1kgあたり 1.600¥" }] },
+      { country: "サウジアラビア", estimates: "推定7日", prices: [{ range: "1 kg", price: "395.000" }, { range: "2 kg", price: "495.000" }, { range: "3 kg", price: "610.000" }, { range: "4 kg", price: "740.000" }, { range: "5 kg", price: "850.000" }, { range: "6 kg", price: "960.000" }, { range: "7 kg", price: "1.100.000" }, { range: "8 kg", price: "1.200.000" }, { range: "9 kg", price: "1.300.000" }, { range: "10 kg", price: "1.400.000" }, { range: "11-30 kg", price: "追加1kgあたり 100.000" }] }
     ]
   };
   return data[lang] || data['id'];
@@ -320,6 +89,10 @@ export const getFaqData = (lang: string = 'id'): FaqItem[] => {
       {
         question: "Bagaimana sistem pembayaran?",
         answer: "Kami menerima pembayaran melalui transfer bank, e-wallet, dan untuk layanan jastip bisa melalui sistem DP (down payment) dengan pelunasan sebelum pengiriman. Detail pembayaran akan disampaikan setelah konfirmasi pesanan."
+      },
+      {
+        question: "Bagaimana sistem perhitungan dan pembulatan berat barang?",
+        answer: "Untuk Via Ekspedisi, setiap kelebihan berat sekecil apapun akan dibulatkan ke atas ke 1 kg berikutnya (contoh: 1,1 kg dihitung 2 kg, 0,2 kg dihitung 1 kg). Untuk Jastip Handcarry, berat dibulatkan ke atas per kelipatan 0,5 kg (contoh: 1,2 kg dihitung 1,5 kg, 1,7 kg dihitung 2 kg)."
       }
     ],
     en: [
@@ -346,6 +119,10 @@ export const getFaqData = (lang: string = 'id'): FaqItem[] => {
       {
         question: "What is the payment system like?",
         answer: "We accept payments via bank transfer, e-wallets, and for jastip services, a DP (down payment) system with the rest paid before shipment is available. Payment details will be provided upon order confirmation."
+      },
+      {
+        question: "How is the weight calculated and rounded?",
+        answer: "For Via Expedition, any excess weight will be rounded up to the next full 1 kg (e.g., 1.1 kg is calculated as 2 kg, 0.2 kg as 1 kg). For Jastip Handcarry, the weight is rounded up to the nearest 0.5 kg interval (e.g., 1.2 kg is calculated as 1.5 kg, 1.7 kg as 2 kg)."
       }
     ],
     jp: [
@@ -372,6 +149,10 @@ export const getFaqData = (lang: string = 'id'): FaqItem[] => {
       {
         question: "支払いシステムはどのようになっていますか？",
         answer: "銀行振込、電子マネーによる支払いを受け付けています。買い物代行サービスの場合は、前払い（DP）システムを利用し、残金は発送前にお支払いいただきます。支払いの詳細は注文の確認時に提供されます。"
+      },
+      {
+        question: "荷物の重量計算と切り上げのシステムはどうなっていますか？",
+        answer: "配送サービス（Via Expedition）の場合、わずかな超過でも次の1kgに切り上げられます（例：1.1kgは2kg、0.2kgは1kgとして計算）。手荷物代行（Jastip Handcarry）の場合、重量は0.5kg単位で切り上げられます（例：1.2kgは1.5kg、1.7kgは2kgとして計算）。"
       }
     ]
   };

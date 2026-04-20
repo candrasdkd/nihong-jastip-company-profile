@@ -372,6 +372,11 @@ framer-motion@^12.38.0:
     motion-utils "^12.36.0"
     tslib "^2.4.0"
 
+groq-sdk@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/groq-sdk/-/groq-sdk-1.1.2.tgz#99483254ae83e4d4bcf6481cb7c1342c340be2a8"
+  integrity sha512-CZO0XUQQDhn43ri1+lZHxZKpb+bGutgTvFmCJtooexiitGmPqhm1hntOT3nCoaq07e+OpeokVnfUs0i/oQuUaQ==
+
 indent-string@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/indent-string/-/indent-string-4.0.0.tgz"
