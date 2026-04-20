@@ -118,17 +118,20 @@ const generateResponse = (input: string, lang: Language): string => {
         }[lang];
       }
 
-      // Expedition rate for matched country
-      const exp = expeditions.find((e) =>
+      // filter (bukan find) supaya Malaysia + Malaysia Timur keduanya muncul
+      const matchedExps = expeditions.filter((e) =>
         INTENTS[matchedKey].some((kw) => normalize(e.country).includes(kw))
       );
-      if (exp) {
-        const rows = exp.prices.map((p) => `• ${p.range}: ${p.price}`).join('\n');
-        const est = exp.estimates ? `\n⏱ ${exp.estimates}` : '';
+      if (matchedExps.length > 0) {
+        const sections = matchedExps.map((exp) => {
+          const rows = exp.prices.map((p) => `  • ${p.range}: ${p.price}`).join('\n');
+          const est = exp.estimates ? ` (${exp.estimates})` : '';
+          return `${exp.country}${est}:\n${rows}`;
+        }).join('\n\n');
         return {
-          id: `Tarif ekspedisi ke ${exp.country}:\n${rows}${est}`,
-          en: `Expedition rates to ${exp.country}:\n${rows}${est}`,
-          jp: `${exp.country}への配送料金:\n${rows}${est}`,
+          id: `Tarif ekspedisi:\n\n${sections}`,
+          en: `Expedition rates:\n\n${sections}`,
+          jp: `配送料金:\n\n${sections}`,
         }[lang];
       }
     }
