@@ -2,7 +2,8 @@
 
 [![Next.js](https://img.shields.io/badge/Next.js-15+-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![CSS3](https://img.shields.io/badge/Vanilla_CSS-Custom-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![Jest](https://img.shields.io/badge/Jest-Tested-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-Passing-4fb325?style=for-the-badge&logo=github-actions&logoColor=white)](#-cicd-pipeline)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
 A premium, SEO-optimized company profile website for **Nihong Jastip**, specializing in personal shopper services from Japan to Indonesia (**Jastip Jepang / Titip Jepang**) and global expedition services.
@@ -11,80 +12,102 @@ A premium, SEO-optimized company profile website for **Nihong Jastip**, speciali
 
 - **Next.js 15+ App Router**: Built with the latest Next.js features for high performance and optimal developer experience.
 - **Advanced i18n Support**: Full internationalization support for Indonesian (ID), English (EN), and Japanese (JA) via URL-based routing.
-- **Intelligent AI Chatbot**: Integrated AI assistant powered by Groq to provide 24/7 customer support and answer Jastip queries accurately.
+- **Intelligent AI Chatbot**: Integrated AI assistant powered by **Groq SDK (Llama 3)** to provide 24/7 customer support and answer Jastip queries accurately.
+- **Robust Testing Suite**: 30+ unit tests covering components, hooks, and utility functions using **Jest** and **React Testing Library**.
 - **SEO & Performance Optimized**: 
   - Dynamic Metadata & OpenGraph tags.
   - JSON-LD Structured Data for better search engine visibility.
-  - Optimized fonts and images.
   - Canonical URL management.
 - **Premium Design System**: Custom-built design using Vanilla CSS for maximum flexibility and performance.
-- **Responsive & Interactive**: Fully responsive layout with smooth animations powered by [Framer Motion](https://www.framer.com/motion/) and [AOS](https://michalsnik.github.io/aos/).
-- **Global Presence**: Information about services in Osaka, Semarang, Depok, and Jakarta, serving over 64 countries.
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/)
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **AI Integration**: [Groq SDK](https://console.groq.com/)
+- **AI Integration**: [Groq Cloud SDK](https://console.groq.com/)
+- **Testing**: [Jest](https://jestjs.io/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 - **Styling**: Vanilla CSS (Custom Design Tokens)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [AOS](https://github.com/michalsnik/aos)
-- **Typography**: [Inter](https://fonts.google.com/specimen/Inter) via `next/font`
-- **Icons**: [Lucide React](https://lucide.dev/) & Custom SVG Icons
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
 ## 📂 Project Structure
 
 ```text
 src/
-├── app/             # Next.js App Router (i18n routing)
-│   └── [lang]/      # Language-specific pages
-├── components/      # UI Components (Sections, Layout, SEO)
-├── data/            # Static data and knowledge base for AI
-├── hooks/           # Custom React hooks (e.g., useChat)
+├── app/             # Next.js App Router (i18n routing & API)
+│   ├── [lang]/      # Language-specific pages
+│   └── api/         # Backend routes (Groq AI Integration)
+├── components/      # UI Components
+│   ├── Layout/      # Header, Sidebar, Footer
+│   ├── Sections/    # Hero, Services, Pricing, FAQ, Contact
+│   ├── SEO/         # Meta tags & JSON-LD Schema
+│   └── UI/          # ChatBot and reusable UI elements
+├── data/            # Knowledge base for AI & Static Content
+├── hooks/           # Custom React hooks (useChat, useAppLogic)
 ├── types/           # TypeScript Type Definitions
-├── utils/           # Helper functions & constants
-└── globals.css      # Custom design system & global styles
+└── utils/           # Helper functions (WhatsApp, Text Processing)
 ```
+
+## 🧪 Testing
+
+Proyek ini dilengkapi dengan suite pengujian otomatis untuk menjaga stabilitas kode.
+
+- **Unit Testing**: Mengetes logika internal fungsi dan hook.
+- **Component Testing**: Memastikan UI merender data dengan benar dan merespon interaksi user.
+- **Mocking**: Menggunakan global mocks untuk browser API (`scrollIntoView`, `IntersectionObserver`) dan `framer-motion`.
+
+### Running Tests
+```bash
+# Menjalankan semua test
+npm test
+
+# Menjalankan test dengan laporan coverage
+npm run test:ci
+```
+
+## ⚙️ CI/CD Pipeline
+
+Kami menggunakan **GitHub Actions** untuk otomatisasi kualitas kode:
+1. **Linting**: Memastikan kode mengikuti standar Next.js.
+2. **Type Check**: Validasi tipe data TypeScript.
+3. **Automated Tests**: Menjalankan seluruh test suite.
+4. **Build Check**: Memastikan proyek berhasil dikompilasi sebelum dideploy.
+
+Setiap Pull Request ke `main` akan memicu pipeline ini. Deployment dilakukan secara otomatis via **Vercel** hanya jika pipeline lulus.
 
 ## 🏃 Getting Started
 
 ### Prerequisites
-
-- Node.js 18.x or later
-- Yarn or npm
+- Node.js 20.x or later
+- npm or yarn
 
 ### Installation
-
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/nihong-jastip-company-profile.git
    ```
-
 2. Install dependencies:
    ```bash
-   yarn install
-   # or
    npm install
    ```
-
-3. Run the development server:
+3. Set up environment variables:
+   Buat file `.env.local` dan tambahkan API Key:
+   ```env
+   GROQ_API_KEY=your_groq_api_key_here
+   ```
+4. Run the development server:
    ```bash
-   yarn dev
-   # or
    npm run dev
    ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
 ## 📦 Scripts
 
-- `yarn dev`: Start development server.
-- `yarn build`: Build the production application.
-- `yarn start`: Start the production server.
-- `yarn lint`: Run ESLint for code quality.
-
-## 🌐 Deployment
-
-The project is optimized for deployment on **Vercel**. Simply connect your repository and it will automatically handle the build and deployment process.
+- `npm run dev`: Start development server.
+- `npm run build`: Build the production application.
+- `npm run start`: Start the production server.
+- `npm run lint`: Run ESLint check.
+- `npm run type-check`: Run TypeScript validation.
+- `npm run test`: Run unit tests.
 
 ---
 
