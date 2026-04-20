@@ -24,7 +24,18 @@ export async function POST(req: Request) {
         const expedition = getExpeditionData('id');
         const faqs = getFaqData('id');
 
-        const dataJastipText = jastip.routes.map(r => `- ${r.route}: ${r.price}`).join('\n');
+        const dataJastipText = jastip.routes.map(r => {
+            // Kita pecah manual string "1300¥ - 1700¥" agar AI tahu mana bawah mana atas
+            const prices = r.price.match(/\d+/g);
+            const min = prices ? prices[0] : "";
+            const max = prices ? prices[1] : "";
+
+            return `
+RUTE: ${r.route}
+- Harga Minimal: ${min}¥ per kg
+- Harga Maksimal: ${max}¥ per kg
+---`;
+        }).join('\n');
         const dataEkspedisiText = expedition.map(e => `
 Negara: ${e.country} (${e.estimates})
 Tarif:
@@ -41,12 +52,19 @@ ATURAN KETAT:
 2. JANGAN MENGARANG: Jika negara tidak ada di daftar, katakan belum tersedia.
 3. BARANG TERLARANG: TOLAK TEGAS narkoba, senjata, aerosol, hewan, tanaman, dan barang ilegal.
 4. ARAHKAN PEMESANAN: Berikan estimasi harga, lalu arahkan ke WhatsApp Admin.
-5. RUTE JEPANG vs INDONESIA: Jangan tertukar! Gunakan rentang harga untuk "Estimasi Min - Max".
+5. RUTE BOLAK-BALIK: Nihong Jastip melayani rute "Jepang ke Indonesia" DAN "Indonesia ke Jepang". Pastikan Kakak membaca data rute dengan teliti sesuai permintaan user agar harga tidak tertukar. Jika user tanya rute ke Jepang, gunakan data "Indonesia → Jepang".
 
-MATEMATIKA PEMBULATAN (WAJIB):
-- EKSPEDISI: Bulatkan ke atas ke 1 kg berikutnya (1.1kg -> 2kg).
-- HANDCARRY: Bulatkan ke atas ke kelipatan 0.5 kg berikutnya (1.1kg -> 1.5kg).
-Jabarkan perhitungannya ke user.
+ATURAN MATEMATIKA PERHITUNGAN (WAJIB DIIKUTI):
+Lakukan langkah-langkah ini secara urut:
+1. Tentukan Berat Awal dari user.
+2. Lakukan Pembulatan (Handcarry: kelipatan 0.5kg ke atas | Ekspedisi: ke 1kg bulat ke atas).
+3. Ambil "Harga Minimal" dan "Harga Maksimal" dari data rute yang tepat.
+4. Hitung: 
+   - Estimasi Total Min = (Berat Setelah Pembulatan) x (Harga Minimal)
+   - Estimasi Total Max = (Berat Setelah Pembulatan) x (Harga Maksimal)
+5. Jabarkan hasilnya ke user dengan format:
+   "Berat [X] kg dibulatkan menjadi [Y] kg.
+    Estimasi biaya: [Total Min]¥ - [Total Max]¥."
 
 === INFO KONTAK ===
 - WhatsApp: https://wa.me/${WA_NUMBER} 
@@ -60,6 +78,8 @@ ${dataEkspedisiText}
 
 === FAQ & INFO ATURAN ===
 ${faqText}
+
+Sebelum memberikan jawaban akhir, pikirkan dulu di dalam hati (internal monologue) mana rute yang benar dan pastikan angka Minimal lebih kecil dari angka Maksimal.
 `;
 
         // --- LOGIKA FALLBACK MODEL ---

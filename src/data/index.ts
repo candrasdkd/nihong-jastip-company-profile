@@ -1,4 +1,4 @@
-import { JastipData, ExpeditionCountry, FaqItem, Language } from '../types';
+import { JastipData, ExpeditionCountry, FaqItem, Language, ChatBotData } from '../types';
 
 export const getJastipData = (lang: string = 'id'): JastipData => {
   const data: Record<string, JastipData> = {
@@ -155,6 +155,27 @@ export const getFaqData = (lang: string = 'id'): FaqItem[] => {
         answer: "配送サービス（Via Expedition）の場合、わずかな超過でも次の1kgに切り上げられます（例：1.1kgは2kg、0.2kgは1kgとして計算）。手荷物代行（Jastip Handcarry）の場合、重量は0.5kg単位で切り上げられます（例：1.2kgは1.5kg、1.7kgは2kgとして計算）。"
       }
     ]
+  };
+  return data[lang] || data['id'];
+};
+
+export const getChatBotData = (lang: string = 'id'): ChatBotData => {
+  const data: Record<string, ChatBotData> = {
+    id: {
+      greeting: 'Halo Kak! Saya asisten AI Nihong Jastip. Ada yang bisa dibantu soal ongkir atau pengiriman?',
+      placeholder: 'Tanya ongkir ke Jepang...',
+      errorMsg: 'Maaf Kak, koneksi sedang terputus. Bisa dicoba beberapa saat lagi ya.',
+    },
+    en: {
+      greeting: "Hello! I'm your Nihong Jastip AI assistant. Need help with shipping rates?",
+      placeholder: 'Ask shipping rates...',
+      errorMsg: 'Sorry, the connection is currently down. Please try again in a few moments.',
+    },
+    jp: {
+      greeting: 'こんにちは！Nihong JastipのAIアシスタントです。配送料金についてご質問はありますか？',
+      placeholder: 'メッセージを入力...',
+      errorMsg: '申し訳ありませんが、現在接続が切れています。しばらくしてからもう一度お試しください。',
+    }
   };
   return data[lang] || data['id'];
 };

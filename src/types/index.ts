@@ -37,3 +37,16 @@ export interface NavClickHandlers {
   handleNavClick: (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => void;
   handleNavClickWithClose: (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
+
+export interface Message {
+  id: string;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
+}
+
+export interface ChatBotData {
+  greeting: string;
+  placeholder: string;
+  errorMsg: string;
+}
