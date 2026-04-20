@@ -38,6 +38,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
       description: descriptions[lang],
       type: "website",
       locale: lang === 'jp' ? 'ja_JP' : lang === 'en' ? 'en_US' : 'id_ID',
+    },
+    verification: {
+      google: "gL6EiGFnxFj2_G7kHqDOHMs3KJjrsvTLWXAjQmdD0Bg",
     }
   };
 }
