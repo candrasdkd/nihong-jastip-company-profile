@@ -34,15 +34,10 @@ export async function POST(req: Request) {
         const faqs = getFaqData('id');
 
         const dataJastipText = jastip.routes.map(r => {
-            // Kita pecah manual string "1300¥ - 1700¥" agar AI tahu mana bawah mana atas
-            const prices = r.price.match(/\d+/g);
-            const min = prices ? prices[0] : "";
-            const max = prices ? prices[1] : "";
-
             return `
 RUTE: ${r.route}
-- Harga Minimal: ${min}¥ per kg
-- Harga Maksimal: ${max}¥ per kg
+- Harga Minimal: ${r.priceMin || ""}¥ per kg
+- Harga Maksimal: ${r.priceMax || ""}¥ per kg
 ---`;
         }).join('\n');
         const dataEkspedisiText = expedition.map(e => `

@@ -4,7 +4,10 @@ export type Language = 'id' | 'en' | 'jp';
 
 export interface JastipRoute {
   route: string;
-  price: string;
+  price: string; // Teks display ("1300¥ - 1700¥ / kg")
+  priceMin?: number;
+  priceMax?: number;
+  currency?: string;
 }
 
 export interface JastipData {
