@@ -1,8 +1,6 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
 import { useChat } from '../useChat';
-
-// Mock fungsi scrollIntoView karena JSDOM (environment untuk unit test) tidak punya DOM API lengkap
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 describe('useChat', () => {
   beforeEach(() => {

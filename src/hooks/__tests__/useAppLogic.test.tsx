@@ -1,14 +1,6 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
 import { useAppLogic } from '../useAppLogic';
-
-// Mock IntersectionObserver karena API ini berjalan di Browser namun tidak ada di lingkungan JSDOM (testing)
-const mockIntersectionObserver = jest.fn();
-mockIntersectionObserver.mockReturnValue({
-  observe: () => null,
-  unobserve: () => null,
-  disconnect: () => null
-});
-window.IntersectionObserver = mockIntersectionObserver;
 
 describe('useAppLogic', () => {
   let openSpy: jest.SpyInstance;
