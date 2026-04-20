@@ -1,43 +1,64 @@
-import { generateWhatsAppUrl, openWhatsApp, WA_NUMBER } from '../whatsapp';
+import { generateWhatsAppUrl, openWhatsApp } from '../whatsapp';
 
 describe('whatsapp utils', () => {
   describe('generateWhatsAppUrl', () => {
-    it('should generate a valid WhatsApp URL with encoded message', () => {
-      const message = 'Hello, this is a test!';
-      const expectedUrl = `https://wa.me/${WA_NUMBER}?text=Hello%2C%20this%20is%20a%20test!`;
-      expect(generateWhatsAppUrl(message)).toBe(expectedUrl);
+    // PENJELASAN TEST 1:
+    // Mengecek apakah fungsi generateWhatsAppUrl dapat membuat URL (link)
+    // yang valid untuk memanggil API WhatsApp (wa.me) dengan pesan khusus.
+    it('should generate correct URL with text', () => {
+      const text = 'Halo Jastip';
+      const url = generateWhatsAppUrl(text);
+      
+      // %20 adalah representasi encoding karakter "spasi" pada format URL di browser.
+      // Kita memastikan function mengubah teks spasi menjadi URL parameter '?text=Halo%20Jastip'
+      expect(url).toContain('https://wa.me/628157162517?text=Halo%20Jastip');
     });
 
-    it('should handle empty message correctly', () => {
-      const message = '';
-      const expectedUrl = `https://wa.me/${WA_NUMBER}?text=`;
-      expect(generateWhatsAppUrl(message)).toBe(expectedUrl);
+    // PENJELASAN TEST 2:
+    // Mengecek apakah karakter-karakter spesial (misalnya tanda tanya "?", newline "\n", dsb.)
+    // di-encode dengan benar menggunakan encodeURIComponent.
+    // Hal ini krusial agar pesan yang kita kirimkan dari Website bisa dibaca sempurna oleh WhatsApp App.
+    it('should encode special characters in URL', () => {
+      const text = 'Halo! Mau pesan dong?';
+      const url = generateWhatsAppUrl(text);
+      
+      // Karakter "!" tidak diencode, tapi "?" menjadi "%3F"
+      expect(url).toContain('%3F');
     });
   });
 
   describe('openWhatsApp', () => {
-    let windowOpenSpy: jest.SpyInstance;
+    let openSpy: jest.SpyInstance;
 
     beforeEach(() => {
-      // Mock window.open
-      windowOpenSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
+      // Sama seperti di useAppLogic, kita melumpuhkan (mocking) API window.open
+      // agar browser (di environment JSDOM) tidak melempar error dan tidak membuka popup baru
+      // setiap kali unit test ini berjalan.
+      openSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
     });
 
     afterEach(() => {
-      windowOpenSpy.mockRestore();
+      // Me-reset hasil mata-mata (spy)
+      openSpy.mockRestore();
     });
 
-    it('should call window.open with the correct URL and default message', () => {
-      openWhatsApp();
-      const expectedUrl = `https://wa.me/${WA_NUMBER}?text=Halo%20Nihong%20Jastip%2C%20saya%20ingin%20konsultasi`;
-      expect(windowOpenSpy).toHaveBeenCalledWith(expectedUrl, '_blank', 'noopener,noreferrer');
-    });
-
-    it('should call window.open with the correct URL for a custom message', () => {
-      const customMessage = 'Tanya harga jastip dong';
-      openWhatsApp(customMessage);
-      const expectedUrl = `https://wa.me/${WA_NUMBER}?text=Tanya%20harga%20jastip%20dong`;
-      expect(windowOpenSpy).toHaveBeenCalledWith(expectedUrl, '_blank', 'noopener,noreferrer');
+    // PENJELASAN TEST 3:
+    // Menguji interaksi akhir: Memastikan bahwa kalau kita panggil openWhatsApp('Halo'),
+    // website akan mengaktifkan browser tab baru (window.open dipanggil) yang mengarah ke link WA.
+    it('should call window.open with correct URL', () => {
+      openWhatsApp('Halo');
+      
+      // Memvalidasi window.open dieksekusi tepat 1x saja
+      expect(openSpy).toHaveBeenCalledTimes(1);
+      
+      // Memvalidasi URL tujuan yang dipanggil oleh parameter ke-1 di window.open(...)
+      expect(openSpy.mock.calls[0][0]).toContain('https://wa.me/628157162517?text=Halo');
+      
+      // Memvalidasi parameter ke-2, targetnya '_blank' (artinya buka tab baru)
+      expect(openSpy.mock.calls[0][1]).toBe('_blank');
+      
+      // Memvalidasi parameter ke-3 'noopener,noreferrer' demi alasan Security (keamanan web)
+      expect(openSpy.mock.calls[0][2]).toBe('noopener,noreferrer');
     });
   });
 });

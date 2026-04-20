@@ -75,7 +75,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
 
               {/* Loading indicator: tampil saat isTyping TAPI belum ada teks streaming */}
               {isTyping && !streamingText && (
-                <div className="chatbot-typing-indicator">
+                <div className="chatbot-typing-indicator" data-testid="typing-indicator">
                   <Loader2 size={16} className="chatbot-typing-spinner" />
                 </div>
               )}
