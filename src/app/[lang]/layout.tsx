@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { Language } from "../../types";
 import Schema from "../../components/SEO/Schema";
+import ChatBot from "../../components/UI/ChatBot";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -59,6 +60,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Schema lang={lang as Language} />
         {children}
+        <ChatBot lang={lang as Language} />
       </body>
     </html>
   );
