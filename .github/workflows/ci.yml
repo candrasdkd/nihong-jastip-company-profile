@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI Pipeline
 
 on:
   push:
@@ -20,20 +20,22 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-          
+
       - name: Install Dependencies
-        run: npm ci || npm install # fallback to install if package-lock is missing
+        run: npm ci || npm install
 
       - name: Run Unit Tests
         run: npm run test:ci
 
-      - name: Build Project
+      - name: Build Next.js App
         run: npm run build
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
 
-  # Note: If your project is connected to Vercel via GitHub integration, 
-  # Vercel will automatically deploy when changes are pushed to main/master.
-  # The tests and build steps above ensure code quality before it merges.
-  # 
-  # If you want GitHub Actions to manually trigger Vercel deployments, 
-  # you would need to set VERCEL_TOKEN, VERCEL_ORG_ID, and VERCEL_PROJECT_ID 
-  # in your GitHub repository secrets and use an action like `amondnet/vercel-action`.
+  # Deploy ke Cloudflare Pages dilakukan OTOMATIS via Cloudflare Pages GitHub Integration.
+  # Setup di: Cloudflare Dashboard > Pages > Create Project > Connect GitHub Repo
+  # Build settings di Cloudflare Dashboard:
+  #   Framework preset: Next.js
+  #   Build command:    npm run build
+  #   Build output:    .next (atau gunakan OpenNext jika sudah support Next.js 16)
+  #   Environment var:  GROQ_API_KEY = <your key>

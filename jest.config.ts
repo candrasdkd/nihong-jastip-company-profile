@@ -10,6 +10,12 @@ const createJestConfig = nextJest({
 const config: Config = {
   coverageProvider: 'v8',
   testEnvironment: 'jsdom',
+  // Force jsdom to use React's 'development' export condition so that
+  // React.act is available (it is stripped from the production build).
+  // This is required for React 19 + @testing-library/react compatibility.
+  testEnvironmentOptions: {
+    customExportConditions: [''],
+  },
   // Add more setup options before each test is run
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {

@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 import { getJastipData, getExpeditionData, getFaqData } from '../../../data';
 import { WA_NUMBER } from '../../../utils/whatsapp';
 
+// Gunakan Node.js runtime (dengan nodejs_compat flag di Cloudflare Workers)
+export const runtime = 'nodejs';
+
 export async function POST(req: Request) {
     try {
         const apiKey = process.env.GROQ_API_KEY;
