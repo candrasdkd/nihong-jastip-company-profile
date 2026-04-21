@@ -15,20 +15,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Enable Corepack (Yarn Berry)
+        run: corepack enable
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+          cache: 'yarn'
 
       - name: Install Dependencies
-        run: npm ci || npm install
+        run: yarn install --immutable
 
       - name: Run Unit Tests
-        run: npm run test:ci
+        run: yarn test:ci
 
       - name: Build Next.js App
-        run: npm run build
+        run: yarn build
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
 
@@ -36,6 +39,6 @@ jobs:
   # Setup di: Cloudflare Dashboard > Pages > Create Project > Connect GitHub Repo
   # Build settings di Cloudflare Dashboard:
   #   Framework preset: Next.js
-  #   Build command:    npm run build
-  #   Build output:    .next (atau gunakan OpenNext jika sudah support Next.js 16)
+  #   Build command:    yarn build
+  #   Build output dir: .next
   #   Environment var:  GROQ_API_KEY = <your key>

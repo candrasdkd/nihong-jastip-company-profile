@@ -22,10 +22,7 @@
     "lint": "next lint",
     "test": "jest",
     "test:ci": "jest --ci --coverage",
-    "type-check": "tsc --noEmit",
-    "cf:build": "opennextjs-cloudflare build",
-    "cf:preview": "opennextjs-cloudflare build && wrangler pages dev",
-    "cf:deploy": "opennextjs-cloudflare build && wrangler pages deploy"
+    "type-check": "tsc --noEmit"
   },
   "eslintConfig": {
     "extends": [
@@ -45,7 +42,6 @@
     ]
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.19.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
@@ -53,7 +49,7 @@
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.3",
-    "wrangler": "^4.84.0"
-  }
+    "typescript": "^6.0.3"
+  },
+  "packageManager": "yarn@4.14.1"
 }
