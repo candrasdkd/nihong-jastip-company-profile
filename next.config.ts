@@ -2,8 +2,9 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-
-  // Diperlukan agar groq-sdk bisa di-bundle dengan benar di server
+  // Required by @opennextjs/cloudflare to bundle for Cloudflare Workers
+  output: 'standalone',
+  // Allow groq-sdk to be bundled correctly
   serverExternalPackages: ['groq-sdk'],
 };
 

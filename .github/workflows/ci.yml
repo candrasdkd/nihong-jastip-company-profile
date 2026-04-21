@@ -35,10 +35,13 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
 
-  # Deploy ke Cloudflare Pages dilakukan OTOMATIS via Cloudflare Pages GitHub Integration.
-  # Setup di: Cloudflare Dashboard > Pages > Create Project > Connect GitHub Repo
-  # Build settings di Cloudflare Dashboard:
+  # Deploy ke Cloudflare Workers dilakukan via Cloudflare Pages GitHub Integration.
+  # Setup di: Cloudflare Dashboard > Workers & Pages > Project > Settings > Build
+  # Build settings:
   #   Framework preset: Next.js
-  #   Build command:    yarn build
-  #   Build output dir: .next
+  #   Build command:    yarn deploy
+  #   Deploy command:   (kosongkan)
   #   Environment var:  GROQ_API_KEY = <your key>
+  #
+  # "yarn deploy" = opennextjs-cloudflare build && opennextjs-cloudflare deploy
+
