@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { redirect } from 'next/navigation';
 
 // Root redirect: / → /id (default locale)

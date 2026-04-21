@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server';
 import { getJastipData, getExpeditionData, getFaqData } from '../../../data';
 import { WA_NUMBER } from '../../../utils/whatsapp';
 
-// Gunakan Node.js runtime (dengan nodejs_compat flag di Cloudflare Workers)
-export const runtime = 'nodejs';
+// Gunakan Edge runtime untuk kompatibilitas Cloudflare Workers
+export const runtime = 'edge';
 
 export async function POST(req: Request) {
     try {
