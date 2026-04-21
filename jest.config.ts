@@ -14,7 +14,7 @@ const config: Config = {
   // React.act is available (it is stripped from the production build).
   // This is required for React 19 + @testing-library/react compatibility.
   testEnvironmentOptions: {
-    customExportConditions: [''],
+    customExportConditions: ['development'],
   },
   // Add more setup options before each test is run
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
