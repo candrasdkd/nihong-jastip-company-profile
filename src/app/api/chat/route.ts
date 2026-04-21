@@ -10,8 +10,12 @@ export async function POST(req: Request) {
     try {
         const apiKey = process.env.GROQ_API_KEY;
         
-        if (!apiKey) {
-            return NextResponse.json({ reply: 'Server Error: API Key hilang.' }, { status: 500 });
+        if (!apiKey || apiKey.trim() === '') {
+            console.error('[Chat API] Missing GROQ_API_KEY environment variable');
+            return NextResponse.json({ 
+                reply: 'Konfigurasi Server Error: API Key tidak ditemukan di dashboard Cloudflare.',
+                debug: 'Missing GROQ_API_KEY'
+            }, { status: 500 });
         }
 
         const groq = new Groq({ apiKey });
@@ -145,9 +149,13 @@ Sebelum memberikan jawaban akhir, pikirkan dulu di dalam hati (internal monologu
         return NextResponse.json({ reply: responseText });
 
     } catch (error: any) {
-        console.error('Groq API Error:', error);
+        console.error('Groq API General Error:', error);
         return NextResponse.json(
-            { reply: 'Maaf Kak, ada kendala teknis sebentar. Boleh dicoba lagi ya?' },
+            { 
+                reply: 'Maaf Kak, ada kendala teknis pada sistem AI kami. Boleh dicoba lagi ya?',
+                error: error?.message || 'Unknown Error',
+                cause: error?.cause || 'No cause provided'
+            },
             { status: 500 }
         );
     }
