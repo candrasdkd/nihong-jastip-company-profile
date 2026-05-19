@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, JastipData, ExpeditionCountry } from '../../types';
 
@@ -17,6 +17,7 @@ const Pricing: React.FC<PricingProps> = ({
   jastipData,
   expeditionData
 }) => {
+  const [selectedCountryIndex, setSelectedCountryIndex] = useState(0);
   return (
     <section id="pricing" className="pricing">
       <div className="container">
@@ -63,7 +64,6 @@ const Pricing: React.FC<PricingProps> = ({
                 transition={{ duration: 0.4 }}
                 className="pricing-content"
               >
-                <h3>{jastipData.title}</h3>
                 <div className="price-table">
                   <div className="table-header">
                     <div>{lang === 'id' ? 'Rute Pengiriman' : lang === 'en' ? 'Shipping Route' : '配送ルート'}</div>
@@ -92,34 +92,58 @@ const Pricing: React.FC<PricingProps> = ({
                 transition={{ duration: 0.4 }}
                 className="pricing-content"
               >
-                <h3>{lang === 'id' ? 'Via Ekspedisi Internasional' : lang === 'en' ? 'Via International Expedition' : '国際配送経由'}</h3>
-                <div className="info-note">
-                  {lang === 'id' ? 'Harga berikut untuk negara yang paling sering dikirim. Untuk negara lainnya, silakan hubungi kami untuk penawaran khusus.' : lang === 'en' ? 'The following prices are for the most frequently shipped countries. For other countries, please contact us for a special offer.' : '以下の料金は最も頻繁に発送される国向けのものです。その他の国についてはお問い合わせください。'}
-                </div>
-                <div className="expedition-grid">
-                  {expeditionData.map((country, index) => (
-                    <motion.div 
-                      key={index} 
-                      className="country-card"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <div className="country-header">
-                        <h4>{country.country}</h4>
-                        {country.estimates && <span className="estimates-badge">{country.estimates}</span>}
-                      </div>
-                      <div className="price-list">
-                        {country.prices.map((price, idx) => (
-                          <div key={idx} className="price-item">
-                            <span className="weight">{price.range}</span>
-                            <span className="price-value">{price.price}</span>
-                          </div>
+                <div className="expedition-selection">
+                  <div className="dropdown-container">
+                    <label htmlFor="country-select">
+                      {lang === 'id' ? 'Pilih Negara Tujuan:' : lang === 'en' ? 'Select Destination Country:' : '目的国を選択:'}
+                    </label>
+                    <div className="custom-select-wrapper">
+                      <select 
+                        id="country-select"
+                        className="country-dropdown"
+                        value={selectedCountryIndex}
+                        onChange={(e) => setSelectedCountryIndex(Number(e.target.value))}
+                      >
+                        {expeditionData.map((country, index) => (
+                          <option key={index} value={index}>
+                            {country.country}
+                          </option>
                         ))}
-                      </div>
-                    </motion.div>
-                  ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {expeditionData[selectedCountryIndex] && (
+                      <motion.div 
+                        key={selectedCountryIndex} 
+                        className="single-country-card"
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -15 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="country-card-header">
+                          <h3>{expeditionData[selectedCountryIndex].country}</h3>
+                          {expeditionData[selectedCountryIndex].estimates && (
+                            <span className="estimates-badge">
+                              {expeditionData[selectedCountryIndex].estimates}
+                            </span>
+                          )}
+                        </div>
+                        <div className="price-list">
+                          {expeditionData[selectedCountryIndex].prices.map((price, idx) => (
+                            <div key={idx} className="price-item">
+                              <span className="weight">{price.range}</span>
+                              <span className="price-value">{price.price}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
+
                 <div className="pricing-note">
                   <p>*{lang === 'id' ? 'Harga belum termasuk packing dan asuransi' : lang === 'en' ? 'Prices do not include packing and insurance' : '料金には梱包費と保険料は含まれていません'}</p>
                   <p>*{lang === 'id' ? 'Untuk barang dengan dimensi besar, akan dikenakan charge volumetrik' : lang === 'en' ? 'For large items, volumetric charges will apply' : '大きな品目の場合、容積重量料金が適用されます'}</p>

@@ -49,7 +49,14 @@ const Terms: React.FC<TermsProps> = ({ lang }) => {
         >
           {/* Jepang → Indonesia */}
           <motion.div className="terms-card" variants={cardVariants}>
-            <h3>🇯🇵 → 🇮🇩 {lang === 'id' ? 'Jepang ke Indonesia' : lang === 'en' ? 'Japan to Indonesia' : '日本からインドネシアへ'}</h3>
+            <div className="terms-card-header">
+              <div className="route-flow">
+                <span className="country-tag jp">JPN</span>
+                <span className="route-arrow">→</span>
+                <span className="country-tag id">IDN</span>
+              </div>
+              <h3>{lang === 'id' ? 'Jepang ke Indonesia' : lang === 'en' ? 'Japan to Indonesia' : '日本からインドネシアへ'}</h3>
+            </div>
 
             <h4>{lang === 'id' ? 'Titip Beli' : lang === 'en' ? 'Buy for Me' : '買い付け依頼'}</h4>
             <ul>
@@ -81,7 +88,14 @@ const Terms: React.FC<TermsProps> = ({ lang }) => {
 
           {/* Indonesia → Jepang */}
           <motion.div className="terms-card" variants={cardVariants}>
-            <h3>🇮🇩 → 🇯🇵 {lang === 'id' ? 'Indonesia ke Jepang' : lang === 'en' ? 'Indonesia to Japan' : 'インドネシアから日本へ'}</h3>
+            <div className="terms-card-header">
+              <div className="route-flow">
+                <span className="country-tag id">IDN</span>
+                <span className="route-arrow">→</span>
+                <span className="country-tag jp">JPN</span>
+              </div>
+              <h3>{lang === 'id' ? 'Indonesia ke Jepang' : lang === 'en' ? 'Indonesia to Japan' : 'インドネシアから日本へ'}</h3>
+            </div>
 
             <h4>{lang === 'id' ? 'Ketentuan Barang' : lang === 'en' ? 'Item Conditions' : '商品の条件'}</h4>
             <ul>

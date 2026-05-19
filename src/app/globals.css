@@ -12,6 +12,7 @@
   --secondary: #F7931E;
   --secondary-light: #FFB35A;
   --accent: #E74C3C;
+  --main-bg: #f8fafc;
   --bg-light: #F8FAFC;
   --bg-white: #FFFFFF;
   --text-main: #1E293B;
@@ -39,7 +40,15 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   line-height: 1.6;
   color: var(--text-main);
-  background-color: var(--bg-light);
+  background-color: var(--main-bg);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(210, 100%, 96%, 1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(205, 100%, 93%, 1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(33, 100%, 94%, 1) 0, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(210, 100%, 95%, 1) 0, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(33, 100%, 93%, 1) 0, transparent 50%);
+  background-attachment: fixed;
+  background-size: cover;
   overflow-x: hidden;
 }
 
@@ -53,14 +62,6 @@ html {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
-}
-
-.mesh-bg {
-  background-color: #f8fafc;
-  background-image: 
-    radial-gradient(at 0% 0%, hsla(210,100%,96%,1) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, hsla(205,100%,93%,1) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, hsla(33,100%,94%,1) 0, transparent 50%);
 }
 
 .container {
@@ -292,11 +293,42 @@ html {
 .hero-description .locations {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(1, 46, 108, 0.05);
   color: var(--primary);
-  font-weight: 600;
-  font-size: 0.95rem;
+  border: 1px solid rgba(1, 46, 108, 0.1);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  cursor: default;
+}
+
+.location-badge:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(1, 46, 108, 0.15);
+  border-color: var(--primary);
+}
+
+.location-badge svg {
+  color: var(--secondary);
+  transition: var(--transition);
+}
+
+.location-badge:hover svg {
+  color: white;
+  transform: scale(1.1);
 }
 
 .hero-cta {
@@ -428,8 +460,8 @@ html {
 
 /* Services Section Revamp */
 .services {
-  padding: 120px 0;
-  background-color: var(--bg-white);
+  padding: 100px 0;
+  background-color: transparent;
   position: relative;
 }
 
@@ -440,7 +472,6 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 10% 90%, rgba(1, 46, 108, 0.03) 0%, transparent 50%);
   z-index: 0;
   pointer-events: none;
 }
@@ -560,8 +591,8 @@ html {
 
 /* Pricing Section Revamp */
 .pricing {
-  padding: 120px 0;
-  background-color: var(--bg-light);
+  padding: 100px 0;
+  background-color: transparent;
 }
 
 .tab-buttons {
@@ -749,21 +780,10 @@ html {
   margin: 0 auto;
 }
 
-.info-note {
-  background: #fff9e6;
-  color: #856404;
-  padding: 16px 24px;
-  border-radius: var(--radius-md);
-  margin-bottom: 2rem;
-  border-left: 4px solid var(--secondary);
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
 /* FAQ Section Revamp */
 .faq {
-  padding: 120px 0;
-  background-color: var(--bg-white);
+  padding: 100px 0;
+  background-color: transparent;
 }
 
 .faq-container {
@@ -776,7 +796,9 @@ html {
 
 .faq-item {
   border: 1px solid rgba(0, 0, 0, 0.05);
-  background-color: var(--bg-light);
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: var(--transition);
@@ -833,28 +855,35 @@ html {
 /* CTA Section Revamp */
 .cta-section {
   padding: 100px 0;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: transparent;
   color: white;
   text-align: center;
   position: relative;
-  overflow: hidden;
 }
 
-.cta-section::before {
+.cta-content {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  padding: 5rem 3rem;
+  border-radius: var(--radius-lg);
+  box-shadow: 
+    var(--shadow-xl), 
+    0 20px 40px rgba(1, 46, 108, 0.2);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.cta-content::before {
   content: '';
   position: absolute;
   top: -50%;
   left: -20%;
   width: 60%;
   height: 200%;
-  background: radial-gradient(circle, rgba(247, 147, 30, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(247, 147, 30, 0.15) 0%, transparent 70%);
   transform: rotate(30deg);
   pointer-events: none;
-}
-
-.cta-content {
-  position: relative;
-  z-index: 1;
+  z-index: -1;
 }
 
 .cta-content h2 {
@@ -891,8 +920,8 @@ html {
 
 /* Contact Section Revamp */
 .contact {
-  padding: 120px 0;
-  background-color: var(--bg-light);
+  padding: 100px 0;
+  background-color: transparent;
 }
 
 .contact-content {
@@ -1127,8 +1156,8 @@ html {
 
 /* Terms Section Revamp */
 .terms {
-  padding: 120px 0;
-  background-color: var(--bg-white);
+  padding: 100px 0;
+  background-color: transparent;
 }
 
 .terms-grid {
@@ -1138,7 +1167,9 @@ html {
 }
 
 .terms-card {
-  background: var(--bg-light);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   padding: 2.5rem;
   border-radius: var(--radius-lg);
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -1156,7 +1187,55 @@ html {
   font-size: 1.5rem;
   font-weight: 800;
   color: var(--primary);
-  margin-bottom: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.terms-card-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(1, 46, 108, 0.08);
+  padding-bottom: 1.2rem;
+}
+
+.route-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.8rem;
+}
+
+.country-tag {
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.country-tag.jp {
+  background: #FFFFFF;
+  color: #BC002D;
+  border: 1px solid rgba(188, 0, 45, 0.25);
+}
+
+.country-tag.id {
+  background: #E70012;
+  color: #FFFFFF;
+  border: 1px solid #E70012;
+}
+
+.route-arrow {
+  color: var(--secondary);
+  font-weight: 800;
+  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .terms-card h4 {
@@ -1182,18 +1261,20 @@ html {
 }
 
 .terms-card li::before {
-  content: '→';
+  content: '•';
   position: absolute;
   left: 0;
   color: var(--secondary);
   font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1.3;
 }
 
 /* Footer Section Revamp */
 .footer {
   padding: 80px 0 40px;
-  background-color: white;
-  border-top: 1px solid var(--bg-light);
+  background-color: transparent;
+  border-top: 1px solid rgba(1, 46, 108, 0.08);
 }
 
 .footer-content {
@@ -1491,7 +1572,7 @@ html {
   right: 0;
   width: calc(100vw - 40px);
   max-width: 380px;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 100px);
   max-height: 500px;
   border-radius: var(--radius-lg);
   display: flex;
@@ -1672,4 +1753,159 @@ html {
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* Custom Country Selector & Single Card Layout */
+.expedition-selection {
+  max-width: 680px;
+  margin: 2rem auto;
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 2rem;
+}
+
+.dropdown-container label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.country-dropdown {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(1, 46, 108, 0.1);
+  border-radius: var(--radius-md);
+  appearance: none;
+  cursor: pointer;
+  transition: var(--transition);
+  outline: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.country-dropdown:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(1, 46, 108, 0.1);
+}
+
+.custom-select-wrapper::after {
+  content: '▼';
+  font-size: 0.8rem;
+  color: var(--primary);
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: var(--transition);
+}
+
+.custom-select-wrapper:hover::after {
+  color: var(--secondary);
+}
+
+/* Elegant Minimalist Card */
+.single-country-card {
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 15px 35px rgba(1, 46, 108, 0.06);
+  transition: var(--transition);
+}
+
+.single-country-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 45px rgba(1, 46, 108, 0.1);
+}
+
+.country-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(1, 46, 108, 0.08);
+  padding-bottom: 1.2rem;
+}
+
+.country-card-header h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+}
+
+.country-card-header .estimates-badge {
+  background: rgba(247, 147, 30, 0.1);
+  color: var(--secondary);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid rgba(247, 147, 30, 0.15);
+}
+
+/* Minimalist Light price list */
+.single-country-card .price-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.single-country-card .price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(1, 46, 108, 0.06);
+}
+
+.single-country-card .price-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.single-country-card .price-item .weight {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.single-country-card .price-item .price-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+/* Spacious Centered Pricing Note */
+.pricing-note {
+  margin-top: 4rem;
+  text-align: center;
+}
+
+.pricing-note p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.pricing-note p:last-child {
+  margin-bottom: 0;
 }

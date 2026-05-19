@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { ArrowRight, MessageCircle, Globe, Zap, Users } from 'lucide-react';
+import { ArrowRight, MessageCircle, MapPin } from 'lucide-react';
 import Image from 'next/image';
 
 import { Language } from '../../types';
@@ -34,7 +34,7 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
   };
 
   return (
-    <section id="home" className="hero mesh-bg">
+    <section id="home" className="hero">
       <div className="container">
         <motion.div 
           className="hero-content"
@@ -63,30 +63,54 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
               <>
                 Solusi belanja dan pengiriman aman dari Jepang langsung ke depan pintu Anda. Cepat, transparan, dan terpercaya.
                 <div className="locations">
-                  <span>📍 Osaka</span>
-                  <span>📍 Semarang</span>
-                  <span>📍 Depok</span>
-                  <span>📍 Jakarta</span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> Osaka
+                  </span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> Semarang
+                  </span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> Depok
+                  </span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> Jakarta
+                  </span>
                 </div>
               </>
             ) : lang === 'en' ? (
               <>
                 Secure shopping and shipping solutions from Japan directly to your doorstep. Fast, transparent, and reliable.
                 <div className="locations">
-                  <span>📍 Osaka</span>
-                  <span>📍 Semarang</span>
-                  <span>📍 Depok</span>
-                  <span>📍 Jakarta</span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> Osaka
+                  </span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> Semarang
+                  </span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> Depok
+                  </span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> Jakarta
+                  </span>
                 </div>
               </>
             ) : (
               <>
                 日本からあなたのご自宅まで、安全なショッピングと配送ソリューションを直接お届けします。迅速、透明、そして信頼。
                 <div className="locations">
-                  <span>📍 大阪</span>
-                  <span>📍 スマラン</span>
-                  <span>📍 デポック</span>
-                  <span>📍 ジャカルタ</span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> 大阪 (Osaka)
+                  </span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> スマラン (Semarang)
+                  </span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> デポック (Depok)
+                  </span>
+                  <span className="location-badge">
+                    <MapPin size={16} /> ジャカルタ (Jakarta)
+                  </span>
                 </div>
               </>
             )}
