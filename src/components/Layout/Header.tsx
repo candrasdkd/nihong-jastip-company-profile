@@ -62,12 +62,24 @@ const Header: React.FC<HeaderProps> = ({
         </nav>
 
         <div className="header-controls">
-          <div className="lang-switcher">
-            <select value={lang} onChange={handleLangChange} className="lang-select">
-              <option value="id">🇮🇩 ID</option>
-              <option value="en">🇬🇧 EN</option>
-              <option value="jp">🇯🇵 JP</option>
+          <div className="custom-lang-switcher">
+            <select value={lang} onChange={handleLangChange} className="hidden-select" aria-label="Select Language">
+              <option value="id">ID</option>
+              <option value="en">EN</option>
+              <option value="jp">JP</option>
             </select>
+            <div className="lang-display">
+              <span className={`flag-icon flag-${lang}`}>
+                {lang === 'en' && (
+                  <>
+                    <span className="flag-en-cross"></span>
+                    <span className="flag-en-cross-vertical"></span>
+                  </>
+                )}
+              </span>
+              <span className="lang-text">{lang.toUpperCase()}</span>
+              <span className="dropdown-caret">▼</span>
+            </div>
           </div>
 
           <button
