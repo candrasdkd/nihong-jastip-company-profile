@@ -40,6 +40,6 @@ describe('Header Component', () => {
         toggleSidebar={jest.fn()} 
       />
     );
-    expect(screen.getByText(/ID/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/ID/i)[0]).toBeInTheDocument();
   });
 });

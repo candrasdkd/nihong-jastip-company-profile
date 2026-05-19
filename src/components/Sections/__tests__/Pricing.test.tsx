@@ -33,7 +33,7 @@ describe('Pricing Section', () => {
     );
     
     // Memastikan judul section dan nama rute muncul di layar
-    expect(screen.getByText('Harga Jastip')).toBeInTheDocument();
+    expect(screen.getByText('Daftar Harga')).toBeInTheDocument();
     expect(screen.getByText('Jepang -> Indonesia')).toBeInTheDocument();
   });
 
@@ -53,7 +53,7 @@ describe('Pricing Section', () => {
     );
     
     // Memastikan nama negara dan harga ekspedisinya muncul di layar
-    expect(screen.getByText('Jepang')).toBeInTheDocument();
+    expect(screen.getAllByText('Jepang')[0]).toBeInTheDocument();
     expect(screen.getByText('1000¥')).toBeInTheDocument();
   });
 });

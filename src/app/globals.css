@@ -1007,12 +1007,15 @@ html {
   align-items: center;
   justify-content: center;
   background: var(--bg-light);
-  border-radius: var(--radius-md);
+  color: var(--primary);
+  border: 1px solid rgba(1, 46, 108, 0.08);
+  border-radius: var(--radius-full);
   transition: var(--transition);
 }
 
 .social-icon:hover {
   background: var(--primary);
+  color: white;
   transform: translateY(-4px);
 }
 
