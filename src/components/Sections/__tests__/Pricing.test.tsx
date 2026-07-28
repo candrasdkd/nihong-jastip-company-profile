@@ -1,8 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import Pricing from '../Pricing';
-
-
-
 describe('Pricing Section', () => {
   // Data simulasi untuk rute jastip (Handcarry)
   const mockJastipData = {
@@ -29,12 +26,14 @@ describe('Pricing Section', () => {
         setActiveTab={jest.fn()} 
         jastipData={mockJastipData as any} 
         expeditionData={mockExpeditionData as any} 
+        openWhatsApp={jest.fn()}
       />
     );
     
-    // Memastikan judul section dan nama rute muncul di layar
-    expect(screen.getByText('Daftar Harga')).toBeInTheDocument();
+    // Memastikan judul baru dan nama rute muncul di layar
+    expect(screen.getByRole('heading', { name: 'Cek tarif sebelum mulai.' })).toBeInTheDocument();
     expect(screen.getByText('Jepang -> Indonesia')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Minta estimasi' })).toBeInTheDocument();
   });
 
   // PENJELASAN TEST 2:
@@ -49,6 +48,7 @@ describe('Pricing Section', () => {
         setActiveTab={jest.fn()} 
         jastipData={mockJastipData as any} 
         expeditionData={mockExpeditionData as any} 
+        openWhatsApp={jest.fn()}
       />
     );
     

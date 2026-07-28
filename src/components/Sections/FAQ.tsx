@@ -37,12 +37,18 @@ const FAQ: React.FC<FAQProps> = ({ lang, faqData, activeFaqs, toggleFaq }) => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <div className="faq-question" onClick={() => toggleFaq(index)}>
+                <button
+                  type="button"
+                  className="faq-question"
+                  onClick={() => toggleFaq(index)}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
+                >
                   <h4>{item.question}</h4>
                   <div className="faq-toggle-icon">
                     <ChevronDown size={20} />
                   </div>
-                </div>
+                </button>
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
@@ -51,6 +57,7 @@ const FAQ: React.FC<FAQProps> = ({ lang, faqData, activeFaqs, toggleFaq }) => {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="faq-answer"
+                      id={`faq-answer-${index}`}
                     >
                       <div className="faq-answer-inner">
                         <p>{item.answer}</p>

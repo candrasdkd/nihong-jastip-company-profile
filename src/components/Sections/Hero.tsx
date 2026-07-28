@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { ArrowRight, MessageCircle, MapPin } from 'lucide-react';
+import { ArrowRight, Check, MessageCircle, ShieldCheck, Star } from 'lucide-react';
 import Image from 'next/image';
 
 import { Language } from '../../types';
@@ -44,140 +44,72 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
           viewport={{ once: true }}
         >
           <motion.div variants={itemVariants} className="hero-badge">
-            <span className="dot"></span>
-            {lang === 'id' ? 'Tersedia Pengiriman ke 64+ Negara' : lang === 'en' ? 'Shipping available to 64+ Countries' : '64カ国以上への配送が可能'}
+            <Star size={15} fill="currentColor" />
+            {lang === 'id' ? 'Dipercaya 200+ customer' : lang === 'en' ? 'Trusted by 200+ customers' : '200人以上のお客様に選ばれています'}
           </motion.div>
 
           <motion.h1 variants={itemVariants}>
             {lang === 'id' ? (
-              <>Jasa Titip & Ekspedisi <br /><span className="highlight">Jepang ⇄ Indonesia</span></>
+              <>Titip belanja dari Jepang, <span className="highlight">tanpa ribet.</span></>
             ) : lang === 'en' ? (
-              <>Japan ⇄ Indonesia <br /><span className="highlight">Personal Shopper</span></>
+              <>Shop from Japan, <span className="highlight">without the hassle.</span></>
             ) : (
-              <>日本 ⇄ インドネシア <br /><span className="highlight">買い物代行</span></>
+              <>日本のお買い物を、<span className="highlight">もっとかんたんに。</span></>
             )}
           </motion.h1>
 
-          <motion.div variants={itemVariants} className="hero-description">
-            {lang === 'id' ? (
-              <>
-                Solusi belanja dan pengiriman aman dari Jepang langsung ke depan pintu Anda. Cepat, transparan, dan terpercaya.
-                <div className="locations">
-                  <span className="location-badge">
-                    <MapPin size={16} /> Osaka
-                  </span>
-                  <span className="location-badge">
-                    <MapPin size={16} /> Semarang
-                  </span>
-                  <span className="location-badge">
-                    <MapPin size={16} /> Depok
-                  </span>
-                  <span className="location-badge">
-                    <MapPin size={16} /> Jakarta
-                  </span>
-                </div>
-              </>
-            ) : lang === 'en' ? (
-              <>
-                Secure shopping and shipping solutions from Japan directly to your doorstep. Fast, transparent, and reliable.
-                <div className="locations">
-                  <span className="location-badge">
-                    <MapPin size={16} /> Osaka
-                  </span>
-                  <span className="location-badge">
-                    <MapPin size={16} /> Semarang
-                  </span>
-                  <span className="location-badge">
-                    <MapPin size={16} /> Depok
-                  </span>
-                  <span className="location-badge">
-                    <MapPin size={16} /> Jakarta
-                  </span>
-                </div>
-              </>
-            ) : (
-              <>
-                日本からあなたのご自宅まで、安全なショッピングと配送ソリューションを直接お届けします。迅速、透明、そして信頼。
-                <div className="locations">
-                  <span className="location-badge">
-                    <MapPin size={16} /> 大阪 (Osaka)
-                  </span>
-                  <span className="location-badge">
-                    <MapPin size={16} /> スマラン (Semarang)
-                  </span>
-                  <span className="location-badge">
-                    <MapPin size={16} /> デポック (Depok)
-                  </span>
-                  <span className="location-badge">
-                    <MapPin size={16} /> ジャカルタ (Jakarta)
-                  </span>
-                </div>
-              </>
-            )}
-          </motion.div>
+          <motion.p variants={itemVariants} className="hero-description">
+            {lang === 'id'
+              ? 'Kirim link atau foto barang yang kamu mau. Tim kami bantu beli, cek, dan kirim dari Jepang sampai ke alamatmu dengan biaya yang jelas.'
+              : lang === 'en'
+                ? 'Send us a product link or photo. We will purchase, check, and ship it from Japan to your address with clear, upfront pricing.'
+                : '欲しい商品のリンクや写真を送るだけ。購入・検品・日本からご自宅までの配送を、わかりやすい料金でサポートします。'}
+          </motion.p>
 
           <motion.div variants={itemVariants} className="hero-cta">
             <button className="cta-button primary" onClick={openWhatsApp}>
               <MessageCircle size={20} />
-              {lang === 'id' ? 'Konsultasi Gratis' : lang === 'en' ? 'Free Consultation' : '無料相談'}
+              {lang === 'id' ? 'Kirim daftar belanja' : lang === 'en' ? 'Send shopping list' : '欲しい商品を送る'}
             </button>
             <button
               className="cta-button secondary"
-              onClick={() => { setActiveMenu('services'); scrollToId('services'); }}
+              onClick={() => { setActiveMenu('pricing'); scrollToId('pricing'); }}
             >
-              {lang === 'id' ? 'Lihat Layanan' : lang === 'en' ? 'View Services' : 'サービスを見る'}
+              {lang === 'id' ? 'Cek tarif dulu' : lang === 'en' ? 'Check rates' : '料金を見る'}
               <ArrowRight size={20} />
             </button>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="hero-stats">
-            <div className="stat">
-              <span className="stat-number">2+</span>
-              <span className="stat-label">
-                {lang === 'id' ? 'Tahun Pengalaman' : lang === 'en' ? 'Years Experience' : '年の経験'}
-              </span>
-            </div>
-            <div className="stat">
-              <span className="stat-number">64</span>
-              <span className="stat-label">
-                {lang === 'id' ? 'Negara Tujuan' : lang === 'en' ? 'Destinations' : '対象国'}
-              </span>
-            </div>
-            <div className="stat">
-              <span className="stat-number">200+</span>
-              <span className="stat-label">
-                {lang === 'id' ? 'Pelanggan Puas' : lang === 'en' ? 'Happy Customers' : '満足なお客様'}
-              </span>
-            </div>
+          <motion.div variants={itemVariants} className="hero-assurances">
+            <span><Check size={16} /> {lang === 'id' ? 'Konsultasi gratis' : lang === 'en' ? 'Free consultation' : '相談無料'}</span>
+            <span><Check size={16} /> {lang === 'id' ? 'Biaya transparan' : lang === 'en' ? 'Clear pricing' : '明瞭な料金'}</span>
+            <span><ShieldCheck size={16} /> {lang === 'id' ? 'Barang dicek' : lang === 'en' ? 'Items checked' : '検品対応'}</span>
           </motion.div>
         </motion.div>
 
-        <motion.div 
-          className="hero-image-container"
-          initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        <motion.div
+          className="hero-visual"
+          initial={{ opacity: 0, scale: 0.94, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <motion.div
-            animate={{ 
-              y: [0, -20, 0],
-              rotate: [0, 2, 0]
-            }}
-            transition={{ 
-              duration: 6, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
-          >
+          <div className="hero-image-container">
             <Image 
               src="/images/hero_3d.png" 
-              alt="Nihong Jastip 3D" 
+              alt={lang === 'id' ? 'Ilustrasi pengiriman Jepang ke Indonesia' : lang === 'en' ? 'Japan to Indonesia shipping illustration' : '日本からインドネシアへの配送イラスト'}
               width={600} 
               height={600} 
               priority
-              style={{ objectFit: 'contain' }}
             />
-          </motion.div>
+          </div>
+          <div className="route-price-card route-price-card-top">
+            <span>JPN → IDN</span>
+            <strong>¥1.300–1.700<small>/kg</small></strong>
+          </div>
+          <div className="route-price-card route-price-card-bottom">
+            <span>IDN → JPN</span>
+            <strong>¥1.100–1.500<small>/kg</small></strong>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { MessageCircle } from 'lucide-react';
 
 import { Language, NavClickHandlers } from '../../types';
 
@@ -10,6 +12,7 @@ interface HeaderProps extends Pick<NavClickHandlers, 'handleNavClick'> {
   activeMenu: string;
   handleLangChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   toggleSidebar: () => void;
+  openWhatsApp: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -17,7 +20,8 @@ const Header: React.FC<HeaderProps> = ({
   activeMenu,
   handleNavClick,
   handleLangChange,
-  toggleSidebar
+  toggleSidebar,
+  openWhatsApp
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -36,28 +40,28 @@ const Header: React.FC<HeaderProps> = ({
       className={`header ${isScrolled ? 'scrolled' : ''}`}
     >
       <div className="container">
-        <div className="logo-section">
-          <h1 className="logo">Nihong Jastip</h1>
-          <span className="tagline">
-            {lang === 'id' ? 'Mitra Pengiriman Internasional Terpercaya' : lang === 'en' ? 'Your Trusted International Shipping Partner' : '信頼できる国際配送パートナー'}
+        <a className="logo-section" href="#home" onClick={handleNavClick('home')} aria-label="Nihong Jastip home">
+          <Image src="/logo-64.png" width={44} height={44} alt="" className="brand-mark" />
+          <span className="brand-copy">
+            <strong className="logo">Nihong Jastip</strong>
+            <span className="tagline">
+              {lang === 'id' ? 'Jepang ⇄ Indonesia' : lang === 'en' ? 'Japan ⇄ Indonesia' : '日本 ⇄ インドネシア'}
+            </span>
           </span>
-        </div>
+        </a>
 
-        <nav className="nav">
+        <nav className="nav" aria-label="Primary navigation">
           <a href="#home" onClick={handleNavClick('home')} className={activeMenu === 'home' ? 'active' : ''}>
             {lang === 'id' ? 'Beranda' : lang === 'en' ? 'Home' : 'ホーム'}
           </a>
-          <a href="#services" onClick={handleNavClick('services')} className={activeMenu === 'services' ? 'active' : ''}>
-            {lang === 'id' ? 'Layanan' : lang === 'en' ? 'Services' : 'サービス'}
+          <a href="#process" onClick={handleNavClick('process')} className={activeMenu === 'process' ? 'active' : ''}>
+            {lang === 'id' ? 'Cara Kerja' : lang === 'en' ? 'How It Works' : 'ご利用の流れ'}
           </a>
           <a href="#pricing" onClick={handleNavClick('pricing')} className={activeMenu === 'pricing' ? 'active' : ''}>
-            {lang === 'id' ? 'Harga' : lang === 'en' ? 'Pricing' : '料金'}
+            {lang === 'id' ? 'Cek Tarif' : lang === 'en' ? 'Rates' : '料金'}
           </a>
           <a href="#faq" onClick={handleNavClick('faq')} className={activeMenu === 'faq' ? 'active' : ''}>
             FAQ
-          </a>
-          <a href="#contact" onClick={handleNavClick('contact')} className={activeMenu === 'contact' ? 'active' : ''}>
-            {lang === 'id' ? 'Kontak' : lang === 'en' ? 'Contact' : 'お問い合わせ'}
           </a>
         </nav>
 
@@ -82,10 +86,15 @@ const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
+          <button className="header-wa-button" onClick={openWhatsApp}>
+            <MessageCircle size={17} />
+            <span>{lang === 'id' ? 'Mulai titip' : lang === 'en' ? 'Start order' : '相談する'}</span>
+          </button>
+
           <button
             className="hamburger-btn"
             onClick={toggleSidebar}
-            aria-label="Toggle Menu"
+            aria-label={lang === 'id' ? 'Buka menu' : lang === 'en' ? 'Open menu' : 'メニューを開く'}
           >
             <span></span>
             <span></span>

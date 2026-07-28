@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, MessageCircle, Plane, ShoppingBag } from 'lucide-react';
 import { Language, JastipData, ExpeditionCountry } from '../../types';
 
 interface PricingProps {
@@ -8,6 +9,7 @@ interface PricingProps {
   setActiveTab: (tab: 'jastip' | 'expedition') => void;
   jastipData: JastipData;
   expeditionData: ExpeditionCountry[];
+  openWhatsApp: () => void;
 }
 
 const Pricing: React.FC<PricingProps> = ({
@@ -15,25 +17,28 @@ const Pricing: React.FC<PricingProps> = ({
   activeTab,
   setActiveTab,
   jastipData,
-  expeditionData
+  expeditionData,
+  openWhatsApp
 }) => {
   const [selectedCountryIndex, setSelectedCountryIndex] = useState(0);
   return (
     <section id="pricing" className="pricing">
       <div className="container">
         <motion.div 
-          className="section-header"
+          className="section-heading pricing-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2>{lang === 'id' ? 'Daftar Harga' : lang === 'en' ? 'Pricing List' : '料金表'}</h2>
-          <p>{lang === 'id' ? 'Transparan dan kompetitif tanpa biaya tersembunyi' : lang === 'en' ? 'Transparent and competitive with no hidden fees' : '隠し費用なしで透明性と競争力があります'}</p>
+          <span className="eyebrow">{lang === 'id' ? 'Tarif transparan' : lang === 'en' ? 'Clear rates' : 'わかりやすい料金'}</span>
+          <h2>{lang === 'id' ? 'Cek tarif sebelum mulai.' : lang === 'en' ? 'Check rates before you start.' : 'ご利用前に料金を確認。'}</h2>
+          <p>{lang === 'id' ? 'Pilih layanan untuk melihat estimasi biaya. Kami akan konfirmasi total final sebelum diproses.' : lang === 'en' ? 'Choose a service to view estimated pricing. We confirm the final total before processing.' : 'サービスを選んで料金の目安をご確認ください。確定金額は処理前にご案内します。'}</p>
         </motion.div>
 
         <motion.div 
           className="tab-buttons"
+          role="tablist"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -42,13 +47,19 @@ const Pricing: React.FC<PricingProps> = ({
           <button
             className={`tab-button ${activeTab === 'jastip' ? 'active' : ''}`}
             onClick={() => setActiveTab('jastip')}
+            role="tab"
+            aria-selected={activeTab === 'jastip'}
           >
+            <ShoppingBag size={18} />
             {lang === 'id' ? 'Via Jastip' : lang === 'en' ? 'Via Jastip' : '買い物代行'}
           </button>
           <button
             className={`tab-button ${activeTab === 'expedition' ? 'active' : ''}`}
             onClick={() => setActiveTab('expedition')}
+            role="tab"
+            aria-selected={activeTab === 'expedition'}
           >
+            <Plane size={18} />
             {lang === 'id' ? 'Via Ekspedisi' : lang === 'en' ? 'Via Expedition' : '配送経由'}
           </button>
         </motion.div>
@@ -64,19 +75,18 @@ const Pricing: React.FC<PricingProps> = ({
                 transition={{ duration: 0.4 }}
                 className="pricing-content"
               >
-                <div className="price-table">
-                  <div className="table-header">
-                    <div>{lang === 'id' ? 'Rute Pengiriman' : lang === 'en' ? 'Shipping Route' : '配送ルート'}</div>
-                    <div style={{ textAlign: 'right' }}>{lang === 'id' ? 'Harga' : lang === 'en' ? 'Price' : '料金'}</div>
-                  </div>
+                <div className="jastip-rate-grid">
                   {jastipData.routes.map((route, index) => (
-                    <div key={index} className="table-row">
-                      <div>
-                        <strong>{route.route}</strong>
-                        <small>{lang === 'id' ? 'Termasuk biaya handling' : lang === 'en' ? 'Including handling fee' : '手数料込み'}</small>
+                    <article key={index} className="jastip-rate-card">
+                      <div className="route-visual">
+                        <span>{index === 0 ? 'JPN' : 'IDN'}</span>
+                        <ArrowRight size={18} />
+                        <span>{index === 0 ? 'IDN' : 'JPN'}</span>
                       </div>
+                      <h3>{route.route}</h3>
                       <div className="price">{route.price}</div>
-                    </div>
+                      <p>{lang === 'id' ? 'Sudah termasuk biaya handling' : lang === 'en' ? 'Handling fee included' : '手数料込み'}</p>
+                    </article>
                   ))}
                 </div>
                 <div className="pricing-note">
@@ -151,6 +161,17 @@ const Pricing: React.FC<PricingProps> = ({
               </motion.div>
             )}
           </AnimatePresence>
+        </div>
+
+        <div className="pricing-help">
+          <div>
+            <MessageCircle size={24} />
+            <span>
+              <strong>{lang === 'id' ? 'Butuh hitungan yang lebih akurat?' : lang === 'en' ? 'Need a more accurate quote?' : 'より正確なお見積りが必要ですか？'}</strong>
+              <small>{lang === 'id' ? 'Kirim foto atau link barang. Konsultasinya gratis.' : lang === 'en' ? 'Send the item photo or link. Consultation is free.' : '商品の写真やリンクをお送りください。ご相談は無料です。'}</small>
+            </span>
+          </div>
+          <button onClick={openWhatsApp}>{lang === 'id' ? 'Minta estimasi' : lang === 'en' ? 'Request a quote' : '見積りを依頼'}</button>
         </div>
       </div>
     </section>

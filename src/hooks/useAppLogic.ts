@@ -48,16 +48,22 @@ export const useAppLogic = (lang: Language) => {
     const fd = new FormData(form);
     const name = (fd.get('name') as string || '').trim();
     const phone = (fd.get('phone') as string || '').trim();
+    const service = (fd.get('service') as string || '').trim();
     const message = (fd.get('message') as string || '').trim();
     const cleanPhone = phone.replace(/[^\d+]/g, '');
 
     const text = [
-      'Halo Nihong Jastip, saya mengirim pesan via Form Website 👋',
+      lang === 'id'
+        ? 'Halo Nihong Jastip, saya ingin konsultasi via website 👋'
+        : lang === 'en'
+          ? 'Hello Nihong Jastip, I would like to consult via the website 👋'
+          : 'こんにちは Nihong Jastip、ウェブサイトから相談したいです 👋',
       '',
-      `Nama: ${name}`,
-      `Telepon: ${cleanPhone}`,
+      `${lang === 'jp' ? '名前' : lang === 'en' ? 'Name' : 'Nama'}: ${name}`,
+      `WhatsApp: ${cleanPhone}`,
+      `${lang === 'jp' ? 'サービス' : lang === 'en' ? 'Service' : 'Layanan'}: ${service}`,
       '',
-      'Pesan:',
+      `${lang === 'jp' ? '商品の詳細' : lang === 'en' ? 'Item details' : 'Detail barang'}:`,
       message
     ].join('\n');
 
@@ -67,7 +73,7 @@ export const useAppLogic = (lang: Language) => {
   };
 
   useEffect(() => {
-    const ids = ['home', 'services', 'pricing', 'faq', 'contact'];
+    const ids = ['home', 'process', 'services', 'pricing', 'terms', 'faq', 'contact'];
     const sections = ids.map((id) => document.getElementById(id)).filter((sec): sec is HTMLElement => sec !== null);
 
     const observer = new IntersectionObserver(

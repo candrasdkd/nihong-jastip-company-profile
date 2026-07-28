@@ -1,15 +1,17 @@
 export const runtime = 'edge';
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { headers } from "next/headers";
 import "../globals.css";
 import { Language } from "../../types";
 import Schema from "../../components/SEO/Schema";
 import ChatBot from "../../components/UI/ChatBot";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export async function generateMetadata({ params }: { params: Promise<{ lang: Language }> }): Promise<Metadata> {
   const lang = (await params).lang;
+  const requestHeaders = await headers();
+  const host = requestHeaders.get('x-forwarded-host') || requestHeaders.get('host') || 'www.nihongjastip.com';
+  const protocol = requestHeaders.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https');
+  const siteUrl = new URL(`${protocol}://${host}`);
   
   const titles = {
     id: "Nihong Jastip — Jasa Titip Jepang ⇄ Indonesia & Ekspedisi",
@@ -24,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
   };
 
   return {
-    metadataBase: new URL('https://www.nihongjastip.com'),
+    metadataBase: siteUrl,
     title: titles[lang] || titles.id,
     description: descriptions[lang] || descriptions.id,
     alternates: {
@@ -40,6 +42,18 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
       description: descriptions[lang],
       type: "website",
       locale: lang === 'jp' ? 'ja_JP' : lang === 'en' ? 'en_US' : 'id_ID',
+      images: [{
+        url: new URL('/og-v2.png', siteUrl).toString(),
+        width: 1731,
+        height: 909,
+        alt: 'Nihong Jastip — Titip belanja dari Jepang, tanpa ribet.',
+      }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: titles[lang],
+      description: descriptions[lang],
+      images: [new URL('/og-v2.png', siteUrl).toString()],
     },
     verification: {
       google: "gL6EiGFnxFj2_G7kHqDOHMs3KJjrsvTLWXAjQmdD0Bg",
@@ -58,7 +72,7 @@ export default async function RootLayout({
   
   return (
     <html lang={lang} data-scroll-behavior="smooth">
-      <body className={inter.className}>
+      <body>
         <Schema lang={lang as Language} />
         {children}
         <ChatBot lang={lang as Language} />

@@ -1,14 +1,16 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { Globe, ShoppingBag, Package, CheckCircle2 } from 'lucide-react';
+import { Globe, ShoppingBag, Package, CheckCircle2, ArrowUpRight } from 'lucide-react';
 
 import { Language } from '../../types';
 
 interface ServicesProps {
   lang: Language;
+  onSelect: (service: 'jastip' | 'expedition') => void;
+  openWhatsApp: () => void;
 }
 
-const Services: React.FC<ServicesProps> = ({ lang }) => {
+const Services: React.FC<ServicesProps> = ({ lang, onSelect, openWhatsApp }) => {
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -32,14 +34,17 @@ const Services: React.FC<ServicesProps> = ({ lang }) => {
     <section id="services" className="services">
       <div className="container">
         <motion.div
-          className="section-header"
+          className="section-heading split-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2>{lang === 'id' ? 'Layanan Kami' : lang === 'en' ? 'Our Services' : '当社のサービス'}</h2>
-          <p>{lang === 'id' ? 'Berbagai solusi pengiriman internasional untuk kebutuhan bisnis dan pribadi Anda' : lang === 'en' ? 'Various international shipping solutions for your business and personal needs' : 'お客様のビジネスや個人のニーズに合わせた様々な国際配送ソリューション'}</p>
+          <div>
+            <span className="eyebrow">{lang === 'id' ? 'Pilih sesuai kebutuhan' : lang === 'en' ? 'Choose what you need' : '目的に合わせて選ぶ'}</span>
+            <h2>{lang === 'id' ? 'Mau titip beli atau kirim paket?' : lang === 'en' ? 'Shopping help or parcel delivery?' : '買い物代行、それとも荷物の発送？'}</h2>
+          </div>
+          <p>{lang === 'id' ? 'Setiap layanan dilengkapi pengecekan barang dan konsultasi sebelum pengiriman.' : lang === 'en' ? 'Every service includes item checks and pre-shipment consultation.' : 'すべてのサービスで検品と発送前のご相談に対応します。'}</p>
         </motion.div>
 
         <motion.div
@@ -51,6 +56,7 @@ const Services: React.FC<ServicesProps> = ({ lang }) => {
         >
           {/* Expedition Service */}
           <motion.div variants={itemVariants} className="service-card">
+            <span className="service-label">{lang === 'id' ? 'Kirim paket' : lang === 'en' ? 'Send a parcel' : '荷物を送る'}</span>
             <div className="service-icon-wrapper">
               <Globe size={32} />
             </div>
@@ -62,10 +68,14 @@ const Services: React.FC<ServicesProps> = ({ lang }) => {
               <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Asuransi barang tersedia' : lang === 'en' ? 'Item insurance available' : '商品保険が利用可能'}</li>
               <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Real-time tracking' : lang === 'en' ? 'Real-time tracking' : 'リアルタイム追跡'}</li>
             </ul>
+            <button className="service-link" onClick={() => onSelect('expedition')}>
+              {lang === 'id' ? 'Lihat tarif ekspedisi' : lang === 'en' ? 'View shipping rates' : '配送料金を見る'} <ArrowUpRight size={18} />
+            </button>
           </motion.div>
 
           {/* Jastip Service */}
           <motion.div variants={itemVariants} className="service-card featured">
+            <span className="service-label">{lang === 'id' ? 'Paling populer' : lang === 'en' ? 'Most popular' : '人気No.1'}</span>
             <div className="service-icon-wrapper">
               <ShoppingBag size={32} />
             </div>
@@ -77,10 +87,14 @@ const Services: React.FC<ServicesProps> = ({ lang }) => {
               <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Bantuan pembelian produk Jepang' : lang === 'en' ? 'Assistance purchasing Japanese products' : '日本の製品の購入サポート'}</li>
               <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Konsultasi gratis' : lang === 'en' ? 'Free consultation' : '無料相談'}</li>
             </ul>
+            <button className="service-link" onClick={() => onSelect('jastip')}>
+              {lang === 'id' ? 'Lihat tarif jastip' : lang === 'en' ? 'View jastip rates' : '代行料金を見る'} <ArrowUpRight size={18} />
+            </button>
           </motion.div>
 
           {/* Additional Service */}
           <motion.div variants={itemVariants} className="service-card">
+            <span className="service-label">{lang === 'id' ? 'Butuh bantuan ekstra' : lang === 'en' ? 'Extra help' : '追加サポート'}</span>
             <div className="service-icon-wrapper">
               <Package size={32} />
             </div>
@@ -92,6 +106,9 @@ const Services: React.FC<ServicesProps> = ({ lang }) => {
               <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Konsolidasi paket' : lang === 'en' ? 'Package consolidation' : 'パッケージの統合'}</li>
               <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Layanan bea cukai' : lang === 'en' ? 'Customs service' : '通関サービス'}</li>
             </ul>
+            <button className="service-link" onClick={openWhatsApp}>
+              {lang === 'id' ? 'Tanya kebutuhan khusus' : lang === 'en' ? 'Ask about special handling' : '特別対応を相談する'} <ArrowUpRight size={18} />
+            </button>
           </motion.div>
         </motion.div>
       </div>

@@ -13,6 +13,7 @@ import Footer from '../../components/Layout/Footer';
 
 // Section Components
 import Hero from '../../components/Sections/Hero';
+import Process from '../../components/Sections/Process';
 import Services from '../../components/Sections/Services';
 import Pricing from '../../components/Sections/Pricing';
 import Terms from '../../components/Sections/Terms';
@@ -57,6 +58,7 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         handleNavClick={handleNavClick}
         handleLangChange={handleLangChange}
         toggleSidebar={toggleSidebar}
+        openWhatsApp={handleOpenWhatsApp}
       />
 
       <Sidebar
@@ -65,6 +67,7 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         lang={lang}
         toggleSidebar={toggleSidebar}
         handleNavClickWithClose={handleNavClickWithClose}
+        openWhatsApp={handleOpenWhatsApp}
       />
 
       <Hero
@@ -74,7 +77,26 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         scrollToId={scrollToId}
       />
 
-      <Services lang={lang} />
+      <div className="trust-strip" aria-label={lang === 'id' ? 'Keunggulan layanan' : 'Service highlights'}>
+        <div className="container">
+          <span><strong>2+</strong> {lang === 'id' ? 'tahun melayani' : lang === 'en' ? 'years serving' : '年の実績'}</span>
+          <span><strong>64</strong> {lang === 'id' ? 'negara tujuan' : lang === 'en' ? 'destinations' : '配送対象国'}</span>
+          <span><strong>4</strong> {lang === 'id' ? 'hub operasional' : lang === 'en' ? 'operation hubs' : '拠点'}</span>
+          <span><strong>200+</strong> {lang === 'id' ? 'customer' : lang === 'en' ? 'customers' : 'お客様'}</span>
+        </div>
+      </div>
+
+      <Process lang={lang} />
+
+      <Services
+        lang={lang}
+        openWhatsApp={handleOpenWhatsApp}
+        onSelect={(service) => {
+          setActiveTab(service);
+          setActiveMenu('pricing');
+          scrollToId('pricing');
+        }}
+      />
 
       <Pricing
         lang={lang}
@@ -82,6 +104,7 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         setActiveTab={setActiveTab}
         jastipData={jastipData}
         expeditionData={expeditionData}
+        openWhatsApp={handleOpenWhatsApp}
       />
 
       <Terms lang={lang} />
@@ -107,10 +130,11 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2>{lang === 'id' ? 'Siap Mengirimkan Barang Anda?' : lang === 'en' ? 'Ready to Ship Your Items?' : '商品を発送する準備はできましたか？'}</h2>
-            <p>{lang === 'id' ? 'Dapatkan penawaran khusus untuk pengiriman pertama Anda' : lang === 'en' ? 'Get a special offer for your first shipment' : '初めての発送で特別割引を受けましょう'}</p>
+            <span className="cta-kicker">{lang === 'id' ? 'Konsultasi tanpa biaya' : lang === 'en' ? 'Free consultation' : '相談無料'}</span>
+            <h2>{lang === 'id' ? 'Barang incaranmu tinggal satu chat lagi.' : lang === 'en' ? 'Your Japan wishlist is one chat away.' : '欲しい商品まで、あと一度のチャットだけ。'}</h2>
+            <p>{lang === 'id' ? 'Kirim link atau foto barang. Kami bantu cek ketersediaan dan estimasi totalnya.' : lang === 'en' ? 'Send the item link or photo. We will check availability and estimate the total.' : '商品のリンクや写真を送るだけ。在庫と合計金額の目安をご案内します。'}</p>
             <button className="cta-button primary large" onClick={handleOpenWhatsApp}>
-              {lang === 'id' ? 'Hubungi Kami Sekarang' : lang === 'en' ? 'Contact Us Now' : '今すぐお問い合わせ'}
+              {lang === 'id' ? 'Chat via WhatsApp' : lang === 'en' ? 'Chat on WhatsApp' : 'WhatsAppで相談'}
             </button>
           </motion.div>
         </div>

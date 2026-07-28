@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send, Instagram, Facebook } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, Instagram, Facebook, MessageCircle, Check } from 'lucide-react';
 
 import { Language } from '../../types';
 
@@ -23,14 +23,15 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
     <section id="contact" className="contact">
       <div className="container">
         <motion.div 
-          className="section-header"
+          className="section-heading contact-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2>{lang === 'id' ? 'Hubungi Kami' : lang === 'en' ? 'Contact Us' : 'お問い合わせ'}</h2>
-          <p>{lang === 'id' ? 'Tim customer service kami siap membantu 7 hari seminggu' : lang === 'en' ? 'Our customer service team is ready to help 7 days a week' : 'カスタマーサービスチームが週7日ご対応いたします'}</p>
+          <span className="eyebrow">{lang === 'id' ? 'Kami siap bantu' : lang === 'en' ? 'We are here to help' : 'お気軽にご相談ください'}</span>
+          <h2>{lang === 'id' ? 'Ceritakan barang yang ingin kamu kirim.' : lang === 'en' ? 'Tell us what you want to ship.' : '送りたい商品について教えてください。'}</h2>
+          <p>{lang === 'id' ? 'Isi detail singkat, lalu percakapan dilanjutkan langsung di WhatsApp.' : lang === 'en' ? 'Share a few details and continue the conversation directly on WhatsApp.' : '簡単な情報を入力すると、WhatsAppでそのままご相談いただけます。'}</p>
         </motion.div>
 
         <div className="contact-content">
@@ -41,13 +42,19 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h3>{lang === 'id' ? 'Informasi Kontak' : lang === 'en' ? 'Contact Information' : '連絡先情報'}</h3>
+            <span className="contact-kicker"><MessageCircle size={17} /> {lang === 'id' ? 'Customer care' : lang === 'en' ? 'Customer care' : 'カスタマーケア'}</span>
+            <h3>{lang === 'id' ? 'Ada pertanyaan? Jangan ragu.' : lang === 'en' ? 'Questions? Just ask.' : 'ご不明点はお気軽に。'}</h3>
+            <p className="contact-intro">{lang === 'id' ? 'Kami bantu memilih layanan, mengecek barang, dan menjelaskan biaya sebelum kamu memutuskan.' : lang === 'en' ? 'We help choose the right service, check the item, and explain costs before you decide.' : 'サービス選び、商品確認、料金のご説明まで、ご依頼前にサポートします。'}</p>
+            <ul className="contact-benefits">
+              <li><Check size={16} /> {lang === 'id' ? 'Konsultasi awal gratis' : lang === 'en' ? 'Free initial consultation' : '初回相談無料'}</li>
+              <li><Check size={16} /> {lang === 'id' ? 'Buka setiap hari' : lang === 'en' ? 'Open every day' : '毎日営業'}</li>
+            </ul>
             
             <div className="contact-item">
               <div className="contact-icon"><Mail size={20} /></div>
               <div>
                 <strong>Email</strong>
-                <p>jastipnihong@gmail.com</p>
+                <a href="mailto:jastipnihong@gmail.com">jastipnihong@gmail.com</a>
               </div>
             </div>
 
@@ -55,7 +62,7 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
               <div className="contact-icon"><Phone size={20} /></div>
               <div>
                 <strong>WhatsApp</strong>
-                <p>+62 815-7162-517</p>
+                <a href="https://wa.me/628157162517" target="_blank" rel="noreferrer">+62 815-7162-517</a>
               </div>
             </div>
 
@@ -100,21 +107,36 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h3>{lang === 'id' ? 'Kirim Pesan' : lang === 'en' ? 'Send Message' : 'メッセージを送る'}</h3>
+            <span className="form-step">{lang === 'id' ? 'Mulai konsultasi' : lang === 'en' ? 'Start a consultation' : '相談を始める'}</span>
+            <h3>{lang === 'id' ? 'Isi detail singkat' : lang === 'en' ? 'Share a few details' : '簡単な情報を入力'}</h3>
             <form onSubmit={submitContactToWhatsApp} noValidate>
               <div className="form-group">
-                <input name="name" type="text" placeholder={lang === 'id' ? 'Nama Lengkap' : lang === 'en' ? 'Full Name' : '氏名'} required />
+                <label htmlFor="contact-name">{lang === 'id' ? 'Nama' : lang === 'en' ? 'Name' : 'お名前'}</label>
+                <input id="contact-name" name="name" type="text" placeholder={lang === 'id' ? 'Nama lengkap kamu' : lang === 'en' ? 'Your full name' : '氏名'} required />
               </div>
               <div className="form-group">
-                <input name="phone" type="tel" placeholder={lang === 'id' ? 'Nomor Telepon' : lang === 'en' ? 'Phone Number' : '電話番号'} required />
+                <label htmlFor="contact-phone">WhatsApp</label>
+                <input id="contact-phone" name="phone" type="tel" placeholder="08xx xxxx xxxx" required />
               </div>
               <div className="form-group">
-                <textarea name="message" placeholder={lang === 'id' ? 'Detail pesan atau pertanyaan Anda' : lang === 'en' ? 'Details of your message or question' : 'メッセージの詳細'} rows={4} required></textarea>
+                <label htmlFor="contact-service">{lang === 'id' ? 'Kebutuhan' : lang === 'en' ? 'Service needed' : 'ご希望のサービス'}</label>
+                <select id="contact-service" name="service" defaultValue="" required>
+                  <option value="" disabled>{lang === 'id' ? 'Pilih layanan' : lang === 'en' ? 'Choose a service' : 'サービスを選択'}</option>
+                  <option value="Jastip Jepang → Indonesia">Jastip Jepang → Indonesia</option>
+                  <option value="Jastip Indonesia → Jepang">Jastip Indonesia → Jepang</option>
+                  <option value="Ekspedisi internasional">{lang === 'id' ? 'Ekspedisi internasional' : lang === 'en' ? 'International shipping' : '国際配送'}</option>
+                  <option value="Lainnya">{lang === 'id' ? 'Lainnya / belum yakin' : lang === 'en' ? 'Other / not sure yet' : 'その他 / まだ未定'}</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="contact-message">{lang === 'id' ? 'Detail barang' : lang === 'en' ? 'Item details' : '商品の詳細'}</label>
+                <textarea id="contact-message" name="message" placeholder={lang === 'id' ? 'Contoh: link barang, jumlah, perkiraan berat, dan kota tujuan' : lang === 'en' ? 'Example: item link, quantity, estimated weight, and destination' : '例：商品リンク、数量、予想重量、配送先'} rows={4} required></textarea>
               </div>
               <button type="submit" className="submit-button">
                 <Send size={18} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-                {lang === 'id' ? 'Kirim Pesan' : lang === 'en' ? 'Send Message' : 'メッセージを送る'}
+                {lang === 'id' ? 'Lanjut ke WhatsApp' : lang === 'en' ? 'Continue on WhatsApp' : 'WhatsAppで続ける'}
               </button>
+              <small className="form-privacy">{lang === 'id' ? 'Data hanya digunakan untuk membantu konsultasi kamu.' : lang === 'en' ? 'Your details are only used to assist your consultation.' : '入力情報はご相談対応のみに使用します。'}</small>
             </form>
           </motion.div>
         </div>
