@@ -19,6 +19,7 @@ import Pricing from '../../components/Sections/Pricing';
 import Terms from '../../components/Sections/Terms';
 import FAQ from '../../components/Sections/FAQ';
 import Contact from '../../components/Sections/Contact';
+import CountUp from '../../components/UI/CountUp';
 import { useRouter } from 'next/navigation';
 
 export default function Home({ params }: { params: Promise<{ lang: Language }> }) {
@@ -79,10 +80,10 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
 
       <div className="trust-strip" aria-label={lang === 'id' ? 'Keunggulan layanan' : 'Service highlights'}>
         <div className="container">
-          <span><strong>2+</strong> {lang === 'id' ? 'tahun melayani' : lang === 'en' ? 'years serving' : '年の実績'}</span>
-          <span><strong>64</strong> {lang === 'id' ? 'negara tujuan' : lang === 'en' ? 'destinations' : '配送対象国'}</span>
-          <span><strong>4</strong> {lang === 'id' ? 'hub operasional' : lang === 'en' ? 'operation hubs' : '拠点'}</span>
-          <span><strong>500+</strong> {lang === 'id' ? 'customer' : lang === 'en' ? 'customers' : 'お客様'}</span>
+          <span><CountUp value={2} suffix="+" /> {lang === 'id' ? 'tahun melayani' : lang === 'en' ? 'years serving' : '年の実績'}</span>
+          <span><CountUp value={64} /> {lang === 'id' ? 'negara tujuan' : lang === 'en' ? 'destinations' : '配送対象国'}</span>
+          <span><CountUp value={4} /> {lang === 'id' ? 'hub operasional' : lang === 'en' ? 'operation hubs' : '拠点'}</span>
+          <span><CountUp value={500} suffix="+" /> {lang === 'id' ? 'customer' : lang === 'en' ? 'customers' : 'お客様'}</span>
         </div>
       </div>
 

@@ -38,5 +38,11 @@ jest.mock('framer-motion', () => {
       }
     }),
     AnimatePresence: ({ children }: any) => children,
+    useInView: () => true,
+    useReducedMotion: () => false,
+    animate: (_from: number, to: number, options: { onUpdate?: (latest: number) => void }) => {
+      options.onUpdate?.(to);
+      return { stop: jest.fn() };
+    },
   };
 });

@@ -2450,6 +2450,8 @@ textarea:focus-visible {
   backdrop-filter: blur(14px);
   display: flex;
   flex-direction: column;
+  pointer-events: none;
+  will-change: transform;
 }
 
 .route-price-card span {
@@ -2527,6 +2529,52 @@ textarea:focus-visible {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+}
+
+.process-progress {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  margin: 0 0 24px;
+}
+
+.process-progress-track,
+.process-progress-fill {
+  position: absolute;
+  top: 50%;
+  left: 12.5%;
+  width: 75%;
+  height: 3px;
+  border-radius: var(--radius-full);
+  transform: translateY(-50%);
+}
+
+.process-progress-track {
+  background: #e2e8ed;
+}
+
+.process-progress-fill {
+  z-index: 1;
+  background: linear-gradient(90deg, var(--secondary), #f5a623);
+  transform-origin: left center;
+}
+
+.process-progress-dot {
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  border: 2px solid #dce3e8;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  background: #fff;
+  color: var(--text-muted);
+  box-shadow: 0 6px 16px rgba(11, 49, 93, 0.1);
+  font-size: 0.72rem;
+  font-weight: 800;
 }
 
 .process-step {
@@ -3665,6 +3713,12 @@ textarea:focus-visible {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .route-price-card {
+    will-change: auto;
+  }
 }
 
 /* Mencegah auto-zoom di iOS Safari / Mobile Browser saat input diketik/ditekan */
@@ -3676,4 +3730,3 @@ textarea:focus-visible {
     font-size: 16px !important;
   }
 }
-

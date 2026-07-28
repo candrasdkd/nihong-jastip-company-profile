@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion, useReducedMotion, Variants } from 'framer-motion';
 import { MessageSquareText, BadgeCheck, Plane, House } from 'lucide-react';
 import { Language } from '../../types';
 
@@ -8,6 +8,7 @@ interface ProcessProps {
 }
 
 const Process: React.FC<ProcessProps> = ({ lang }) => {
+  const shouldReduceMotion = useReducedMotion();
   const steps = lang === 'id'
     ? [
         { title: 'Kirim detail barang', text: 'Kirim link, foto, jumlah, dan tujuan melalui WhatsApp.', icon: MessageSquareText },
@@ -39,6 +40,38 @@ const Process: React.FC<ProcessProps> = ({ lang }) => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: 'easeOut' } },
   };
 
+  const progressVariants: Variants = {
+    hidden: { scaleX: shouldReduceMotion ? 1 : 0 },
+    visible: {
+      scaleX: 1,
+      transition: {
+        duration: shouldReduceMotion ? 0 : 1.1,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const checkpointVariants: Variants = {
+    hidden: {
+      opacity: shouldReduceMotion ? 1 : 0.45,
+      scale: shouldReduceMotion ? 1 : 0.78,
+      backgroundColor: '#ffffff',
+      borderColor: '#dce3e8',
+      color: '#8a99a8',
+    },
+    visible: (index: number) => ({
+      opacity: 1,
+      scale: 1,
+      backgroundColor: '#ff7a30',
+      borderColor: '#ff7a30',
+      color: '#ffffff',
+      transition: {
+        delay: shouldReduceMotion ? 0 : 0.16 + index * 0.18,
+        duration: shouldReduceMotion ? 0 : 0.35,
+      },
+    }),
+  };
+
   return (
     <section id="process" className="process">
       <div className="container">
@@ -49,6 +82,27 @@ const Process: React.FC<ProcessProps> = ({ lang }) => {
           </div>
           <p>{lang === 'id' ? 'Tidak perlu bingung soal pembelian, konsolidasi, atau pengiriman internasional—kami bantu di setiap tahap.' : lang === 'en' ? 'No need to figure out purchasing, consolidation, or international shipping on your own.' : '購入・同梱・国際配送まで、すべてのステップをサポートします。'}</p>
         </div>
+
+        <motion.div
+          className="process-progress"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.65 }}
+          aria-hidden="true"
+        >
+          <span className="process-progress-track" />
+          <motion.span className="process-progress-fill" variants={progressVariants} />
+          {steps.map((step, index) => (
+            <motion.span
+              className="process-progress-dot"
+              custom={index}
+              variants={checkpointVariants}
+              key={step.title}
+            >
+              {index + 1}
+            </motion.span>
+          ))}
+        </motion.div>
 
         <motion.div className="process-grid" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
           {steps.map((step, index) => (

@@ -21,7 +21,8 @@ describe('Header Component', () => {
         activeMenu="home" 
         handleNavClick={mockHandleNavClick} 
         handleLangChange={jest.fn()}
-        toggleSidebar={jest.fn()} 
+        toggleSidebar={jest.fn()}
+        openWhatsApp={jest.fn()}
       />
     );
     expect(screen.getByText(/Beranda/i)).toBeInTheDocument();
@@ -37,7 +38,8 @@ describe('Header Component', () => {
         activeMenu="home" 
         handleNavClick={mockHandleNavClick} 
         handleLangChange={jest.fn()}
-        toggleSidebar={jest.fn()} 
+        toggleSidebar={jest.fn()}
+        openWhatsApp={jest.fn()}
       />
     );
     expect(screen.getAllByText(/ID/i)[0]).toBeInTheDocument();

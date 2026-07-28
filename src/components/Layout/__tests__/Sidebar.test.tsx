@@ -22,7 +22,8 @@ describe('Sidebar Component', () => {
         lang="id" 
         activeMenu="home" 
         handleNavClickWithClose={mockHandleNavClick} 
-        toggleSidebar={jest.fn()} 
+        toggleSidebar={jest.fn()}
+        openWhatsApp={jest.fn()}
       />
     );
     // Jika teks "Beranda" ditemukan, berarti komponen berhasil merender menu mobile-nya.

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion, useReducedMotion, Variants } from 'framer-motion';
 import { ArrowRight, Check, MessageCircle, ShieldCheck, Star } from 'lucide-react';
 import Image from 'next/image';
 
@@ -13,6 +13,7 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollToId }) => {
+  const shouldReduceMotion = useReducedMotion();
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -102,14 +103,22 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
               priority
             />
           </div>
-          <div className="route-price-card route-price-card-top">
+          <motion.div
+            className="route-price-card route-price-card-top"
+            animate={shouldReduceMotion ? { y: 0 } : { y: [0, -6, 0] }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+          >
             <span>JPN → IDN</span>
             <strong>¥1.300–1.700<small>/kg</small></strong>
-          </div>
-          <div className="route-price-card route-price-card-bottom">
+          </motion.div>
+          <motion.div
+            className="route-price-card route-price-card-bottom"
+            animate={shouldReduceMotion ? { y: 0 } : { y: [0, 5, 0] }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 5.4, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
+          >
             <span>IDN → JPN</span>
             <strong>¥1.100–1.500<small>/kg</small></strong>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
