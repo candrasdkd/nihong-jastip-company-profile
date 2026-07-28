@@ -82,7 +82,7 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
           <span><strong>2+</strong> {lang === 'id' ? 'tahun melayani' : lang === 'en' ? 'years serving' : '年の実績'}</span>
           <span><strong>64</strong> {lang === 'id' ? 'negara tujuan' : lang === 'en' ? 'destinations' : '配送対象国'}</span>
           <span><strong>4</strong> {lang === 'id' ? 'hub operasional' : lang === 'en' ? 'operation hubs' : '拠点'}</span>
-          <span><strong>200+</strong> {lang === 'id' ? 'customer' : lang === 'en' ? 'customers' : 'お客様'}</span>
+          <span><strong>500+</strong> {lang === 'id' ? 'customer' : lang === 'en' ? 'customers' : 'お客様'}</span>
         </div>
       </div>
 
@@ -116,14 +116,14 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         toggleFaq={toggleFaq}
       />
 
-      <motion.section 
+      <motion.section
         className="cta-section"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
         <div className="container">
-          <motion.div 
+          <motion.div
             className="cta-content"
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -145,8 +145,8 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         submitContactToWhatsApp={submitContactToWhatsApp}
       />
 
-      <Footer 
-        lang={lang} 
+      <Footer
+        lang={lang}
         handleNavClick={handleNavClick}
       />
     </div>

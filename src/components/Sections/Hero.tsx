@@ -26,8 +26,8 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
 
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
     }
@@ -36,7 +36,7 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
   return (
     <section id="home" className="hero">
       <div className="container">
-        <motion.div 
+        <motion.div
           className="hero-content"
           variants={containerVariants}
           initial="hidden"
@@ -45,7 +45,7 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
         >
           <motion.div variants={itemVariants} className="hero-badge">
             <Star size={15} fill="currentColor" />
-            {lang === 'id' ? 'Dipercaya 200+ customer' : lang === 'en' ? 'Trusted by 200+ customers' : '200人以上のお客様に選ばれています'}
+            {lang === 'id' ? 'Dipercaya 500+ customer' : lang === 'en' ? 'Trusted by 500+ customers' : '200人以上のお客様に選ばれています'}
           </motion.div>
 
           <motion.h1 variants={itemVariants}>
@@ -94,11 +94,11 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="hero-image-container">
-            <Image 
-              src="/images/hero_3d.png" 
+            <Image
+              src="/images/hero_3d.png"
               alt={lang === 'id' ? 'Ilustrasi pengiriman Jepang ke Indonesia' : lang === 'en' ? 'Japan to Indonesia shipping illustration' : '日本からインドネシアへの配送イラスト'}
-              width={600} 
-              height={600} 
+              width={600}
+              height={600}
               priority
             />
           </div>
