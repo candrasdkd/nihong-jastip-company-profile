@@ -21,7 +21,7 @@ const FAQ: React.FC<FAQProps> = ({ lang, faqData, activeFaqs, toggleFaq }) => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2>{lang === 'id' ? 'Pertanyaan Umum' : lang === 'en' ? 'Frequently Asked Questions' : 'よくある質問'}</h2>
+          <h2>{lang === 'id' ? 'Pertanyaan Umum seputar Jastip Jepang' : lang === 'en' ? 'Frequently Asked Questions' : 'よくある質問'}</h2>
           <p>{lang === 'id' ? 'Semua yang perlu Anda ketahui tentang layanan kami' : lang === 'en' ? 'Everything you need to know about our services' : '当社のサービスについて知っておくべきことすべて'}</p>
         </motion.div>
 

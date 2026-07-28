@@ -3,7 +3,7 @@ import Hero from '../Hero';
 describe('Hero Section', () => {
   it('renders correctly in Indonesian', () => {
     render(<Hero lang="id" openWhatsApp={jest.fn()} setActiveMenu={jest.fn()} scrollToId={jest.fn()} />);
-    expect(screen.getByRole('heading', { name: /Titip belanja dari Jepang/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Jastip Jepang Terpercaya/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Kirim daftar belanja/i })).toBeInTheDocument();
   });
 

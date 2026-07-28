@@ -9,8 +9,8 @@ export default function Schema({ lang }: SchemaProps) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": lang === 'id' ? "Nihong Jastip - Jasa Titip Jepang ⇄ Indonesia" : lang === 'en' ? "Nihong Jastip - Japan ⇄ Indonesia Personal Shopper" : "Nihong Jastip - 日本 ⇄ インドネシア 買い物代行",
-    "description": lang === 'id' ? "Layanan Jasa Titip (Jastip) dua arah Jepang ⇄ Indonesia dan Ekspedisi Internasional ke 64 negara. Berlokasi di Osaka, Semarang, Depok, dan Jakarta." : lang === 'en' ? "Two-way Japan ⇄ Indonesia Personal Shopper and International Expedition. Located in Osaka, Semarang, Depok, and Jakarta." : "日本 ⇄ インドネシアの両方向買い物代行、および64カ国への国際配送。大阪、スマラン、デポック、ジャカルタに拠点を置いています。",
+    "name": lang === 'id' ? "Nihong Jastip — Jastip Jepang & Jasa Titip Jepang Terpercaya" : lang === 'en' ? "Nihong Jastip - Japan ⇄ Indonesia Personal Shopper" : "Nihong Jastip - 日本 ⇄ インドネシア 買い物代行",
+    "description": lang === 'id' ? "Layanan Jastip Jepang & Jasa Titip Jepang ke Indonesia terpercaya. Melayani pembelian barang Jepang (Mercari, Amazon, Anime, Fashion) dan pengiriman ekspedisi." : lang === 'en' ? "Two-way Japan ⇄ Indonesia Personal Shopper and International Expedition. Located in Osaka, Semarang, Depok, and Jakarta." : "日本 ⇄ インドネシアの両方向買い物代行、および64カ国への国際配送。大阪、スマラン、デポック、ジャカルタに拠点を置いています。",
     "provider": {
       "@type": "LocalBusiness",
       "name": "Nihong Jastip",

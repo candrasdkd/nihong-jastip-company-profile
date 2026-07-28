@@ -31,7 +31,7 @@ describe('Pricing Section', () => {
     );
     
     // Memastikan judul baru dan nama rute muncul di layar
-    expect(screen.getByRole('heading', { name: 'Cek tarif sebelum mulai.' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Tarif Jastip Jepang & Pengiriman' })).toBeInTheDocument();
     expect(screen.getByText('Jepang -> Indonesia')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Minta estimasi' })).toBeInTheDocument();
   });

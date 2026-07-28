@@ -42,7 +42,7 @@ const Services: React.FC<ServicesProps> = ({ lang, onSelect, openWhatsApp }) => 
         >
           <div>
             <span className="eyebrow">{lang === 'id' ? 'Pilih sesuai kebutuhan' : lang === 'en' ? 'Choose what you need' : '目的に合わせて選ぶ'}</span>
-            <h2>{lang === 'id' ? 'Mau titip beli atau kirim paket?' : lang === 'en' ? 'Shopping help or parcel delivery?' : '買い物代行、それとも荷物の発送？'}</h2>
+            <h2>{lang === 'id' ? 'Layanan Jastip Jepang & Kirim Paket' : lang === 'en' ? 'Shopping help or parcel delivery?' : '買い物代行、それとも荷物の発送？'}</h2>
           </div>
           <p>{lang === 'id' ? 'Setiap layanan dilengkapi pengecekan barang dan konsultasi sebelum pengiriman.' : lang === 'en' ? 'Every service includes item checks and pre-shipment consultation.' : 'すべてのサービスで検品と発送前のご相談に対応します。'}</p>
         </motion.div>

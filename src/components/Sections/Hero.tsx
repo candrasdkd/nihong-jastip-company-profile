@@ -50,7 +50,7 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
 
           <motion.h1 variants={itemVariants}>
             {lang === 'id' ? (
-              <>Titip belanja dari Jepang, <span className="highlight">tanpa ribet.</span></>
+              <>Jastip Jepang Terpercaya — <span className="highlight">Titip Belanja Tanpa Ribet.</span></>
             ) : lang === 'en' ? (
               <>Shop from Japan, <span className="highlight">without the hassle.</span></>
             ) : (
@@ -60,7 +60,7 @@ const Hero: React.FC<HeroProps> = ({ lang, openWhatsApp, setActiveMenu, scrollTo
 
           <motion.p variants={itemVariants} className="hero-description">
             {lang === 'id'
-              ? 'Kirim link atau foto barang yang kamu mau. Tim kami bantu beli, cek, dan kirim dari Jepang sampai ke alamatmu dengan biaya yang jelas.'
+              ? 'Layanan Jastip Jepang & Jasa Titip Indonesia ⇄ Jepang terpercaya. Kirim link atau foto barang yang kamu mau (Mercari, Amazon, Anime, Fashion), tim kami bantu beli & kirim sampai ke alamatmu.'
               : lang === 'en'
                 ? 'Send us a product link or photo. We will purchase, check, and ship it from Japan to your address with clear, upfront pricing.'
                 : '欲しい商品のリンクや写真を送るだけ。購入・検品・日本からご自宅までの配送を、わかりやすい料金でサポートします。'}

@@ -14,14 +14,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
   const siteUrl = new URL(`${protocol}://${host}`);
   
   const titles = {
-    id: "Nihong Jastip — Jasa Titip Jepang ⇄ Indonesia & Ekspedisi",
+    id: "Nihong Jastip — Jastip Jepang & Jasa Titip Jepang Terpercaya",
     en: "Nihong Jastip — Japan ⇄ Indonesia Personal Shopper & Expedition",
     jp: "Nihong Jastip — 日本 ⇄ インドネシア 買い物代行および配送"
   };
 
   const descriptions = {
-    id: "Jasa Titip (Jastip) Jepang ⇄ Indonesia. Layanan aman di Osaka, Semarang, Depok, dan Jakarta. Pengiriman ke 64 negara cepat & transparan.",
-    en: "Japan ⇄ Indonesia Personal Shopper. Secure services in Osaka, Semarang, Depok, and Jakarta. Fast shipping to 64 countries.",
+    id: "Layanan Jastip Jepang & Jasa Titip Jepang ke Indonesia terpercaya. Titip beli barang Jepang (Mercari, Amazon, Anime, Fashion) & ekspedisi aman berlokasi di Osaka, Semarang, Depok, dan Jakarta.",
+    en: "Japan ⇄ Indonesia Personal Shopper & Expedition. Secure services in Osaka, Semarang, Depok, and Jakarta. Fast shipping to 64 countries.",
     jp: "日本 ⇄ インドネシアの買い物代行。大阪、スマラン、デポック、ジャカルタで安全なサービスを提供。64カ国への迅速な配送。"
   };
 
@@ -29,6 +29,17 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
     metadataBase: siteUrl,
     title: titles[lang] || titles.id,
     description: descriptions[lang] || descriptions.id,
+    keywords: [
+      'Jastip Jepang',
+      'Jasa Titip Jepang',
+      'Jastip Jepang Terpercaya',
+      'Jastip Barang Jepang',
+      'Jastip Mercari Jepang',
+      'Jastip Anime Jepang',
+      'Jastip Indonesia Jepang',
+      'Ekspedisi Jepang Indonesia',
+      'Nihong Jastip'
+    ],
     alternates: {
       canonical: `/${lang}`,
       languages: {
@@ -46,7 +57,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
         url: new URL('/og-v2.png', siteUrl).toString(),
         width: 1731,
         height: 909,
-        alt: 'Nihong Jastip — Titip belanja dari Jepang, tanpa ribet.',
+        alt: 'Nihong Jastip — Jastip Jepang & Jasa Titip Jepang Terpercaya',
       }],
     },
     twitter: {

@@ -32,7 +32,7 @@ const Pricing: React.FC<PricingProps> = ({
           transition={{ duration: 0.6 }}
         >
           <span className="eyebrow">{lang === 'id' ? 'Tarif transparan' : lang === 'en' ? 'Clear rates' : 'わかりやすい料金'}</span>
-          <h2>{lang === 'id' ? 'Cek tarif sebelum mulai.' : lang === 'en' ? 'Check rates before you start.' : 'ご利用前に料金を確認。'}</h2>
+          <h2>{lang === 'id' ? 'Tarif Jastip Jepang & Pengiriman' : lang === 'en' ? 'Check rates before you start.' : 'ご利用前に料金を確認。'}</h2>
           <p>{lang === 'id' ? 'Pilih layanan untuk melihat estimasi biaya. Kami akan konfirmasi total final sebelum diproses.' : lang === 'en' ? 'Choose a service to view estimated pricing. We confirm the final total before processing.' : 'サービスを選んで料金の目安をご確認ください。確定金額は処理前にご案内します。'}</p>
         </motion.div>
 
