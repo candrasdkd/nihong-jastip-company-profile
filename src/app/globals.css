@@ -1716,7 +1716,7 @@ html {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 0.9rem;
+  font-size: 16px;
   color: var(--text-main);
 }
 
@@ -3665,5 +3665,15 @@ textarea:focus-visible {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+}
+
+/* Mencegah auto-zoom di iOS Safari / Mobile Browser saat input diketik/ditekan */
+@media screen and (max-width: 768px) {
+  input,
+  select,
+  textarea,
+  .chatbot-input {
+    font-size: 16px !important;
   }
 }
+
