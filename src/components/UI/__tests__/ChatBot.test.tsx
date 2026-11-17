@@ -23,10 +23,15 @@ describe('ChatBot Component', () => {
     streamingText: '',
     messagesEndRef: { current: null },
     handleSend: jest.fn(),
+    sendSuggestion: jest.fn(),
+    handoffToWhatsApp: jest.fn(),
+    hasUserMessage: false,
     chatData: {
       title: 'Nihong AI',
       placeholder: 'Tanya sesuatu...',
-      send: 'Kirim'
+      send: 'Kirim',
+      suggestions: ['Berapa lama pengiriman?'],
+      handoffLabel: 'Lanjut chat dengan admin',
     }
   };
 
@@ -94,5 +99,23 @@ describe('ChatBot Component', () => {
     render(<ChatBot lang="id" />);
     const typingIndicator = screen.getByTestId('typing-indicator');
     expect(typingIndicator).toBeInTheDocument();
+  });
+
+  // Saran pertanyaan tampil sebelum user mengetik, dan klik langsung mengirim pertanyaan itu.
+  it('shows suggestion chips before the first user message and sends on click', () => {
+    mockUseChat.mockReturnValue({ ...defaultChatData, isOpen: true });
+    render(<ChatBot lang="id" />);
+    fireEvent.click(screen.getByText('Berapa lama pengiriman?'));
+    expect(defaultChatData.sendSuggestion).toHaveBeenCalledWith('Berapa lama pengiriman?');
+    expect(screen.queryByText('Lanjut chat dengan admin')).not.toBeInTheDocument();
+  });
+
+  // Setelah user bertanya: saran hilang, tombol lanjut ke admin muncul.
+  it('shows the WhatsApp handoff button after the user has asked something', () => {
+    mockUseChat.mockReturnValue({ ...defaultChatData, isOpen: true, hasUserMessage: true });
+    render(<ChatBot lang="id" />);
+    expect(screen.queryByText('Berapa lama pengiriman?')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText('Lanjut chat dengan admin'));
+    expect(defaultChatData.handoffToWhatsApp).toHaveBeenCalled();
   });
 });

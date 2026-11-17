@@ -1,154 +1,188 @@
 import Groq from 'groq-sdk';
 import { NextResponse } from 'next/server';
-import { getJastipData, getFaqData } from '../../../data';
-import { WA_NUMBER } from '../../../utils/whatsapp';
+import { buildSystemPrompt } from '../../../data/knowledge';
+import { estimateHandcarry, Direction } from '../../../utils/handcarry';
+import { fetchJpyIdr } from '../../../utils/rate';
+import { detectLang, LANG_NAME, ChatLang } from '../../../utils/detectLang';
 
-// Gunakan Node.js runtime untuk kompatibilitas groq-sdk di Vercel
+// Node.js runtime untuk kompatibilitas groq-sdk di Vercel
 export const runtime = 'nodejs';
 
+// ---------- Batasan & pengaman ----------
+const MAX_MESSAGE_CHARS = 600;
+const MAX_HISTORY = 10;
+const MAX_HISTORY_CHARS = 1200;
+const MAX_TOOL_ROUNDS = 3;
+const RATE_LIMIT = { max: 20, windowMs: 5 * 60 * 1000 };
+
+// Pembatas sederhana per IP (best-effort: di serverless tiap instance punya memori sendiri).
+const hits = new Map<string, number[]>();
+const isRateLimited = (ip: string): boolean => {
+  const now = Date.now();
+  const recent = (hits.get(ip) || []).filter((t) => now - t < RATE_LIMIT.windowMs);
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) hits.clear();
+  return recent.length > RATE_LIMIT.max;
+};
+
+const FALLBACK_MODELS = [
+  'openai/gpt-oss-20b', // cepat & mendukung tool calling
+  'openai/gpt-oss-120b', // cadangan berkapasitas besar
+  'qwen/qwen3-32b', // cadangan multibahasa
+];
+
+const TOOLS: Groq.Chat.Completions.ChatCompletionTool[] = [
+  {
+    type: 'function',
+    function: {
+      name: 'estimate_handcarry_cost',
+      description:
+        'Hitung estimasi ongkos handcarry Nihong Jastip (yen & rupiah) dari berat barang dan arah. Selalu gunakan ini untuk pertanyaan biaya; jangan menghitung sendiri.',
+      parameters: {
+        type: 'object',
+        properties: {
+          weight_kg: { type: 'number', description: 'Berat total barang dalam kilogram, termasuk kemasan.' },
+          direction: {
+            type: 'string',
+            enum: ['japan_to_id', 'id_to_japan'],
+            description: 'japan_to_id = Jepang ke Indonesia, id_to_japan = Indonesia ke Jepang.',
+          },
+        },
+        required: ['weight_kg', 'direction'],
+      },
+    },
+  },
+];
+
+const runTool = async (name: string, rawArgs: string): Promise<string> => {
+  if (name !== 'estimate_handcarry_cost') return JSON.stringify({ error: 'unknown_tool' });
+  let args: { weight_kg?: number; direction?: Direction };
+  try {
+    args = JSON.parse(rawArgs || '{}');
+  } catch {
+    return JSON.stringify({ error: 'invalid_arguments' });
+  }
+  const est = estimateHandcarry(Number(args.weight_kg), args.direction as Direction);
+  if (!est) return JSON.stringify({ error: 'invalid_weight_or_direction' });
+
+  const fx = await fetchJpyIdr();
+  const rp = (yen: number) => (fx ? Math.round((yen * fx.rate) / 1000) * 1000 : null);
+  return JSON.stringify({
+    direction: est.direction === 'japan_to_id' ? 'Jepang → Indonesia' : 'Indonesia → Jepang',
+    input_weight_kg: est.inputKg,
+    billed_weight_kg: est.billedKg,
+    rate_per_kg_yen: `${est.ratePerKgMin}–${est.ratePerKgMax}`,
+    total_yen: { min: est.totalMin, max: est.totalMax },
+    total_rupiah_approx: fx ? { min: rp(est.totalMin), max: rp(est.totalMax), idr_per_yen: Math.round(fx.rate * 100) / 100 } : null,
+    note: 'Hanya ongkos handcarry. Harga barang tidak termasuk. Total final dikonfirmasi admin.',
+  });
+};
+
+type ChatMsg = Groq.Chat.Completions.ChatCompletionMessageParam;
+
 export async function POST(req: Request) {
-    try {
-        const apiKey = process.env.GROQ_API_KEY;
-        
-        if (!apiKey || apiKey.trim() === '') {
-            console.error('[Chat API] Missing GROQ_API_KEY environment variable');
-            return NextResponse.json({ 
-                reply: 'Konfigurasi Server Error: API Key tidak ditemukan di dashboard Vercel.',
-                debug: 'Missing GROQ_API_KEY'
-            }, { status: 500 });
-        }
-
-        const groq = new Groq({ apiKey });
-
-        const { message, history } = await req.json();
-
-        if (!message) {
-            return NextResponse.json({ reply: 'Pesan kosong.' }, { status: 400 });
-        }
-
-        // Batasi history menjadi 10 pesan terakhir agar tidak menguras token
-        type ChatRole = 'user' | 'assistant';
-        const trimmedHistory: { role: ChatRole; content: string }[] = Array.isArray(history)
-            ? history.slice(-10).map((m: { role: string; content: string }) => ({
-                role: (m.role === 'user' ? 'user' : 'assistant') as ChatRole,
-                content: m.content,
-              }))
-            : [];
-
-        // --- PREPARASI DATA ---
-        const jastip = getJastipData('id');
-        const faqs = getFaqData('id');
-
-        const dataJastipText = jastip.routes.map(r => {
-            return `
-RUTE: ${r.route}
-- Harga Minimal: ${r.priceMin || ""}¥ per kg
-- Harga Maksimal: ${r.priceMax || ""}¥ per kg
----`;
-        }).join('\n');
-        const faqText = faqs.map(f => `Tanya: ${f.question}\nJawab: ${f.answer}`).join('\n\n');
-
-        // --- SYSTEM PROMPT ---
-        const systemPrompt = `
-Kamu adalah Nihong AI, asisten customer service resmi untuk "Nihong Jastip". 
-Tugasmu HANYA melayani pertanyaan tentang jasa titip handcarry (titip beli & titip bawa) rute Jepang ⇄ Indonesia, bea cukai handcarry, dan estimasi biaya berdasarkan data di bawah ini.
-
-ATURAN KETAT:
-1. TOLAK TOPIK LAIN: Jika ditanya hal di luar jastip handcarry / Nihong Jastip, tolak dengan sopan.
-2. FOKUS INDONESIA ⇄ JEPANG HANDCARRY: Nihong Jastip hanya melayani rute Jepang → Indonesia dan Indonesia → Jepang secara handcarry. Jika user menanyakan negara lain selain Indonesia dan Jepang, atau layanan ekspedisi kargo/laut, sampaikan dengan sopan bahwa saat ini layanan hanya fokus pada Jastip Handcarry Jepang ⇄ Indonesia.
-3. BARANG TERLARANG: TOLAK TEGAS narkoba, senjata, aerosol, hewan, tanaman, dan barang ilegal.
-4. ARAHKAN PEMESANAN: Berikan estimasi harga, lalu arahkan ke WhatsApp Admin.
-5. RUTE BOLAK-BALIK: Nihong Jastip melayani rute "Jepang → Indonesia" DAN "Indonesia → Jepang". Pastikan Kakak membaca data rute dengan teliti sesuai permintaan user agar harga tidak tertukar. Jika user tanya rute ke Jepang, gunakan data "Indonesia → Jepang".
-
-ATURAN MATEMATIKA PERHITUNGAN (WAJIB DIIKUTI):
-Lakukan langkah-langkah ini secara urut:
-1. Tentukan Berat Awal dari user (minimum charge 1 kg; jika di bawah 1 kg, hitung sebagai 1 kg).
-2. Lakukan Pembulatan Handcarry: kelipatan 0.5kg ke atas.
-3. Ambil "Harga Minimal" dan "Harga Maksimal" dari data rute yang tepat.
-4. Hitung: 
-   - Estimasi Total Min = (Berat Setelah Pembulatan) x (Harga Minimal)
-   - Estimasi Total Max = (Berat Setelah Pembulatan) x (Harga Maksimal)
-5. Jabarkan hasilnya ke user dengan format:
-   "Berat [X] kg dibulatkan menjadi [Y] kg.
-    Estimasi biaya: [Total Min]¥ - [Total Max]¥."
-
-=== INFO KONTAK ===
-- WhatsApp: https://wa.me/${WA_NUMBER} 
-- Instagram: https://instagram.com/nihongjastip
-
-=== DATA HARGA JASTIP HANDCARRY ===
-${dataJastipText}
-
-=== FAQ & INFO ATURAN ===
-${faqText}
-
-Sebelum memberikan jawaban akhir, pikirkan dulu di dalam hati (internal monologue) mana rute yang benar dan pastikan angka Minimal lebih kecil dari angka Maksimal.
-`;
-
-        // --- LOGIKA FALLBACK MODEL ---
-        // Urutan: Cepat & multibahasa -> Ringan -> Kapasitas besar (Backup)
-        const fallbackModels = [
-            'qwen/qwen3.8-27b',     // Prioritas 1: Cepat (~250ms), multibahasa (ID/EN/JP)
-            'openai/gpt-oss-20b',   // Prioritas 2: Ringan & cepat
-            'openai/gpt-oss-120b'   // Prioritas 3: Backup kapasitas besar
-        ];
-
-        let responseText = "";
-        let success = false;
-        let lastErrorStatus = 0;
-
-        for (const modelId of fallbackModels) {
-            try {
-                const chatCompletion = await groq.chat.completions.create({
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        ...trimmedHistory,
-                        { role: 'user', content: message }
-                    ],
-                    model: modelId,
-                    temperature: 0.2, // Low temperature agar jawaban konsisten & tidak ngaco
-                    max_tokens: 2048,
-                });
-
-                responseText = chatCompletion.choices[0]?.message?.content || "";
-
-                if (responseText) {
-                    success = true;
-                    console.log(`[Success] Respon menggunakan model: ${modelId}`);
-                    break;
-                }
-            } catch (error: any) {
-                lastErrorStatus = error?.status;
-
-                // Jika error 429 (Rate Limit) atau 404 (Model tidak tersedia/deprecated), lanjut ke model berikutnya
-                if (error?.status === 429 || error?.status === 404) {
-                    console.warn(`[Fallback] Model ${modelId} gagal (${error?.status}). Mencoba model berikutnya...`);
-                    continue;
-                } else {
-                    // Jika error lain (misal API Key salah/Auth), stop dan lempar ke catch utama
-                    throw error;
-                }
-            }
-        }
-
-        if (!success) {
-            return NextResponse.json(
-                { reply: 'Waduh, server kami lagi penuh banget Kak. Coba kirim pesan lagi dalam 1 menit ya!' },
-                { status: lastErrorStatus || 500 }
-            );
-        }
-
-        return NextResponse.json({ reply: responseText });
-
-    } catch (error: any) {
-        console.error('Groq API General Error:', error);
-        return NextResponse.json(
-            { 
-                reply: 'Maaf Kak, ada kendala teknis pada sistem AI kami. Boleh dicoba lagi ya?',
-                error: error?.message || 'Unknown Error',
-                cause: error?.cause || 'No cause provided'
-            },
-            { status: 500 }
-        );
+  try {
+    const apiKey = process.env.GROQ_API_KEY;
+    if (!apiKey || apiKey.trim() === '') {
+      console.error('[Chat API] GROQ_API_KEY tidak ditemukan');
+      return NextResponse.json({ reply: 'Maaf Kak, asisten AI sedang tidak tersedia. Silakan hubungi admin lewat WhatsApp ya.' }, { status: 503 });
     }
+
+    const ip = (req.headers.get('x-forwarded-for') || 'unknown').split(',')[0].trim();
+    if (isRateLimited(ip)) {
+      return NextResponse.json({ reply: 'Pesannya terlalu cepat Kak, coba lagi beberapa menit lagi ya.' }, { status: 429 });
+    }
+
+    const body = await req.json().catch(() => null);
+    const message = typeof body?.message === 'string' ? body.message.trim() : '';
+    const lang = ['id', 'en', 'jp'].includes(body?.lang) ? (body.lang as string) : 'id';
+
+    if (!message) return NextResponse.json({ reply: 'Pesan kosong.' }, { status: 400 });
+    if (message.length > MAX_MESSAGE_CHARS) {
+      return NextResponse.json({ reply: `Pesannya terlalu panjang Kak (maksimal ${MAX_MESSAGE_CHARS} karakter). Boleh dipersingkat ya.` }, { status: 413 });
+    }
+
+    const history: ChatMsg[] = Array.isArray(body?.history)
+      ? body.history
+          .filter((m: unknown): m is { role: string; content: string } => typeof (m as { content?: unknown })?.content === 'string')
+          .slice(-MAX_HISTORY)
+          .map((m: { role: string; content: string }) => ({
+            role: m.role === 'user' ? ('user' as const) : ('assistant' as const),
+            content: m.content.slice(0, MAX_HISTORY_CHARS),
+          }))
+      : [];
+
+    const groq = new Groq({ apiKey });
+    // Deteksi bahasa user di server lalu suntikkan perintah eksplisit tepat sebelum pesan terakhir
+    const replyLang = detectLang(message, lang as ChatLang);
+    const langRule =
+      replyLang === 'id'
+        ? 'Balas dalam bahasa Indonesia dengan sapaan "Kak".'
+        : `PENTING: user menulis dalam bahasa ${LANG_NAME[replyLang]}. Balas SELURUHNYA dalam bahasa ${LANG_NAME[replyLang]}, jangan bahasa Indonesia, jangan pakai sapaan "Kak". Terjemahkan juga isi hasil tool.`;
+
+    const baseMessages: ChatMsg[] = [
+      { role: 'system', content: buildSystemPrompt(lang) },
+      ...history,
+      { role: 'system', content: langRule },
+      { role: 'user', content: message },
+    ];
+
+    let lastStatus = 0;
+
+    for (const model of FALLBACK_MODELS) {
+      try {
+        const messages: ChatMsg[] = [...baseMessages];
+
+        for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
+          const completion = await groq.chat.completions.create({
+            model,
+            messages,
+            tools: TOOLS,
+            tool_choice: round >= MAX_TOOL_ROUNDS ? 'none' : 'auto',
+            temperature: 0.2,
+            max_tokens: 900,
+          });
+
+          const msg = completion.choices[0]?.message;
+          if (!msg) break;
+
+          if (msg.tool_calls?.length) {
+            messages.push({ role: 'assistant', content: msg.content || '', tool_calls: msg.tool_calls });
+            for (const call of msg.tool_calls) {
+              messages.push({
+                role: 'tool',
+                tool_call_id: call.id,
+                content: await runTool(call.function.name, call.function.arguments),
+              });
+            }
+            continue;
+          }
+
+          const reply = (msg.content || '').trim();
+          if (reply) return NextResponse.json({ reply });
+          break;
+        }
+      } catch (error) {
+        const status = (error as { status?: number })?.status ?? 0;
+        lastStatus = status;
+        // Rate limit / model hilang / tool-call gagal di model ini → coba model berikutnya
+        if ([400, 404, 413, 429, 500, 503].includes(status)) {
+          console.warn(`[Chat API] Model ${model} gagal (${status}), mencoba berikutnya`);
+          continue;
+        }
+        throw error;
+      }
+    }
+
+    console.error('[Chat API] Semua model gagal, status terakhir:', lastStatus);
+    return NextResponse.json(
+      { reply: 'Waduh, server kami lagi penuh Kak. Coba kirim lagi sebentar lagi, atau langsung chat admin lewat WhatsApp ya.' },
+      { status: 503 }
+    );
+  } catch (error) {
+    // Jangan bocorkan detail error ke pengguna
+    console.error('[Chat API] Error:', error);
+    return NextResponse.json({ reply: 'Maaf Kak, ada kendala teknis pada sistem AI kami. Boleh dicoba lagi ya?' }, { status: 500 });
+  }
 }

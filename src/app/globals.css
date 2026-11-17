@@ -658,3 +658,11 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 700; letter-spacing: -0
 .hero-content > *:nth-child(5) { animation-delay: 0.24s; }
 .hero-art-wrap { animation: hero-in 0.6s var(--ease) 0.1s both; }
 @media (prefers-reduced-motion: reduce) { .hero-content > *, .hero-art-wrap { animation: none; } }
+
+/* ---------- Chatbot: saran & handoff ---------- */
+.chatbot-suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.chatbot-suggestions button { padding: 8px 12px; border: 1.5px solid var(--ink); border-radius: 999px; background: #fff; font-size: 0.82rem; font-weight: 600; text-align: left; transition: transform 0.2s var(--ease), background 0.2s; }
+.chatbot-suggestions button:hover { background: var(--orange); transform: translateY(-1px); }
+.chatbot-handoff { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px; padding: 6px 12px; border: 0; border-radius: 999px; background: #fff4e2; color: var(--ink); font-size: 0.78rem; font-weight: 700; }
+.chatbot-handoff:hover { background: var(--orange); }
+.chatbot-message-bubble a { color: var(--brand); text-decoration: underline; word-break: break-all; }

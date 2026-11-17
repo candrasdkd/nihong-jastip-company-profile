@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Message, ChatBotData } from '../types';
 import { getChatBotData } from '../data';
+import { openWhatsApp } from '../utils/whatsapp';
 
-const TYPING_DELAY_MS = 2500; // Delay 2.5 detik sebelum mulai mengetik
-const CHAR_INTERVAL_MS = 18;  // Kecepatan typewriter: 1 karakter per 18ms
+const TYPING_DELAY_MS = 350; // Jeda singkat sebelum balasan mulai tampil
+const CHAR_INTERVAL_MS = 8;  // Kecepatan typewriter: 1 karakter per 8ms
 
 export const useChat = (lang: string) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,12 +66,13 @@ export const useChat = (lang: string) => {
     }, CHAR_INTERVAL_MS);
   }, []);
 
-  const handleSend = async () => {
-    if (!inputValue.trim() || isTyping) return;
+  const send = async (rawText: string) => {
+    const text = rawText.trim();
+    if (!text || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: inputValue,
+      text,
       sender: 'user',
       timestamp: new Date(),
     };
@@ -89,7 +91,7 @@ export const useChat = (lang: string) => {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage.text, history })
+        body: JSON.stringify({ message: userMessage.text, history, lang })
       });
 
       if (!res.ok) throw new Error('API Error');
@@ -110,6 +112,18 @@ export const useChat = (lang: string) => {
     }
   };
 
+  const handleSend = () => send(inputValue);
+  const sendSuggestion = (text: string) => send(text);
+
+  // Lanjut ke admin: bawa ringkasan pertanyaan user ke WhatsApp
+  const handoffToWhatsApp = () => {
+    const asked = messages.filter((m) => m.sender === 'user').slice(-3).map((m) => `- ${m.text}`);
+    const text = [chatData.handoffIntro, ...(asked.length ? ['', ...asked] : [])].join('\n');
+    openWhatsApp(text);
+  };
+
+  const hasUserMessage = messages.some((m) => m.sender === 'user');
+
   return {
     isOpen,
     setIsOpen,
@@ -120,6 +134,9 @@ export const useChat = (lang: string) => {
     streamingText,
     messagesEndRef,
     handleSend,
+    sendSuggestion,
+    handoffToWhatsApp,
+    hasUserMessage,
     chatData
   };
 };

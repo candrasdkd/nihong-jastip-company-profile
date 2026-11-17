@@ -41,4 +41,7 @@ export interface ChatBotData {
   greeting: string;
   placeholder: string;
   errorMsg: string;
+  suggestions: string[];
+  handoffLabel: string;
+  handoffIntro: string;
 }

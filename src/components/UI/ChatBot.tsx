@@ -22,6 +22,9 @@ const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
     streamingText,
     messagesEndRef,
     handleSend,
+    sendSuggestion,
+    handoffToWhatsApp,
+    hasUserMessage,
     chatData
   } = useChat(lang);
 
@@ -89,11 +92,23 @@ const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
                   </div>
                 </div>
               )}
+              {!hasUserMessage && !isTyping && (
+                <div className="chatbot-suggestions">
+                  {chatData.suggestions.map((q) => (
+                    <button key={q} type="button" onClick={() => sendSuggestion(q)}>{q}</button>
+                  ))}
+                </div>
+              )}
               <div ref={messagesEndRef} />
             </div>
 
             {/* Input */}
             <div className="chatbot-input-area">
+              {hasUserMessage && (
+                <button type="button" className="chatbot-handoff" onClick={handoffToWhatsApp}>
+                  <MessageCircle size={14} /> {chatData.handoffLabel}
+                </button>
+              )}
               <div className="chatbot-input-container">
                 <input
                   type="text"
