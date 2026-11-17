@@ -26,7 +26,7 @@ Recommended <head> snippet:
 <meta name="theme-color" content="#012E6C">
 <!-- Social preview -->
 <meta property="og:title" content="Nihong Jastip">
-<meta property="og:description" content="Jasa Titip & Ekspedisi Internasional Premium">
+<meta property="og:description" content="Jasa Titip Handcarry Jepang ⇄ Indonesia Terpercaya">
 <meta property="og:image" content="/og-image-1200x630.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">

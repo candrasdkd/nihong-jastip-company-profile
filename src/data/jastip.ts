@@ -15,15 +15,15 @@ export const JASTIP_ROUTES_BASE: JastipRouteBase[] = [
 // Terjemahan label rute per bahasa
 const JASTIP_LABELS: Record<string, { title: string; routes: Record<string, string> }> = {
   id: {
-    title: 'Via Jastip',
+    title: 'Jastip Handcarry',
     routes: { japan_to_id: 'Jepang → Indonesia', id_to_japan: 'Indonesia → Jepang' },
   },
   en: {
-    title: 'Via Jastip',
+    title: 'Jastip Handcarry',
     routes: { japan_to_id: 'Japan → Indonesia', id_to_japan: 'Indonesia → Japan' },
   },
   jp: {
-    title: '買い物代行',
+    title: 'ハンドキャリー代行',
     routes: { japan_to_id: '日本 → インドネシア', id_to_japan: 'インドネシア → 日本' },
   },
 };

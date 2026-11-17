@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
-import { getExpeditionData, getFaqData, getJastipData } from '../data';
+import { getFaqData, getJastipData } from '../data';
 import { openWhatsApp, generateWhatsAppUrl } from '../utils/whatsapp';
 import { Language } from '../types';
 
 export const useAppLogic = (lang: Language) => {
-  const [activeTab, setActiveTab] = useState<'jastip' | 'expedition'>('jastip');
   const [activeFaqs, setActiveFaqs] = useState<number[]>([]);
   const [activeMenu, setActiveMenu] = useState<string>('home');
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const jastipData = getJastipData(lang);
-  const expeditionData = getExpeditionData(lang);
   const faqData = getFaqData(lang);
 
   const toggleSidebar = (): void => setSidebarOpen(!sidebarOpen);
@@ -98,15 +96,12 @@ export const useAppLogic = (lang: Language) => {
   }, []);
 
   return {
-    activeTab,
-    setActiveTab,
     activeFaqs,
     activeMenu,
     setActiveMenu,
     sidebarOpen,
     toggleSidebar,
     jastipData,
-    expeditionData,
     faqData,
     handleOpenWhatsApp,
     toggleFaq,

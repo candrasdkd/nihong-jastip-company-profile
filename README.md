@@ -1,4 +1,4 @@
-# Nihong Jastip — Japan ⇄ Indonesia Personal Shopper & Expedition
+# Nihong Jastip — Japan ⇄ Indonesia Handcarry Personal Shopper
 
 [![Next.js](https://img.shields.io/badge/Next.js-15+-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
@@ -6,7 +6,7 @@
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 [![Jest](https://img.shields.io/badge/Jest-Tested-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/)
 
-A premium, SEO-optimized company profile website for **Nihong Jastip**, specializing in personal shopper services from Japan to Indonesia (**Jastip Jepang / Titip Jepang**) and global expedition services.
+A premium, SEO-optimized company profile website for **Nihong Jastip**, specializing in two-way handcarry personal shopper services between Japan and Indonesia (**Jastip Handcarry Jepang ⇄ Indonesia**).
 
 ## 🚀 Key Features
 

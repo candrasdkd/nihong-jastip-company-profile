@@ -13,15 +13,15 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
   const siteUrl = new URL(`${protocol}://${host}`);
   
   const titles = {
-    id: "Nihong Jastip — Jastip Jepang & Jasa Titip Jepang Terpercaya",
-    en: "Nihong Jastip — Japan ⇄ Indonesia Personal Shopper & Expedition",
-    jp: "Nihong Jastip — 日本 ⇄ インドネシア 買い物代行および配送"
+    id: "Nihong Jastip — Jastip Handcarry Jepang ⇄ Indonesia Terpercaya",
+    en: "Nihong Jastip — Japan ⇄ Indonesia Handcarry Personal Shopper",
+    jp: "Nihong Jastip — 日本 ⇄ インドネシア ハンドキャリー買い物代行"
   };
 
   const descriptions = {
-    id: "Layanan Jastip Jepang & Jasa Titip Jepang ke Indonesia terpercaya. Titip beli barang Jepang (Mercari, Amazon, Anime, Fashion) & ekspedisi aman berlokasi di Osaka, Semarang, Depok, dan Jakarta.",
-    en: "Japan ⇄ Indonesia Personal Shopper & Expedition. Secure services in Osaka, Semarang, Depok, and Jakarta. Fast shipping to 64 countries.",
-    jp: "日本 ⇄ インドネシアの買い物代行。大阪、スマラン、デポック、ジャカルタで安全なサービスを提供。64カ国への迅速な配送。"
+    id: "Layanan Jastip Handcarry Jepang ⇄ Indonesia terpercaya. Titip beli & titip bawa barang (Mercari, Amazon, Anime, Fashion) berlokasi di Osaka, Semarang, Depok, dan Jakarta.",
+    en: "Japan ⇄ Indonesia two-way handcarry personal shopper. Secure services in Osaka, Semarang, Depok, and Jakarta.",
+    jp: "日本 ⇄ インドネシアのハンドキャリー買い物代行。大阪、スマラン、デポック、ジャカルタ拠点で安心・迅速に対応します。"
   };
 
   return {
@@ -31,12 +31,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
     keywords: [
       'Jastip Jepang',
       'Jasa Titip Jepang',
+      'Jastip Handcarry Jepang',
       'Jastip Jepang Terpercaya',
       'Jastip Barang Jepang',
       'Jastip Mercari Jepang',
       'Jastip Anime Jepang',
       'Jastip Indonesia Jepang',
-      'Ekspedisi Jepang Indonesia',
       'Nihong Jastip'
     ],
     alternates: {

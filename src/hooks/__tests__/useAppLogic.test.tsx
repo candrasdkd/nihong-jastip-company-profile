@@ -18,11 +18,11 @@ describe('useAppLogic', () => {
 
   // PENJELASAN TEST 1:
   // Memastikan hooks diinisialisasi dengan state standar yang benar.
-  // Tab layanan "jastip" harus aktif pertama kali, tak ada FAQ terbuka, dan menu saat ini adalah "home".
+  // Rute handcarry tersedia, tak ada FAQ terbuka, dan menu saat ini adalah "home".
   it('initializes with default values', () => {
     const { result } = renderHook(() => useAppLogic('id'));
 
-    expect(result.current.activeTab).toBe('jastip');
+    expect(result.current.jastipData.routes).toHaveLength(2);
     expect(result.current.activeFaqs).toEqual([]);
     expect(result.current.activeMenu).toBe('home');
     expect(result.current.sidebarOpen).toBe(false);

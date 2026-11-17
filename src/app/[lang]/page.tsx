@@ -28,15 +28,12 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
   const router = useRouter();
 
   const {
-    activeTab,
-    setActiveTab,
     activeFaqs,
     activeMenu,
     setActiveMenu,
     sidebarOpen,
     toggleSidebar,
     jastipData,
-    expeditionData,
     faqData,
     handleOpenWhatsApp,
     toggleFaq,
@@ -81,7 +78,7 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
       <div className="trust-strip" aria-label={lang === 'id' ? 'Keunggulan layanan' : 'Service highlights'}>
         <div className="container">
           <span><CountUp value={2} suffix="+" /> {lang === 'id' ? 'tahun melayani' : lang === 'en' ? 'years serving' : '年の実績'}</span>
-          <span><CountUp value={64} /> {lang === 'id' ? 'negara tujuan' : lang === 'en' ? 'destinations' : '配送対象国'}</span>
+          <span><CountUp value={2} /> {lang === 'id' ? 'negara (ID ⇄ JP)' : lang === 'en' ? 'countries (ID ⇄ JP)' : 'カ国 (ID ⇄ JP)'}</span>
           <span><CountUp value={4} /> {lang === 'id' ? 'hub operasional' : lang === 'en' ? 'operation hubs' : '拠点'}</span>
           <span><CountUp value={500} suffix="+" /> {lang === 'id' ? 'customer' : lang === 'en' ? 'customers' : 'お客様'}</span>
         </div>
@@ -92,8 +89,7 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
       <Services
         lang={lang}
         openWhatsApp={handleOpenWhatsApp}
-        onSelect={(service) => {
-          setActiveTab(service);
+        onSelect={() => {
           setActiveMenu('pricing');
           scrollToId('pricing');
         }}
@@ -101,10 +97,7 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
 
       <Pricing
         lang={lang}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
         jastipData={jastipData}
-        expeditionData={expeditionData}
         openWhatsApp={handleOpenWhatsApp}
       />
 

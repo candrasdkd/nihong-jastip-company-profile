@@ -43,10 +43,10 @@ const Footer: React.FC<FooterProps> = ({ lang, handleNavClick }) => {
             </div>
             <p>
               {lang === 'id'
-                ? 'Mitra pengiriman internasional terpercaya Anda. Menghubungkan Jepang dan Indonesia dengan layanan aman dan cepat.'
+                ? 'Mitra jastip handcarry terpercaya Anda. Menghubungkan Jepang dan Indonesia dengan layanan aman dan cepat.'
                 : lang === 'en'
-                  ? 'Your trusted international shipping partner. Connecting Japan and Indonesia with safe and fast services.'
-                  : '信頼できる国際配送パートナー。日本とインドネシアを安全かつ迅速なサービスで結びます。'}
+                  ? 'Your trusted handcarry partner. Connecting Japan and Indonesia with safe and fast personal shopper services.'
+                  : '信頼できるハンドキャリーパートナー。日本とインドネシアを安全かつ迅速に結びます。'}
             </p>
             <div className="footer-socials">
               <a href="https://instagram.com/nihongjastip" target="_blank" rel="noreferrer" aria-label="Instagram">

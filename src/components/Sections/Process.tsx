@@ -80,7 +80,7 @@ const Process: React.FC<ProcessProps> = ({ lang }) => {
             <span className="eyebrow">{lang === 'id' ? 'Mudah dari awal' : lang === 'en' ? 'Simple from day one' : 'はじめから簡単'}</span>
             <h2>{lang === 'id' ? 'Empat langkah, lalu beres.' : lang === 'en' ? 'Four steps. Done.' : '4ステップで完了。'}</h2>
           </div>
-          <p>{lang === 'id' ? 'Tidak perlu bingung soal pembelian, konsolidasi, atau pengiriman internasional—kami bantu di setiap tahap.' : lang === 'en' ? 'No need to figure out purchasing, consolidation, or international shipping on your own.' : '購入・同梱・国際配送まで、すべてのステップをサポートします。'}</p>
+          <p>{lang === 'id' ? 'Tidak perlu bingung soal pembelian, konsolidasi, atau proses handcarry Jepang ⇄ Indonesia—kami bantu di setiap tahap.' : lang === 'en' ? 'No need to figure out purchasing, consolidation, or Japan ⇄ Indonesia handcarry on your own.' : '購入・おまとめ・日本⇄インドネシアのハンドキャリーまで、すべてのステップをサポートします。'}</p>
         </div>
 
         <motion.div

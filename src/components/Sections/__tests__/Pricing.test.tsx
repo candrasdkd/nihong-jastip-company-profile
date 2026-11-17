@@ -3,57 +3,26 @@ import Pricing from '../Pricing';
 describe('Pricing Section', () => {
   // Data simulasi untuk rute jastip (Handcarry)
   const mockJastipData = {
-    title: 'Harga Jastip',
+    title: 'Jastip Handcarry',
     routes: [
-      { id: '1', route: 'Jepang -> Indonesia', price: '100¥', priceMin: 100, priceMax: 200 }
+      { route: 'Jepang → Indonesia', price: '1300¥ - 1700¥ / kg', priceMin: 1300, priceMax: 1700 },
+      { route: 'Indonesia → Jepang', price: '1100¥ - 1500¥ / kg', priceMin: 1100, priceMax: 1500 }
     ]
   };
 
-  // Data simulasi untuk pengiriman via Ekspedisi Internasional
-  const mockExpeditionData = [
-    { country: 'Jepang', estimates: '3-5 hari', prices: [{ range: '1kg', price: '1000¥' }] }
-  ];
-
-  // PENJELASAN TEST 1:
-  // Mengetes tampilan Tab "Via Jastip". 
-  // Kita memastikan data yang kita oper via props (jastipData) dirender dengan benar 
-  // oleh komponen ke dalam elemen HTML (DOM).
-  it('renders jastip tab correctly', () => {
+  it('renders handcarry routes and rates correctly', () => {
     render(
       <Pricing 
         lang="id" 
-        activeTab="jastip" 
-        setActiveTab={jest.fn()} 
         jastipData={mockJastipData as any} 
-        expeditionData={mockExpeditionData as any} 
         openWhatsApp={jest.fn()}
       />
     );
     
-    // Memastikan judul baru dan nama rute muncul di layar
-    expect(screen.getByRole('heading', { name: 'Tarif Jastip Jepang & Pengiriman' })).toBeInTheDocument();
-    expect(screen.getByText('Jepang -> Indonesia')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Tarif Jastip Handcarry/i })).toBeInTheDocument();
+    expect(screen.getByText('Jepang → Indonesia')).toBeInTheDocument();
+    expect(screen.getByText('Indonesia → Jepang')).toBeInTheDocument();
+    expect(screen.getByText('1300¥ - 1700¥ / kg')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Minta estimasi' })).toBeInTheDocument();
-  });
-
-  // PENJELASAN TEST 2:
-  // Mengetes tampilan Tab "Via Ekspedisi".
-  // Kita mengubah prop `activeTab` menjadi 'expedition' dan memastikan komponen 
-  // merubah tampilannya untuk menunjukkan daftar negara (misal: Jepang) dan harganya.
-  it('renders expedition tab correctly', () => {
-    render(
-      <Pricing 
-        lang="id" 
-        activeTab="expedition" 
-        setActiveTab={jest.fn()} 
-        jastipData={mockJastipData as any} 
-        expeditionData={mockExpeditionData as any} 
-        openWhatsApp={jest.fn()}
-      />
-    );
-    
-    // Memastikan nama negara dan harga ekspedisinya muncul di layar
-    expect(screen.getAllByText('Jepang')[0]).toBeInTheDocument();
-    expect(screen.getByText('1000¥')).toBeInTheDocument();
   });
 });

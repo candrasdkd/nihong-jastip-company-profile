@@ -122,9 +122,9 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
                 <label htmlFor="contact-service">{lang === 'id' ? 'Kebutuhan' : lang === 'en' ? 'Service needed' : 'ご希望のサービス'}</label>
                 <select id="contact-service" name="service" defaultValue="" required>
                   <option value="" disabled>{lang === 'id' ? 'Pilih layanan' : lang === 'en' ? 'Choose a service' : 'サービスを選択'}</option>
-                  <option value="Jastip Jepang → Indonesia">Jastip Jepang → Indonesia</option>
-                  <option value="Jastip Indonesia → Jepang">Jastip Indonesia → Jepang</option>
-                  <option value="Ekspedisi internasional">{lang === 'id' ? 'Ekspedisi internasional' : lang === 'en' ? 'International shipping' : '国際配送'}</option>
+                  <option value="Jastip Handcarry Jepang → Indonesia">{lang === 'id' ? 'Jastip Handcarry Jepang → Indonesia' : lang === 'en' ? 'Handcarry Japan → Indonesia' : 'ハンドキャリー 日本 → インドネシア'}</option>
+                  <option value="Jastip Handcarry Indonesia → Jepang">{lang === 'id' ? 'Jastip Handcarry Indonesia → Jepang' : lang === 'en' ? 'Handcarry Indonesia → Japan' : 'ハンドキャリー インドネシア → 日本'}</option>
+                  <option value="Titip Beli Barang Jepang">{lang === 'id' ? 'Titip Beli Barang Jepang (Mercari/Amazon)' : lang === 'en' ? 'Japan Buy-for-Me (Mercari/Amazon)' : '日本商品の買い付け代行'}</option>
                   <option value="Lainnya">{lang === 'id' ? 'Lainnya / belum yakin' : lang === 'en' ? 'Other / not sure yet' : 'その他 / まだ未定'}</option>
                 </select>
               </div>

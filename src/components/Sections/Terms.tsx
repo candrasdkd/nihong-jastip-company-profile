@@ -107,14 +107,14 @@ const Terms: React.FC<TermsProps> = ({ lang }) => {
             <h4>{lang === 'id' ? 'Warehouse & Tanggung Jawab' : lang === 'en' ? 'Warehouse & Responsibility' : '倉庫と責任'}</h4>
             <ul>
               <li>{lang === 'id' ? 'Tanggung jawab kami setelah barang diterima di warehouse' : lang === 'en' ? 'Our responsibility starts after the item is received at the warehouse' : '当社の責任は、商品が倉庫に到着した後に開始されます'}</li>
-              <li>{lang === 'id' ? 'Kerusakan/kehilangan dari ekspedisi lokal bukan tanggung jawab kami' : lang === 'en' ? 'Damage/loss from local expedition is not our responsibility' : '現地の配送業者による破損/紛失は当社の責任ではありません'}</li>
+              <li>{lang === 'id' ? 'Kerusakan/kehilangan dari kurir lokal bukan tanggung jawab kami' : lang === 'en' ? 'Damage/loss from local courier is not our responsibility' : '現地の配送業者による破損/紛失は当社の責任ではありません'}</li>
               <li>{lang === 'id' ? 'Berat dihitung termasuk box/kemasan' : lang === 'en' ? 'Weight is calculated including box/packaging' : '重量は箱/梱包を含めて計算されます'}</li>
             </ul>
 
             <h4>{lang === 'id' ? 'Pengiriman' : lang === 'en' ? 'Shipping' : '発送'}</h4>
             <ul>
               <li>{lang === 'id' ? 'Alamat wajib dicantumkan sebelum keberangkatan' : lang === 'en' ? 'Address must be provided before departure' : '出発前に住所を必ず提供する必要があります'}</li>
-              <li>{lang === 'id' ? 'Dikirim 1–3 hari setelah landing Jepang/Korea/Indonesia' : lang === 'en' ? 'Shipped 1–3 days after landing in Japan/Korea/Indonesia' : '日本/韓国/インドネシア到着後1〜3日で発送'}</li>
+              <li>{lang === 'id' ? 'Dikirim 1–3 hari setelah landing di Jepang/Indonesia' : lang === 'en' ? 'Shipped 1–3 days after landing in Japan/Indonesia' : '日本/インドネシア到着後1〜3日で発送'}</li>
               <li>{lang === 'id' ? 'Estimasi 2–4 hari tergantung flight' : lang === 'en' ? 'Estimate 2–4 days depending on flight' : 'フライトにより推定2〜4日'}</li>
               <li>{lang === 'id' ? 'Jika delay penerbangan, waktu pengiriman menyesuaikan' : lang === 'en' ? 'If flight is delayed, delivery time will adjust' : 'フライトが遅延した場合、配送時間は調整されます'}</li>
             </ul>

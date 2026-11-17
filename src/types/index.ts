@@ -15,17 +15,6 @@ export interface JastipData {
   routes: JastipRoute[];
 }
 
-export interface ExpeditionPrice {
-  range: string;
-  price: string;
-}
-
-export interface ExpeditionCountry {
-  country: string;
-  estimates: string;
-  prices: ExpeditionPrice[];
-}
-
 export interface FaqItem {
   question: string;
   answer: string;
