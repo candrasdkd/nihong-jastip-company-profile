@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server';
 import { getJastipData, getExpeditionData, getFaqData } from '../../../data';
 import { WA_NUMBER } from '../../../utils/whatsapp';
 
-// Gunakan Edge runtime untuk kompatibilitas Cloudflare Workers
-export const runtime = 'edge';
+// Gunakan Node.js runtime untuk kompatibilitas groq-sdk di Vercel
+export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
     try {
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
         if (!apiKey || apiKey.trim() === '') {
             console.error('[Chat API] Missing GROQ_API_KEY environment variable');
             return NextResponse.json({ 
-                reply: 'Konfigurasi Server Error: API Key tidak ditemukan di dashboard Cloudflare.',
+                reply: 'Konfigurasi Server Error: API Key tidak ditemukan di dashboard Vercel.',
                 debug: 'Missing GROQ_API_KEY'
             }, { status: 500 });
         }

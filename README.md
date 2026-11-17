@@ -3,17 +3,17 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15+-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Deployed-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://pages.cloudflare.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 [![Jest](https://img.shields.io/badge/Jest-Tested-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/)
 
 A premium, SEO-optimized company profile website for **Nihong Jastip**, specializing in personal shopper services from Japan to Indonesia (**Jastip Jepang / Titip Jepang**) and global expedition services.
 
 ## 🚀 Key Features
 
-- **Next.js 15+ App Router (Edge Runtime)**: Dikonfigurasi khusus untuk berjalan di atas infrastruktur Cloudflare Workers yang sangat cepat.
+- **Next.js 16 App Router**: Dioptimalkan untuk deployment seamless di Vercel.
 - **React 19 Ready**: Memanfaatkan fitur terbaru React 19 untuk performa maksimal.
 - **Advanced i18n Support**: Full internationalization support for Indonesian (ID), English (EN), and Japanese (JA) via URL-based routing.
-- **Intelligent AI Chatbot**: Integrated AI assistant powered by **Groq SDK (Llama 3)** running on Edge Runtime for instant responses.
+- **Intelligent AI Chatbot**: Integrated AI assistant powered by **Groq SDK (Llama 3)** running on Node.js serverless route for instant responses.
 - **Robust Testing Suite**: 30+ unit tests covering components, hooks, and utility functions using **Jest** and **React Testing Library**.
 - **SEO & Performance Optimized**: 
   - Dynamic Metadata & OpenGraph tags.
@@ -24,8 +24,8 @@ A premium, SEO-optimized company profile website for **Nihong Jastip**, speciali
 ## 🛠️ Tech Stack
 
 - **Framework**: [Next.js](https://nextjs.org/) (App Router)
-- **Runtime**: [Cloudflare Pages](https://pages.cloudflare.com/) via [OpenNext](https://opennext.js.org/)
-- **Package Manager**: [Yarn 4 (Berry)](https://yarnpkg.com/)
+- **Runtime**: [Vercel](https://vercel.com/) (Node.js Serverless Functions)
+- **Package Manager**: [Yarn](https://yarnpkg.com/)
 - **AI Integration**: [Groq Cloud SDK](https://console.groq.com/)
 - **Testing**: [Jest](https://jestjs.io/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 - **Styling**: Vanilla CSS (Custom Design Tokens)
@@ -59,19 +59,13 @@ yarn test:ci
 
 **Catatan Kompatibilitas React 19:** Pengujian dikonfigurasi untuk memaksa `NODE_ENV=test` dan `customExportConditions: ['development']` guna memastikan fungsi `act()` dari React Testing Library berjalan dengan benar.
 
-## ⚙️ Deployment (Cloudflare Pages)
+## ⚙️ Deployment (Vercel)
 
-Proyek ini di-deploy menggunakan **OpenNext** untuk mengubah build Next.js menjadi format Cloudflare Workers.
+Proyek ini dikonfigurasi untuk deployment otomatis di **Vercel** melalui [vercel.json](./vercel.json).
 
 ### Environment Variables
-Pastikan variabel berikut diatur di Dashboard Cloudflare Pages (Settings -> Variables and Secrets):
+Pastikan variabel berikut diatur di Dashboard Vercel (Settings → Environment Variables):
 - `GROQ_API_KEY`: API Key dari Groq Cloud Console.
-
-### Edge Runtime Configuration
-Semua dynamic routes menggunakan konfigurasi:
-```typescript
-export const runtime = 'edge';
-```
 
 ## 🏃 Getting Started
 
@@ -100,9 +94,7 @@ export const runtime = 'edge';
 ## 📦 Scripts
 
 - `yarn dev`: Jalankan server pengembangan.
-- `yarn build`: Build Next.js standar.
-- `yarn build:cf`: Build khusus untuk Cloudflare Pages (OpenNext).
-- `yarn deploy`: Build dan deploy langsung ke Cloudflare.
+- `yarn build`: Build Next.js untuk produksi (Vercel).
 - `yarn test:ci`: Jalankan test suite lengkap untuk CI/CD.
 
 ---
