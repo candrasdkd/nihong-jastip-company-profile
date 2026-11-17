@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calculator, Home, ListChecks, HelpCircle, Mail, X, MessageCircle } from 'lucide-react';
+import { ShoppingBag, Calculator, Home, ListChecks, HelpCircle, Mail, X, MessageCircle } from 'lucide-react';
 
 import { Language, NavClickHandlers } from '../../types';
 
@@ -24,6 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     { id: 'home', label: lang === 'id' ? 'Beranda' : lang === 'en' ? 'Home' : 'ホーム', icon: Home },
     { id: 'process', label: lang === 'id' ? 'Cara Kerja' : lang === 'en' ? 'How It Works' : 'ご利用の流れ', icon: ListChecks },
     { id: 'calculator', label: lang === 'id' ? 'Cek Tarif' : lang === 'en' ? 'Rates' : '料金', icon: Calculator },
+    { id: 'order', label: lang === 'id' ? 'Titip Beli' : lang === 'en' ? 'Buy-for-me' : '買い付け', icon: ShoppingBag },
     { id: 'faq', label: 'FAQ', icon: HelpCircle },
     { id: 'contact', label: lang === 'id' ? 'Kontak' : lang === 'en' ? 'Contact' : 'お問い合わせ', icon: Mail },
   ];

@@ -16,6 +16,7 @@ import Hero from '../../components/Sections/Hero';
 import Process from '../../components/Sections/Process';
 import Services from '../../components/Sections/Services';
 import Stats from '../../components/Sections/Stats';
+import OrderBuilder from '../../components/Sections/OrderBuilder';
 import Hubs from '../../components/Sections/Hubs';
 import ScrollProgress from '../../components/UI/ScrollProgress';
 import Calculator from '../../components/Sections/Calculator';
@@ -98,6 +99,8 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
       <Hubs lang={lang} />
 
       <Calculator lang={lang} />
+
+      <OrderBuilder lang={lang} />
       <Terms lang={lang} />
 
       <FAQ

@@ -672,3 +672,66 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 700; letter-spacing: -0
 .calc-chips button.special.picked { border-style: solid; border-color: var(--orange-d); background: #fff4e2; }
 .calc-chips button em { margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: #fff4e2; color: var(--orange-d); font-size: 0.68rem; font-style: normal; font-weight: 800; }
 .calc-total-special { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+
+/* ---------- Titip Beli: daftar belanja & pengecek barang ---------- */
+.order { padding: clamp(72px, 10vw, 128px) 0; background: #fff7ea; border-block: 1px solid #f1dfc2; }
+.order-grid { display: grid; grid-template-columns: 1.5fr 0.7fr; gap: clamp(20px, 3vw, 36px); align-items: start; }
+.order-card { background: #fff; border: 2px solid var(--ink); border-radius: 28px; padding: clamp(18px, 3vw, 32px); box-shadow: 8px 8px 0 var(--ink); min-width: 0; }
+.order-rows { display: grid; gap: 14px; }
+.order-row { position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start; padding: 14px; background: var(--paper); border: 1.5px solid var(--line); border-radius: 20px; transition: border-color 0.2s, background 0.2s; }
+.order-row.special { background: #fff4e2; border-color: var(--orange); }
+.order-row.prohibited { background: #fdecea; border-color: #d9382a; }
+.order-num { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 10px; background: var(--brand); color: #fff; font-weight: 800; font-size: 0.85rem; transform: rotate(-6deg); }
+.order-fields { display: grid; gap: 10px; min-width: 0; }
+.order-fields input { width: 100%; min-width: 0; padding: 11px 13px; background: #fff; border: 1.5px solid var(--line); border-radius: var(--r-md); transition: border-color 0.2s; }
+.order-fields input:focus, .checker-input:focus { outline: none; border-color: var(--ink); }
+.order-mini { display: grid; grid-template-columns: 0.6fr 1fr 1.4fr; gap: 10px; }
+.order-mini label { display: grid; gap: 4px; min-width: 0; }
+.order-mini span { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.04em; color: var(--mute); }
+.order-flag { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; }
+.order-flag.warn { color: var(--orange-d); }
+.order-flag.danger { color: #c0291a; }
+.order-remove { width: 36px; height: 36px; display: grid; place-items: center; border: 1.5px solid var(--line); border-radius: 50%; background: #fff; color: var(--mute); }
+.order-remove:hover { color: #c0291a; border-color: #c0291a; }
+.order-add { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 2px dashed var(--ink); border-radius: 999px; background: transparent; font-weight: 700; }
+.order-add:hover:not(:disabled) { background: var(--paper-2); }
+.order-add:disabled { opacity: 0.4; cursor: not-allowed; }
+.order-summary { margin-top: 22px; padding: 20px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; background: var(--brand); color: #fff; border-radius: 22px; }
+.order-sum-label { display: block; font-size: 0.78rem; color: #9fb3d9; font-weight: 600; margin-bottom: 4px; }
+.order-summary strong { font-family: var(--font-head); font-size: clamp(1.8rem, 3.4vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; color: var(--orange); line-height: 1; font-variant-numeric: tabular-nums; }
+.order-sum-rp { display: block; margin-top: 6px; font-weight: 600; }
+.order-sum-rp small { margin-left: 6px; font-size: 0.72rem; color: #9fb3d9; }
+.order-sum-rp small.on { color: #6bdc9a; }
+.order-sum-empty { font-size: 0.9rem; color: #c9d6ef; }
+.order-send { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--orange); color: var(--ink); font-weight: 800; box-shadow: 0 5px 0 var(--orange-d); transition: transform 0.2s var(--ease), box-shadow 0.2s; }
+.order-send:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 7px 0 var(--orange-d); }
+.order-send:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+.order-notes { margin-top: 16px; display: grid; gap: 4px; font-size: 0.82rem; color: var(--mute); }
+.order-notes li::before { content: '* '; }
+.order-notes li.danger { color: #c0291a; font-weight: 700; }
+
+.checker { position: sticky; top: 110px; padding: 24px; background: var(--orange); color: var(--ink); border: 2px solid var(--ink); border-radius: 28px; border-top-left-radius: 56px; box-shadow: 8px 8px 0 var(--ink); }
+.checker-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px; background: var(--brand); color: var(--orange); transform: rotate(-6deg); margin-bottom: 16px; }
+.checker h3 { font-size: 1.5rem; margin-bottom: 6px; }
+.checker > p { font-size: 0.92rem; margin-bottom: 16px; opacity: 0.85; }
+.checker-input { width: 100%; padding: 13px 15px; background: #fff; border: 2px solid var(--ink); border-radius: 14px; }
+.checker-result { margin-top: 14px; display: grid; gap: 6px; padding: 14px; background: #fff; border: 2px solid var(--ink); border-radius: 18px; font-size: 0.9rem; }
+.checker-result strong { display: flex; align-items: center; gap: 8px; font-size: 1rem; }
+.checker-result.prohibited strong { color: #c0291a; }
+.checker-result.special strong { color: var(--orange-d); }
+.checker-result.ok strong { color: #1c8a52; }
+.checker-result button { justify-self: start; margin-top: 4px; padding: 8px 14px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; font-weight: 700; font-size: 0.82rem; }
+
+@media (max-width: 1024px) {
+  .order-grid { grid-template-columns: 1fr; }
+  .checker { position: static; order: -1; }
+}
+@media (max-width: 720px) {
+  .order-card { box-shadow: 5px 5px 0 var(--ink); border-radius: 22px; }
+  .order-row { grid-template-columns: auto 1fr; }
+  .order-remove { position: absolute; top: 10px; right: 10px; }
+  .order-mini { grid-template-columns: 1fr 1fr; }
+  .order-mini .order-note { grid-column: 1 / -1; }
+  .order-summary { flex-direction: column; align-items: stretch; }
+  .checker { box-shadow: 5px 5px 0 var(--ink); }
+}

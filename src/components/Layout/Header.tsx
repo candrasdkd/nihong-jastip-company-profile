@@ -60,6 +60,9 @@ const Header: React.FC<HeaderProps> = ({
           <a href="#calculator" onClick={handleNavClick('calculator')} className={activeMenu === 'calculator' ? 'active' : ''}>
             {lang === 'id' ? 'Cek Tarif' : lang === 'en' ? 'Rates' : '料金'}
           </a>
+          <a href="#order" onClick={handleNavClick('order')} className={activeMenu === 'order' ? 'active' : ''}>
+            {lang === 'id' ? 'Titip Beli' : lang === 'en' ? 'Buy-for-me' : '買い付け'}
+          </a>
           <a href="#faq" onClick={handleNavClick('faq')} className={activeMenu === 'faq' ? 'active' : ''}>
             FAQ
           </a>
