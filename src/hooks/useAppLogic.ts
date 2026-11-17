@@ -71,7 +71,7 @@ export const useAppLogic = (lang: Language) => {
   };
 
   useEffect(() => {
-    const ids = ['home', 'process', 'services', 'pricing', 'terms', 'faq', 'contact'];
+    const ids = ['home', 'process', 'services', 'calculator', 'terms', 'faq', 'contact'];
     const sections = ids.map((id) => document.getElementById(id)).filter((sec): sec is HTMLElement => sec !== null);
 
     const observer = new IntersectionObserver(

@@ -16,7 +16,7 @@ const Services: React.FC<ServicesProps> = ({ lang, onSelect, openWhatsApp }) => 
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15
+        staggerChildren: 0.08
       }
     }
   };
@@ -26,7 +26,7 @@ const Services: React.FC<ServicesProps> = ({ lang, onSelect, openWhatsApp }) => 
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: 0.4, ease: "easeOut" }
     }
   };
 
@@ -35,10 +35,10 @@ const Services: React.FC<ServicesProps> = ({ lang, onSelect, openWhatsApp }) => 
       <div className="container">
         <motion.div
           className="section-heading split-heading"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: '0px 0px -8% 0px' }}
+          transition={{ duration: 0.4 }}
         >
           <div>
             <span className="eyebrow">{lang === 'id' ? 'Fokus layanan kami' : lang === 'en' ? 'Our core focus' : 'サービス内容'}</span>
@@ -52,7 +52,7 @@ const Services: React.FC<ServicesProps> = ({ lang, onSelect, openWhatsApp }) => 
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: '0px 0px -8% 0px' }}
         >
           {/* Jastip Handcarry Service */}
           <motion.div variants={itemVariants} className="service-card featured">
@@ -62,9 +62,17 @@ const Services: React.FC<ServicesProps> = ({ lang, onSelect, openWhatsApp }) => 
             </div>
             <h3>{lang === 'id' ? 'Jastip Handcarry' : lang === 'en' ? 'Jastip Handcarry' : 'ハンドキャリー代行'}</h3>
             <p>{lang === 'id' ? 'Layanan titip beli dan titip bawa langsung di koper tim kami khusus rute Jepang ⇄ Indonesia yang cepat, aman, dan transparan' : lang === 'en' ? 'Personal shopper and handcarry luggage service exclusively between Japan and Indonesia with fast, safe, and transparent pricing' : '日本とインドネシア専用のスピード・安心ハンドキャリー買い物＆持ち込み代行サービス'}</p>
+            <div className="rate-tiles">
+              <div className="rate-tile navy">
+                <span>JPN → IDN</span>
+                <strong>¥1.300–1.700<small>/kg</small></strong>
+              </div>
+              <div className="rate-tile orange">
+                <span>IDN → JPN</span>
+                <strong>¥1.100–1.500<small>/kg</small></strong>
+              </div>
+            </div>
             <ul>
-              <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Jepang → Indonesia: 1300¥ - 1700¥ / kg' : lang === 'en' ? 'Japan → Indonesia: 1300¥ - 1700¥ / kg' : '日本 → インドネシア: 1kg 1300¥ - 1700¥'}</li>
-              <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Indonesia → Jepang: 1100¥ - 1500¥ / kg' : lang === 'en' ? 'Indonesia → Japan: 1100¥ - 1500¥ / kg' : 'インドネシア → 日本: 1kg 1100¥ - 1500¥'}</li>
               <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Titip beli (Mercari, Amazon JP, Anime, Fashion) & titip bawa' : lang === 'en' ? 'Buy-for-me (Mercari, Amazon JP, Anime, Fashion) & carry-for-me' : '買い付け代行（メルカリ・Amazon等）＆持ち込み代行'}</li>
               <li><CheckCircle2 size={18} /> {lang === 'id' ? 'Penerbangan rutin 2–5 kali setiap bulan' : lang === 'en' ? 'Scheduled flights 2–5 times per month' : '月2〜5回の定期フライト便'}</li>
             </ul>
@@ -74,7 +82,7 @@ const Services: React.FC<ServicesProps> = ({ lang, onSelect, openWhatsApp }) => 
           </motion.div>
 
           {/* Additional Service */}
-          <motion.div variants={itemVariants} className="service-card">
+          <motion.div variants={itemVariants} className="service-card alt">
             <span className="service-label">{lang === 'id' ? 'Butuh bantuan ekstra' : lang === 'en' ? 'Extra help' : '追加サポート'}</span>
             <div className="service-icon-wrapper">
               <Package size={32} />

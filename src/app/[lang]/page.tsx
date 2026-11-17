@@ -15,11 +15,15 @@ import Footer from '../../components/Layout/Footer';
 import Hero from '../../components/Sections/Hero';
 import Process from '../../components/Sections/Process';
 import Services from '../../components/Sections/Services';
-import Pricing from '../../components/Sections/Pricing';
+import Stats from '../../components/Sections/Stats';
+import Hubs from '../../components/Sections/Hubs';
+import ScrollProgress from '../../components/UI/ScrollProgress';
+import Calculator from '../../components/Sections/Calculator';
+import Categories from '../../components/Sections/Categories';
+import StickyCta from '../../components/UI/StickyCta';
 import Terms from '../../components/Sections/Terms';
 import FAQ from '../../components/Sections/FAQ';
 import Contact from '../../components/Sections/Contact';
-import CountUp from '../../components/UI/CountUp';
 import { useRouter } from 'next/navigation';
 
 export default function Home({ params }: { params: Promise<{ lang: Language }> }) {
@@ -50,6 +54,7 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
 
   return (
     <div className="App">
+      <ScrollProgress />
       <Header
         lang={lang}
         activeMenu={activeMenu}
@@ -75,14 +80,9 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         scrollToId={scrollToId}
       />
 
-      <div className="trust-strip" aria-label={lang === 'id' ? 'Keunggulan layanan' : 'Service highlights'}>
-        <div className="container">
-          <span><CountUp value={2} suffix="+" /> {lang === 'id' ? 'tahun melayani' : lang === 'en' ? 'years serving' : '年の実績'}</span>
-          <span><CountUp value={2} /> {lang === 'id' ? 'negara (ID ⇄ JP)' : lang === 'en' ? 'countries (ID ⇄ JP)' : 'カ国 (ID ⇄ JP)'}</span>
-          <span><CountUp value={4} /> {lang === 'id' ? 'hub operasional' : lang === 'en' ? 'operation hubs' : '拠点'}</span>
-          <span><CountUp value={500} suffix="+" /> {lang === 'id' ? 'customer' : lang === 'en' ? 'customers' : 'お客様'}</span>
-        </div>
-      </div>
+      <Stats lang={lang} />
+
+      <Categories lang={lang} />
 
       <Process lang={lang} />
 
@@ -90,17 +90,14 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         lang={lang}
         openWhatsApp={handleOpenWhatsApp}
         onSelect={() => {
-          setActiveMenu('pricing');
-          scrollToId('pricing');
+          setActiveMenu('calculator');
+          scrollToId('calculator');
         }}
       />
 
-      <Pricing
-        lang={lang}
-        jastipData={jastipData}
-        openWhatsApp={handleOpenWhatsApp}
-      />
+      <Hubs lang={lang} />
 
+      <Calculator lang={lang} />
       <Terms lang={lang} />
 
       <FAQ
@@ -108,21 +105,22 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         faqData={faqData}
         activeFaqs={activeFaqs}
         toggleFaq={toggleFaq}
+        openWhatsApp={handleOpenWhatsApp}
       />
 
       <motion.section
         className="cta-section"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, margin: '0px 0px -8% 0px' }}
       >
         <div className="container">
           <motion.div
             className="cta-content"
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: '0px 0px -8% 0px' }}
+            transition={{ duration: 0.4 }}
           >
             <span className="cta-kicker">{lang === 'id' ? 'Konsultasi tanpa biaya' : lang === 'en' ? 'Free consultation' : '相談無料'}</span>
             <h2>{lang === 'id' ? 'Barang incaranmu tinggal satu chat lagi.' : lang === 'en' ? 'Your Japan wishlist is one chat away.' : '欲しい商品まで、あと一度のチャットだけ。'}</h2>
@@ -143,6 +141,7 @@ export default function Home({ params }: { params: Promise<{ lang: Language }> }
         lang={lang}
         handleNavClick={handleNavClick}
       />
+      <StickyCta lang={lang} onClick={handleOpenWhatsApp} />
     </div>
   );
 }

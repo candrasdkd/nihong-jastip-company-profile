@@ -32,12 +32,12 @@ const Process: React.FC<ProcessProps> = ({ lang }) => {
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
+    visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
   };
 
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: 'easeOut' } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
   };
 
   const progressVariants: Variants = {

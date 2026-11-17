@@ -15,7 +15,7 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: 0.4, ease: "easeOut" }
     }
   };
 
@@ -24,10 +24,10 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
       <div className="container">
         <motion.div 
           className="section-heading contact-heading"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: '0px 0px -8% 0px' }}
+          transition={{ duration: 0.4 }}
         >
           <span className="eyebrow">{lang === 'id' ? 'Kami siap bantu' : lang === 'en' ? 'We are here to help' : 'お気軽にご相談ください'}</span>
           <h2>{lang === 'id' ? 'Ceritakan barang yang ingin kamu kirim.' : lang === 'en' ? 'Tell us what you want to ship.' : '送りたい商品について教えてください。'}</h2>
@@ -37,10 +37,10 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
         <div className="contact-content">
           <motion.div 
             className="contact-info"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '0px 0px -8% 0px' }}
+            transition={{ duration: 0.5 }}
           >
             <span className="contact-kicker"><MessageCircle size={17} /> {lang === 'id' ? 'Customer care' : lang === 'en' ? 'Customer care' : 'カスタマーケア'}</span>
             <h3>{lang === 'id' ? 'Ada pertanyaan? Jangan ragu.' : lang === 'en' ? 'Questions? Just ask.' : 'ご不明点はお気軽に。'}</h3>
@@ -72,7 +72,6 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
                 <strong>{lang === 'id' ? 'Alamat' : lang === 'en' ? 'Address' : '住所'}</strong>
                 <p>- Jl. Petukangan Utara, Jakarta Selatan</p>
                 <p>- Jl. Garuda I Gg Acim II No 58, Depok</p>
-                <p>- Gadukan, Kutoharjo, Kec. Kaliwungu, Kabupaten Kendal</p>
               </div>
             </div>
 
@@ -102,10 +101,10 @@ const Contact: React.FC<ContactProps> = ({ lang, submitContactToWhatsApp }) => {
 
           <motion.div 
             className="contact-form"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '0px 0px -8% 0px' }}
+            transition={{ duration: 0.5 }}
           >
             <span className="form-step">{lang === 'id' ? 'Mulai konsultasi' : lang === 'en' ? 'Start a consultation' : '相談を始める'}</span>
             <h3>{lang === 'id' ? 'Isi detail singkat' : lang === 'en' ? 'Share a few details' : '簡単な情報を入力'}</h3>

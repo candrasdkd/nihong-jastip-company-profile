@@ -33,7 +33,7 @@ const Footer: React.FC<FooterProps> = ({ lang, handleNavClick }) => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: '0px 0px -8% 0px' }}
         >
           {/* Brand Section */}
           <motion.div className="footer-section brand" variants={itemVariants}>
@@ -69,7 +69,7 @@ const Footer: React.FC<FooterProps> = ({ lang, handleNavClick }) => {
             <ul>
               <li><a href="#home" onClick={handleNavClick('home')}>{lang === 'id' ? 'Beranda' : lang === 'en' ? 'Home' : 'ホーム'}</a></li>
               <li><a href="#process" onClick={handleNavClick('process')}>{lang === 'id' ? 'Cara Kerja' : lang === 'en' ? 'How It Works' : 'ご利用の流れ'}</a></li>
-              <li><a href="#pricing" onClick={handleNavClick('pricing')}>{lang === 'id' ? 'Cek Tarif' : lang === 'en' ? 'Rates' : '料金'}</a></li>
+              <li><a href="#calculator" onClick={handleNavClick('calculator')}>{lang === 'id' ? 'Cek Tarif' : lang === 'en' ? 'Rates' : '料金'}</a></li>
               <li><a href="#faq" onClick={handleNavClick('faq')}>FAQ</a></li>
               <li><a href="#terms" onClick={handleNavClick('terms')}>{lang === 'id' ? 'Ketentuan' : lang === 'en' ? 'Terms' : '規約'}</a></li>
             </ul>
@@ -89,7 +89,7 @@ const Footer: React.FC<FooterProps> = ({ lang, handleNavClick }) => {
               </li>
               <li>
                 <MapPin size={16} />
-                <span>Jakarta - Depok - Kendal - Osaka</span>
+                <span>Jakarta - Depok - Osaka</span>
               </li>
             </ul>
           </motion.div>
@@ -99,7 +99,7 @@ const Footer: React.FC<FooterProps> = ({ lang, handleNavClick }) => {
           className="footer-bottom"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: '0px 0px -8% 0px' }}
           transition={{ delay: 0.5 }}
         >
           <p>Copyright ©{new Date().getFullYear()} Nihong Jastip. All rights reserved.</p>

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { Bricolage_Grotesque, Hanken_Grotesk } from "next/font/google";
 import "../globals.css";
+
+const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display", weight: ["600", "700", "800"] });
+const sans = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
 import { Language } from "../../types";
 import Schema from "../../components/SEO/Schema";
 import ChatBot from "../../components/UI/ChatBot";
@@ -19,9 +23,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
   };
 
   const descriptions = {
-    id: "Layanan Jastip Handcarry Jepang ⇄ Indonesia terpercaya. Titip beli & titip bawa barang (Mercari, Amazon, Anime, Fashion) berlokasi di Osaka, Semarang, Depok, dan Jakarta.",
-    en: "Japan ⇄ Indonesia two-way handcarry personal shopper. Secure services in Osaka, Semarang, Depok, and Jakarta.",
-    jp: "日本 ⇄ インドネシアのハンドキャリー買い物代行。大阪、スマラン、デポック、ジャカルタ拠点で安心・迅速に対応します。"
+    id: "Layanan Jastip Handcarry Jepang ⇄ Indonesia terpercaya. Titip beli & titip bawa barang (Mercari, Amazon, Anime, Fashion) berlokasi di Osaka, Depok, dan Jakarta.",
+    en: "Japan ⇄ Indonesia two-way handcarry personal shopper. Secure services in Osaka, Depok, and Jakarta.",
+    jp: "日本 ⇄ インドネシアのハンドキャリー買い物代行。大阪、デポック、ジャカルタ拠点で安心・迅速に対応します。"
   };
 
   return {
@@ -81,7 +85,7 @@ export default async function RootLayout({
   const lang = (await params).lang;
   
   return (
-    <html lang={lang} data-scroll-behavior="smooth">
+    <html lang={lang} data-scroll-behavior="smooth" className={`${display.variable} ${sans.variable}`}>
       <body>
         <Schema lang={lang as Language} />
         {children}

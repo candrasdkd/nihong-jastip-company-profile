@@ -57,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({
           <a href="#process" onClick={handleNavClick('process')} className={activeMenu === 'process' ? 'active' : ''}>
             {lang === 'id' ? 'Cara Kerja' : lang === 'en' ? 'How It Works' : 'ご利用の流れ'}
           </a>
-          <a href="#pricing" onClick={handleNavClick('pricing')} className={activeMenu === 'pricing' ? 'active' : ''}>
+          <a href="#calculator" onClick={handleNavClick('calculator')} className={activeMenu === 'calculator' ? 'active' : ''}>
             {lang === 'id' ? 'Cek Tarif' : lang === 'en' ? 'Rates' : '料金'}
           </a>
           <a href="#faq" onClick={handleNavClick('faq')} className={activeMenu === 'faq' ? 'active' : ''}>

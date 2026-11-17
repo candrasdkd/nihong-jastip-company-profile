@@ -10,7 +10,7 @@ export default function Schema({ lang }: SchemaProps) {
     "@context": "https://schema.org",
     "@type": "Service",
     "name": lang === 'id' ? "Nihong Jastip — Jastip Handcarry Jepang ⇄ Indonesia Terpercaya" : lang === 'en' ? "Nihong Jastip - Japan ⇄ Indonesia Handcarry Personal Shopper" : "Nihong Jastip - 日本 ⇄ インドネシア ハンドキャリー買い物代行",
-    "description": lang === 'id' ? "Layanan Jastip Handcarry Jepang ⇄ Indonesia terpercaya. Melayani titip beli dan titip bawa barang Jepang (Mercari, Amazon, Anime, Fashion) dan Indonesia." : lang === 'en' ? "Two-way Japan ⇄ Indonesia Handcarry Personal Shopper. Located in Osaka, Semarang, Depok, and Jakarta." : "日本 ⇄ インドネシアの双方向ハンドキャリー買い物代行。大阪、スマラン、デポック、ジャカルタに拠点を置いています。",
+    "description": lang === 'id' ? "Layanan Jastip Handcarry Jepang ⇄ Indonesia terpercaya. Melayani titip beli dan titip bawa barang Jepang (Mercari, Amazon, Anime, Fashion) dan Indonesia." : lang === 'en' ? "Two-way Japan ⇄ Indonesia Handcarry Personal Shopper. Located in Osaka, Depok, and Jakarta." : "日本 ⇄ インドネシアの双方向ハンドキャリー買い物代行。大阪、デポック、ジャカルタに拠点を置いています。",
     "provider": {
       "@type": "LocalBusiness",
       "name": "Nihong Jastip",
@@ -20,11 +20,6 @@ export default function Schema({ lang }: SchemaProps) {
           "@type": "PostalAddress",
           "addressLocality": "Osaka",
           "addressCountry": "JP"
-        },
-        {
-          "@type": "PostalAddress",
-          "addressLocality": "Semarang",
-          "addressCountry": "ID"
         },
         {
           "@type": "PostalAddress",
