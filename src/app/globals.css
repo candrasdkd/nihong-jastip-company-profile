@@ -666,3 +666,9 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 700; letter-spacing: -0
 .chatbot-handoff { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px; padding: 6px 12px; border: 0; border-radius: 999px; background: #fff4e2; color: var(--ink); font-size: 0.78rem; font-weight: 700; }
 .chatbot-handoff:hover { background: var(--orange); }
 .chatbot-message-bubble a { color: var(--brand); text-decoration: underline; word-break: break-all; }
+
+/* ---------- Calculator: barang khusus ---------- */
+.calc-chips button.special { border-style: dashed; }
+.calc-chips button.special.picked { border-style: solid; border-color: var(--orange-d); background: #fff4e2; }
+.calc-chips button em { margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: #fff4e2; color: var(--orange-d); font-size: 0.68rem; font-style: normal; font-weight: 800; }
+.calc-total-special { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }

@@ -4,6 +4,7 @@ import { buildSystemPrompt } from '../../../data/knowledge';
 import { estimateHandcarry, Direction } from '../../../utils/handcarry';
 import { fetchJpyIdr } from '../../../utils/rate';
 import { detectLang, LANG_NAME, ChatLang } from '../../../utils/detectLang';
+import { mentionsSpecialItem } from '../../../utils/specialItems';
 
 // Node.js runtime untuk kompatibilitas groq-sdk di Vercel
 export const runtime = 'nodejs';
@@ -38,7 +39,7 @@ const TOOLS: Groq.Chat.Completions.ChatCompletionTool[] = [
     function: {
       name: 'estimate_handcarry_cost',
       description:
-        'Hitung estimasi ongkos handcarry Nihong Jastip (yen & rupiah) dari berat barang dan arah. Selalu gunakan ini untuk pertanyaan biaya; jangan menghitung sendiri.',
+        'Hitung estimasi ongkos handcarry BARANG UMUM Nihong Jastip (yen & rupiah) dari berat dan arah. Jangan dipakai untuk sepatu, figure, elektronik, atau barang bulky (harganya berbeda, tanya admin). Selalu gunakan ini untuk pertanyaan biaya barang umum; jangan menghitung sendiri.',
       parameters: {
         type: 'object',
         properties: {
@@ -55,7 +56,7 @@ const TOOLS: Groq.Chat.Completions.ChatCompletionTool[] = [
   },
 ];
 
-const runTool = async (name: string, rawArgs: string): Promise<string> => {
+const runTool = async (name: string, rawArgs: string, lang: ChatLang): Promise<string> => {
   if (name !== 'estimate_handcarry_cost') return JSON.stringify({ error: 'unknown_tool' });
   let args: { weight_kg?: number; direction?: Direction };
   try {
@@ -68,14 +69,26 @@ const runTool = async (name: string, rawArgs: string): Promise<string> => {
 
   const fx = await fetchJpyIdr();
   const rp = (yen: number) => (fx ? Math.round((yen * fx.rate) / 1000) * 1000 : null);
+  const yen = (n: number) => `¥${n.toLocaleString('en-US')}`;
+  const idr = (n: number) => `Rp ${n.toLocaleString('id-ID')}`;
+  const dirText = {
+    id: est.direction === 'japan_to_id' ? 'Jepang → Indonesia' : 'Indonesia → Jepang',
+    en: est.direction === 'japan_to_id' ? 'Japan → Indonesia' : 'Indonesia → Japan',
+    jp: est.direction === 'japan_to_id' ? '日本 → インドネシア' : 'インドネシア → 日本',
+  }[lang];
+  const rupiah = fx ? ` ≈ ${idr(rp(est.totalMin)!)} – ${idr(rp(est.totalMax)!)}` : '';
+
+  // Teks jadi dengan angka final dari kode; model hanya boleh menyalinnya (angka tidak boleh diubah).
+  const readyText = {
+    id: `Rute ${dirText}. Berat ${est.inputKg} kg dibulatkan menjadi ${est.billedKg} kg. Tarif ${yen(est.ratePerKgMin)}–${yen(est.ratePerKgMax)} per kg. Estimasi total: ${yen(est.totalMin)} – ${yen(est.totalMax)}${rupiah}.`,
+    en: `Route ${dirText}. Weight ${est.inputKg} kg is rounded up to ${est.billedKg} kg. Rate ${yen(est.ratePerKgMin)}–${yen(est.ratePerKgMax)} per kg. Estimated total: ${yen(est.totalMin)} – ${yen(est.totalMax)}${rupiah}.`,
+    jp: `ルート: ${dirText}。重量${est.inputKg}kgは${est.billedKg}kgに切り上げ。料金は1kgあたり${yen(est.ratePerKgMin)}〜${yen(est.ratePerKgMax)}。合計の目安: ${yen(est.totalMin)} 〜 ${yen(est.totalMax)}${rupiah}。`,
+  }[lang];
+
   return JSON.stringify({
-    direction: est.direction === 'japan_to_id' ? 'Jepang → Indonesia' : 'Indonesia → Jepang',
-    input_weight_kg: est.inputKg,
-    billed_weight_kg: est.billedKg,
-    rate_per_kg_yen: `${est.ratePerKgMin}–${est.ratePerKgMax}`,
-    total_yen: { min: est.totalMin, max: est.totalMax },
-    total_rupiah_approx: fx ? { min: rp(est.totalMin), max: rp(est.totalMax), idr_per_yen: Math.round(fx.rate * 100) / 100 } : null,
-    note: 'Hanya ongkos handcarry. Harga barang tidak termasuk. Total final dikonfirmasi admin.',
+    ready_text: readyText,
+    instruction: 'Sampaikan ready_text ini dengan angka PERSIS seperti tertulis (jangan ubah/hitung ulang). Boleh dirapikan jadi daftar poin dan diterjemahkan ke bahasa user.',
+    note: 'Hanya ongkos handcarry untuk barang umum. Harga barang tidak termasuk. Total final dikonfirmasi admin.',
   });
 };
 
@@ -121,10 +134,18 @@ export async function POST(req: Request) {
         ? 'Balas dalam bahasa Indonesia dengan sapaan "Kak".'
         : `PENTING: user menulis dalam bahasa ${LANG_NAME[replyLang]}. Balas SELURUHNYA dalam bahasa ${LANG_NAME[replyLang]}, jangan bahasa Indonesia, jangan pakai sapaan "Kak". Terjemahkan juga isi hasil tool.`;
 
+    // Barang khusus (sepatu/figure/elektronik/bulky): tarif beda, jangan beri angka. Cek pesan ini + beberapa pesan user sebelumnya.
+    const recentUserText = history.filter((m) => m.role === 'user').slice(-3).map((m) => String(m.content));
+    const special = mentionsSpecialItem(message, ...recentUserText);
+    const specialRule = special
+      ? 'PERHATIAN: percakapan ini menyebut barang khusus (sepatu/figure/elektronik/bulky). Tarif per kg TIDAK berlaku untuk barang itu. JANGAN beri estimasi angka; jelaskan harganya berbeda dan arahkan ke admin WhatsApp sesuai aturan BARANG KHUSUS.'
+      : '';
+
     const baseMessages: ChatMsg[] = [
       { role: 'system', content: buildSystemPrompt(lang) },
       ...history,
       { role: 'system', content: langRule },
+      ...(specialRule ? [{ role: 'system' as const, content: specialRule }] : []),
       { role: 'user', content: message },
     ];
 
@@ -139,7 +160,7 @@ export async function POST(req: Request) {
             model,
             messages,
             tools: TOOLS,
-            tool_choice: round >= MAX_TOOL_ROUNDS ? 'none' : 'auto',
+            tool_choice: special || round >= MAX_TOOL_ROUNDS ? 'none' : 'auto',
             temperature: 0.2,
             max_tokens: 900,
           });
@@ -153,7 +174,7 @@ export async function POST(req: Request) {
               messages.push({
                 role: 'tool',
                 tool_call_id: call.id,
-                content: await runTool(call.function.name, call.function.arguments),
+                content: await runTool(call.function.name, call.function.arguments, replyLang),
               });
             }
             continue;

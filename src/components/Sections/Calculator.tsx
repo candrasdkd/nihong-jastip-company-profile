@@ -15,14 +15,17 @@ interface CalculatorProps {
 type Dir = 'japan_to_id' | 'id_to_japan';
 
 // Perkiraan bobot barang populer (kg) — hanya untuk membantu menebak total berat.
-const PRESETS = [
-  { id: 'shoes', kg: 1.2, label: { id: 'Sepatu', en: 'Shoes', jp: '靴' } },
+// `special`: harga berbeda dari tarif per kg biasa, jadi tidak boleh dihitung otomatis (tanya admin).
+interface Preset { id: string; kg: number; special?: boolean; label: Record<Language, string> }
+const PRESETS: Preset[] = [
+  { id: 'shoes', kg: 1.2, special: true, label: { id: 'Sepatu', en: 'Shoes', jp: '靴' } },
   { id: 'hoodie', kg: 0.8, label: { id: 'Jaket / Hoodie', en: 'Jacket / Hoodie', jp: 'ジャケット' } },
-  { id: 'figure', kg: 0.6, label: { id: 'Figure', en: 'Figure', jp: 'フィギュア' } },
+  { id: 'figure', kg: 0.6, special: true, label: { id: 'Figure', en: 'Figure', jp: 'フィギュア' } },
   { id: 'skincare', kg: 0.3, label: { id: 'Skincare', en: 'Skincare', jp: 'スキンケア' } },
   { id: 'snack', kg: 0.5, label: { id: 'Snack / Oleh-oleh', en: 'Snacks', jp: 'お菓子' } },
-  { id: 'gadget', kg: 0.7, label: { id: 'Gadget', en: 'Gadget', jp: 'ガジェット' } },
-] as const;
+  { id: 'gadget', kg: 0.7, special: true, label: { id: 'Elektronik / Gadget', en: 'Electronics / Gadget', jp: '電化製品・ガジェット' } },
+  { id: 'bulky', kg: 3, special: true, label: { id: 'Barang besar / bulky', en: 'Large / bulky item', jp: '大きな荷物' } },
+];
 
 const DEFAULT_RATE = 114; // Rp per ¥ — cadangan jika kurs live gagal dimuat
 
@@ -31,6 +34,7 @@ const Calculator: React.FC<CalculatorProps> = ({ lang }) => {
   const [kg, setKg] = useState(3);
   const [rate, setRate] = useState(DEFAULT_RATE);
   const [live, setLive] = useState<{ updatedAt: string } | null>(null);
+  const [specials, setSpecials] = useState<string[]>([]);
   const edited = useRef(false);
 
   // Ambil kurs terbaru; jangan timpa kalau customer sudah mengisi manual.
@@ -58,6 +62,13 @@ const Calculator: React.FC<CalculatorProps> = ({ lang }) => {
 
   const fmtYen = (n: number) => `¥${n.toLocaleString('en-US')}`;
   const fmtRp = (n: number) => `Rp ${Math.round(n / 1000).toLocaleString('id-ID')}rb`;
+  const specialLabels = PRESETS.filter((p) => specials.includes(p.id)).map((p) => p.label[lang]);
+  const hasSpecial = specials.length > 0;
+  const addItem = (p: Preset) => {
+    addKg(p.kg);
+    if (p.special) setSpecials((prev) => (prev.includes(p.id) ? prev : [...prev, p.id]));
+  };
+  const resetAll = () => { setKg(0.5); setSpecials([]); };
   const addKg = (v: number) => setKg((k) => Math.min(30, Math.round((k + v) * 10) / 10));
   const roundedKg = Math.max(1, Math.ceil(kg * 2) / 2);
 
@@ -67,11 +78,18 @@ const Calculator: React.FC<CalculatorProps> = ({ lang }) => {
       : t('Indonesia → Jepang', 'Indonesia → Japan', 'インドネシア → 日本');
 
   const sendQuote = () => {
-    const msg = t(
-      `Halo Nihong Jastip, saya mau handcarry ${routeLabel} sekitar ${roundedKg} kg. Estimasi dari kalkulator: ${fmtYen(result.min)} - ${fmtYen(result.max)}. Mohon info jadwal flight terdekat.`,
-      `Hello Nihong Jastip, I'd like a handcarry ${routeLabel}, about ${roundedKg} kg. Calculator estimate: ${fmtYen(result.min)} - ${fmtYen(result.max)}. Please share the nearest flight schedule.`,
-      `Nihong Jastipさん、${routeLabel}のハンドキャリーを約${roundedKg}kgで希望します。目安: ${fmtYen(result.min)}〜${fmtYen(result.max)}。直近のフライト予定を教えてください。`
-    );
+    const items = specialLabels.join(', ');
+    const msg = hasSpecial
+      ? t(
+          `Halo Nihong Jastip, saya mau handcarry ${routeLabel} dengan barang: ${items} (total sekitar ${roundedKg} kg). Mohon info harganya ya, dan jadwal flight terdekat.`,
+          `Hello Nihong Jastip, I'd like a handcarry ${routeLabel} for: ${items} (about ${roundedKg} kg in total). Could you share the price and the nearest flight schedule?`,
+          `Nihong Jastipさん、${routeLabel}のハンドキャリーで次の荷物を希望します: ${items}（合計約${roundedKg}kg）。料金と直近のフライト予定を教えてください。`
+        )
+      : t(
+          `Halo Nihong Jastip, saya mau handcarry ${routeLabel} sekitar ${roundedKg} kg. Estimasi dari kalkulator: ${fmtYen(result.min)} - ${fmtYen(result.max)}. Mohon info jadwal flight terdekat.`,
+          `Hello Nihong Jastip, I'd like a handcarry ${routeLabel}, about ${roundedKg} kg. Calculator estimate: ${fmtYen(result.min)} - ${fmtYen(result.max)}. Please share the nearest flight schedule.`,
+          `Nihong Jastipさん、${routeLabel}のハンドキャリーを約${roundedKg}kgで希望します。目安: ${fmtYen(result.min)}〜${fmtYen(result.max)}。直近のフライト予定を教えてください。`
+        );
     openWhatsApp(msg);
   };
 
@@ -134,12 +152,13 @@ const Calculator: React.FC<CalculatorProps> = ({ lang }) => {
             <div className="calc-block">
               <div className="calc-label-row">
                 <span className="calc-label">{t('Tebak berat dari isi koper', 'Guess weight from your items', 'アイテムから重さを推定')}</span>
-                <button className="calc-reset" onClick={() => setKg(0.5)}><RotateCcw size={13} /> Reset</button>
+                <button className="calc-reset" onClick={resetAll}><RotateCcw size={13} /> Reset</button>
               </div>
               <div className="calc-chips">
                 {PRESETS.map((p) => (
-                  <button key={p.id} onClick={() => addKg(p.kg)}>
+                  <button key={p.id} className={`${p.special ? 'special' : ''} ${specials.includes(p.id) ? 'picked' : ''}`} onClick={() => addItem(p)}>
                     + {p.label[lang]} <small>~{p.kg} kg</small>
+                    {p.special && <em>{t('tanya admin', 'ask admin', '要確認')}</em>}
                   </button>
                 ))}
               </div>
@@ -158,24 +177,40 @@ const Calculator: React.FC<CalculatorProps> = ({ lang }) => {
 
           <div className="calc-result" aria-live="polite">
             <span className="calc-route">{routeLabel}</span>
-            <span className="calc-result-label">{t('Estimasi ongkos handcarry', 'Estimated handcarry cost', 'ハンドキャリー料金の目安')}</span>
-            <motion.strong key={`${dir}-${kg}`} className="calc-total" initial={{ opacity: 0.4, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
-              {fmtYen(result.min)} <em>–</em> {fmtYen(result.max)}
-            </motion.strong>
-            <span className="calc-rp">≈ {fmtRp(result.rpMin)} – {fmtRp(result.rpMax)}</span>
-            <ul className="calc-notes">
-              <li>{t(`Dihitung ${roundedKg} kg (pembulatan per 0,5 kg, min. 1 kg)`, `Billed at ${roundedKg} kg (rounded per 0.5 kg, min. 1 kg)`, `${roundedKg}kgで計算（0.5kg単位切り上げ、最低1kg）`)}</li>
-              <li>{t(`Tarif ${fmtYen(route.priceMin)}–${fmtYen(route.priceMax)} per kg, sudah termasuk handling`, `Rate ${fmtYen(route.priceMin)}–${fmtYen(route.priceMax)} per kg, handling included`, `1kgあたり${fmtYen(route.priceMin)}〜${fmtYen(route.priceMax)}、手数料込み`)}</li>
-              <li>{t('Belum termasuk harga barang (untuk titip beli)', 'Excludes item price (for buy-for-me orders)', '商品代金は含まれません（買い付けの場合）')}</li>
-            </ul>
+            {hasSpecial ? (
+              <>
+                <span className="calc-result-label">{t('Harga khusus, konfirmasi admin', 'Special pricing, ask our admin', '特別料金（担当者へご確認ください）')}</span>
+                <strong className="calc-total calc-total-special">{t('Tanya admin', 'Ask admin', '要問い合わせ')}</strong>
+                <span className="calc-rp">{specialLabels.join(' · ')}</span>
+                <ul className="calc-notes">
+                  <li>{t('Sepatu, figure, elektronik, dan barang bulky tidak dihitung dengan tarif per kg biasa. Harganya berbeda dan dikonfirmasi admin.', 'Shoes, figures, electronics, and bulky items are not charged at the regular per-kg rate. Prices differ and are confirmed by our admin.', '靴・フィギュア・電化製品・かさばる荷物は通常のkg単価では計算されません。料金は担当者がご案内します。')}</li>
+                  <li>{t(`Total berat sekitar ${roundedKg} kg (akan ikut dikirim ke admin)`, `Total weight about ${roundedKg} kg (sent to our admin)`, `合計重量は約${roundedKg}kg（担当者に送信されます）`)}</li>
+                </ul>
+              </>
+            ) : (
+              <>
+                <span className="calc-result-label">{t('Estimasi ongkos handcarry', 'Estimated handcarry cost', 'ハンドキャリー料金の目安')}</span>
+                <motion.strong key={`${dir}-${kg}`} className="calc-total" initial={{ opacity: 0.4, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+                  {fmtYen(result.min)} <em>–</em> {fmtYen(result.max)}
+                </motion.strong>
+                <span className="calc-rp">≈ {fmtRp(result.rpMin)} – {fmtRp(result.rpMax)}</span>
+                <ul className="calc-notes">
+                  <li>{t(`Dihitung ${roundedKg} kg (pembulatan per 0,5 kg, min. 1 kg)`, `Billed at ${roundedKg} kg (rounded per 0.5 kg, min. 1 kg)`, `${roundedKg}kgで計算（0.5kg単位切り上げ、最低1kg）`)}</li>
+                  <li>{t(`Tarif ${fmtYen(route.priceMin)}–${fmtYen(route.priceMax)} per kg, sudah termasuk handling`, `Rate ${fmtYen(route.priceMin)}–${fmtYen(route.priceMax)} per kg, handling included`, `1kgあたり${fmtYen(route.priceMin)}〜${fmtYen(route.priceMax)}、手数料込み`)}</li>
+                  <li>{t('Berlaku untuk barang umum. Sepatu, figure, elektronik & barang bulky: harga berbeda, tanya admin', 'For regular items. Shoes, figures, electronics & bulky items are priced differently: ask our admin', '一般的な荷物の場合。靴・フィギュア・電化製品・かさばる荷物は別料金のため要確認')}</li>
+                  <li>{t('Belum termasuk harga barang (untuk titip beli)', 'Excludes item price (for buy-for-me orders)', '商品代金は含まれません（買い付けの場合）')}</li>
+                </ul>
+              </>
+            )}
             <button className="calc-cta" onClick={sendQuote}>
               <MessageCircle size={19} />
-              {t('Kirim estimasi ke WhatsApp', 'Send this estimate on WhatsApp', 'この見積りをWhatsAppで送る')}
+              {hasSpecial ? t('Tanya harga ke admin', 'Ask the admin for a price', '担当者に料金を問い合わせる') : t('Kirim estimasi ke WhatsApp', 'Send this estimate on WhatsApp', 'この見積りをWhatsAppで送る')}
             </button>
           </div>
         </motion.div>
 
         <ul className="calc-disclaimer">
+          <li>{t('Tarif per kg berlaku untuk barang umum. Barang bulky, elektronik, figure, dan sepatu memiliki harga berbeda: silakan tanya admin.', 'The per-kg rate applies to regular items. Bulky items, electronics, figures, and shoes are priced differently: please ask our admin.', 'kg単価は一般的な荷物に適用されます。かさばる荷物・電化製品・フィギュア・靴は別料金のため、担当者にご確認ください。')}</li>
           <li>{t('Minimum charge 1 kg dan dibulatkan ke atas per kelipatan 0,5 kg.', 'Minimum charge 1 kg, rounded up to the nearest 0.5 kg.', '最低料金1kg、0.5kg単位で切り上げ計算となります。')}</li>
           <li>{t('Harga dapat bervariasi tergantung jenis barang, jadwal flight, dan ketentuan bea cukai. Total final kami konfirmasi sebelum diproses.', 'Prices may vary by item type, flight schedule, and customs rules. We confirm the final total before processing.', '商品の種類、フライト状況、税関規定により価格が変動する場合があります。確定金額は処理前にご案内します。')}</li>
         </ul>
