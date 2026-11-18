@@ -102,7 +102,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ reply: 'Maaf Kak, asisten AI sedang tidak tersedia. Silakan hubungi admin lewat WhatsApp ya.' }, { status: 503 });
     }
 
-    const ip = (req.headers.get('x-forwarded-for') || 'unknown').split(',')[0].trim();
+    // Header Vercel diset oleh platform (tidak bisa dipalsukan klien); x-forwarded-for hanya cadangan.
+    const ip = (
+      req.headers.get('x-vercel-forwarded-for') ||
+      req.headers.get('x-real-ip') ||
+      req.headers.get('x-forwarded-for') ||
+      'unknown'
+    ).split(',')[0].trim();
     if (isRateLimited(ip)) {
       return NextResponse.json({ reply: 'Pesannya terlalu cepat Kak, coba lagi beberapa menit lagi ya.' }, { status: 429 });
     }
@@ -116,14 +122,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ reply: `Pesannya terlalu panjang Kak (maksimal ${MAX_MESSAGE_CHARS} karakter). Boleh dipersingkat ya.` }, { status: 413 });
     }
 
+    // Hanya terima role 'user'/'assistant' dengan isi string tidak kosong; role lain (mis. 'system') dibuang.
     const history: ChatMsg[] = Array.isArray(body?.history)
-      ? body.history
-          .filter((m: unknown): m is { role: string; content: string } => typeof (m as { content?: unknown })?.content === 'string')
+      ? (body.history as unknown[])
+          .filter(
+            (m): m is { role: 'user' | 'assistant'; content: string } => {
+              const x = m as { role?: unknown; content?: unknown } | null;
+              return (
+                (x?.role === 'user' || x?.role === 'assistant') &&
+                typeof x.content === 'string' &&
+                x.content.trim() !== ''
+              );
+            }
+          )
           .slice(-MAX_HISTORY)
-          .map((m: { role: string; content: string }) => ({
-            role: m.role === 'user' ? ('user' as const) : ('assistant' as const),
-            content: m.content.slice(0, MAX_HISTORY_CHARS),
-          }))
+          .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_HISTORY_CHARS) }))
       : [];
 
     const groq = new Groq({ apiKey });

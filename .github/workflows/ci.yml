@@ -15,9 +15,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Enable Corepack (Yarn Berry)
-        run: corepack enable
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -26,6 +23,12 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Type Check
+        run: yarn type-check
 
       - name: Run Unit Tests
         run: yarn test:ci

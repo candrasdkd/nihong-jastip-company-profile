@@ -59,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <a 
                   key={item.id}
                   href={`#${item.id}`} 
-                  onClick={handleNavClickWithClose(item.id as any)} 
+                  onClick={handleNavClickWithClose(item.id)} 
                   className={activeMenu === item.id ? 'active' : ''}
                 >
                   <item.icon size={20} />
